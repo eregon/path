@@ -38,6 +38,9 @@ describe Path do
   it 'replace_extension' do
     Path('hello/world.rb').replace_extension('.ext').should == Path('hello/world.ext')
     Path('hello/world').replace_extension('.ext').should == Path('hello/world.ext')
+
+    # should add a '.' if missing (consistent with #ext)
+    Path('hello/world').replace_extension('ext').should == Path('hello/world.ext')
   end
 
   it 'relative_to' do

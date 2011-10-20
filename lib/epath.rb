@@ -96,6 +96,7 @@ class Path
   end
 
   def replace_extension(ext)
+    ext = ".#{ext}" unless ext.start_with? '.'
     Path.new(without_extension.to_s + ext)
   end
 
