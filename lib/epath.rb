@@ -28,7 +28,7 @@ class Path
       new(caller.first.split(':').first).expand.dir
     end
 
-    def tmpfile(basename, tmpdir = nil, options = nil)
+    def tmpfile(basename = '', tmpdir = nil, options = nil)
       tempfile = Tempfile.new(basename, *[tmpdir, options].compact)
       file = new tempfile
       if block_given?

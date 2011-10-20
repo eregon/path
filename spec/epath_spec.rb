@@ -84,7 +84,7 @@ describe Path do
 
   it 'tmpfile' do
     tmpfile = nil
-    Path.tmpfile('foo') do |file|
+    Path.tmpfile do |file|
       tmpfile = file
       tmpfile.exist?.should be_true
       tmpfile.write 'foo'
