@@ -3,8 +3,8 @@
 
 require 'pathname'
 require 'fileutils'
-require 'tempfile'
-require 'tmpdir'
+
+autoload :Tempfile, 'tempfile'
 
 class Path
   attr_reader :path
@@ -44,6 +44,7 @@ class Path
     alias_method :tempfile, :tmpfile
 
     def tmpdir(prefix_suffix = nil, *rest)
+      require 'tmpdir'
       dir = new Dir.mktmpdir(prefix_suffix, *rest)
       if block_given?
         begin
