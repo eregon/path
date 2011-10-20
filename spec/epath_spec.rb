@@ -46,9 +46,18 @@ describe Path do
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b/')).should == Path('Array/sort.rb')
   end
 
-  it 'read, size' do
-    this.read.should include 'this.read'
+  it 'read, write, size' do
+    contents = this.read
+    this.read.should == contents
     this.read.size.should == this.size
+
+    begin
+      tmp = Path('.tmp')
+      tmp.write(contents)
+      tmp.read.should == contents
+    ensure
+      tmp.unlink if tmp.exist?
+    end
   end
 
   it 'parent' do
