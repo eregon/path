@@ -3,6 +3,8 @@
 
 require 'pathname'
 require 'fileutils'
+require 'tempfile'
+require 'tmpdir'
 
 class Path
   attr_reader :path
@@ -25,6 +27,31 @@ class Path
     def dir
       new(caller.first.split(':').first).expand.dir
     end
+
+    def tmpfile(basename, tmpdir = nil, options = nil)
+      file = new Tempfile.new(basename, *[tmpdir, options].compact)
+      if block_given?
+        begin
+          yield file
+        ensure
+          file.unlink if file.exist?
+        end
+      end
+      file
+    end
+    alias_method :tempfile, :tmpfile
+
+    def tmpdir(prefix_suffix = nil, *rest)
+      dir = new Dir.mktmpdir(prefix_suffix, *rest)
+      if block_given?
+        begin
+          yield dir
+        ensure
+          FileUtils.remove_entry_secure dir
+        end
+      end
+      dir
+    end
   end
 
   def initialize(*parts)
@@ -34,6 +61,9 @@ class Path
       path
     when String
       Pathname.new(path)
+    when Tempfile
+      @_tmpfile = path # We would not want it to be GC'd
+      Pathname.new(path.path)
     else
       raise "Invalid arguments: #{parts}"
     end

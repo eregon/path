@@ -78,4 +78,26 @@ describe Path do
     dir = this.dir.expand
     dir.glob('*.rb').should == [dir/'epath_spec.rb']
   end
+
+  it 'tmpfile' do
+    tmpfile = nil
+    Path.tmpfile('foo') do |file|
+      tmpfile = file
+      tmpfile.exist?.should be_true
+      tmpfile.write 'foo'
+      tmpfile.read.should == 'foo'
+    end
+    tmpfile.exist?.should be_false
+  end
+
+  it 'tmpdir' do
+    tmpdir = nil
+    Path.tmpdir do |dir|
+      tmpdir = dir
+      tmpdir.exist?.should be_true
+      (dir/:file).write 'foo'
+      (dir/:file).read.should == 'foo'
+    end
+    tmpdir.exist?.should be_false
+  end
 end
