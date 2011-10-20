@@ -1,1 +1,1 @@
-# EPath - Enhanced Pathname
+# epath - Enhanced Pathname
