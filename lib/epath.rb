@@ -29,12 +29,14 @@ class Path
     end
 
     def tmpfile(basename, tmpdir = nil, options = nil)
-      file = new Tempfile.new(basename, *[tmpdir, options].compact)
+      tempfile = Tempfile.new(basename, *[tmpdir, options].compact)
+      file = new tempfile
       if block_given?
         begin
           yield file
         ensure
-          file.unlink if file.exist?
+          tempfile.close
+          tempfile.unlink if file.exist?
         end
       end
       file
@@ -47,7 +49,7 @@ class Path
         begin
           yield dir
         ensure
-          FileUtils.remove_entry_secure dir
+          FileUtils.remove_entry_secure(dir) rescue nil
         end
       end
       dir
