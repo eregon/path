@@ -85,7 +85,7 @@ class Path
 
   def write(contents, open_args = nil)
     if IO.respond_to? :write
-      IO.write(@path, contents, *[open_args].compat)
+      IO.write(@path, contents, *[open_args].compact)
     else
       open('w', *[open_args].compact) { |f| f.write(contents) }
     end
