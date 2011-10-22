@@ -5,6 +5,13 @@ require 'epath'
 this = Path(__FILE__)
 
 describe Path do
+  it 'behaves like a path' do
+    path = Path.new('/')
+    [:to_s, :to_str, :to_path].each do |meth|
+      path.should respond_to meth
+    end
+  end
+
   it 'Path(), new' do
     Path.new('/').to_s.should == '/'
     Path('/usr', 'bin', 'ls').should == Path('/usr/bin/ls')
