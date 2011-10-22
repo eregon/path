@@ -72,9 +72,11 @@ describe Path do
     Path('../a').parent.should == Path('..')
   end
 
-  it 'here' do
+  it 'here, dir, relative' do
     Path.here.should == Path(__FILE__).expand
     Path.dir.should == Path(File.dirname(__FILE__))
+    Path.relative('epath_spec.rb').should == this
+    Path.relative('../spec').should == this.dir.expand
   end
 
   it 'glob' do

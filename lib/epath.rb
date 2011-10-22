@@ -19,13 +19,17 @@ class Path
     end
     alias_method :[], :new
 
-    def here
-      new(caller.first.split(':').first).expand
+    def here(from = caller)
+      new(from.first.split(':').first).expand
     end
     alias_method :file, :here
 
     def dir
-      new(caller.first.split(':').first).expand.dir
+      file(caller).dir
+    end
+
+    def relative(path)
+      new(path).expand file(caller).dir
     end
 
     def tmpfile(basename = '', tmpdir = nil, options = nil)
