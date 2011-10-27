@@ -7,6 +7,8 @@ require 'fileutils'
 autoload :Tempfile, 'tempfile'
 
 class Path
+  DOTS = %w[. ..]
+
   attr_reader :path
 
   class << self
@@ -105,6 +107,10 @@ class Path
   def replace_extension(ext)
     ext = ".#{ext}" unless ext.start_with? '.'
     Path.new(without_extension.to_s + ext)
+  end
+
+  def entries
+    (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry) }
   end
 
   def glob(pattern, flags = 0)

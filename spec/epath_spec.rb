@@ -86,6 +86,10 @@ describe Path do
     Path.relative('../spec').should == this.dir.expand
   end
 
+  it 'entries' do
+    Path.dir.entries.should == [this]
+  end
+
   it 'glob' do
     dir = this.dir.expand
     dir.glob('*.rb').should == [dir/'epath_spec.rb']
