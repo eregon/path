@@ -12,13 +12,15 @@ describe Path do
     end
   end
 
-  it 'Path(), new' do
+  it 'Path(), new, &Path' do
     Path.new('/').to_s.should == '/'
     Path('/usr', 'bin', 'ls').should == Path('/usr/bin/ls')
     (Path('/usr')/:bin/:ls).should == Path('/usr/bin/ls')
 
     path = Path.new('.')
     Path.new(path).should be path
+
+    %w[foo bar].map(&Path).should == [Path('foo'), Path('bar')]
   end
 
   it 'base, basename' do

@@ -21,6 +21,10 @@ class Path
     end
     alias_method :[], :new
 
+    def to_proc
+      lambda { |path| new(path) }
+    end
+
     def here(from = caller)
       new(from.first.split(':').first).expand
     end
@@ -114,9 +118,7 @@ class Path
   end
 
   def glob(pattern, flags = 0)
-    Dir.glob(join(pattern), flags).map { |path|
-      Path.new(path)
-    }
+    Dir.glob(join(pattern), flags).map(&Path)
   end
 
   def rm_rf
