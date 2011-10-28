@@ -137,6 +137,10 @@ class Path
     end
   end
 
+  def to_sym
+    @path.to_s.to_sym
+  end
+
   (Pathname.instance_methods(false) - instance_methods(false)).each do |meth|
     class_eval <<-METHOD, __FILE__, __LINE__+1
       def #{meth}(*args, &block)

@@ -7,7 +7,7 @@ this = Path(__FILE__)
 describe Path do
   it 'behaves like a path' do
     path = Path.new('/')
-    [:to_s, :to_str, :to_path].each do |meth|
+    [:to_s, :to_str, :to_path, :to_sym].each do |meth|
       path.should respond_to meth
     end
   end
