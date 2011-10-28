@@ -16,6 +16,7 @@ describe Path do
     Path.new('/').to_s.should == '/'
     Path('/usr', 'bin', 'ls').should == Path('/usr/bin/ls')
     (Path('/usr')/:bin/:ls).should == Path('/usr/bin/ls')
+    Path(:path).to_s.should == 'path'
 
     path = Path.new('.')
     Path.new(path).should be path

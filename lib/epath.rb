@@ -75,6 +75,8 @@ class Path
       path
     when String
       Pathname.new(path)
+    when Symbol
+      Pathname.new(path.to_s)
     when Tempfile
       @_tmpfile = path # We would not want it to be GC'd
       Pathname.new(path.path)
