@@ -144,6 +144,11 @@ class Path
     @path.to_s.to_sym
   end
 
+  def relative_to other
+    Path.new @path.relative_path_from Path.new other
+  end
+  alias_method :%, :relative_to
+
   (Pathname.instance_methods(false) - instance_methods(false)).each do |meth|
     class_eval <<-METHOD, __FILE__, __LINE__+1
       def #{meth}(*args, &block)
@@ -158,8 +163,6 @@ class Path
 
   alias_method :expand, :expand_path
   alias_method :dir, :dirname
-  alias_method :relative_to, :relative_path_from
-  alias_method :%, :relative_to
 end
 
 EPath = Path # to meet everyone's expectations
