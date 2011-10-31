@@ -26,7 +26,7 @@ class Path
     end
 
     def here(from = caller)
-      new(from.first.split(':').first).expand
+      new(from.first.split(/:\d+:in/).first).expand
     end
     alias_method :file, :here
 
