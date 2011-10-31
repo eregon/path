@@ -25,7 +25,8 @@ class Path
       lambda { |path| new(path) }
     end
 
-    def here(from = caller)
+    def here(from = nil)
+      from ||= caller
       new(from.first.split(/:\d+:in/).first).expand
     end
     alias_method :file, :here
