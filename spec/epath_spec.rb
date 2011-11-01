@@ -2,7 +2,7 @@ require 'rspec/autorun'
 $: << '../lib'
 require 'epath'
 
-this = Path(__FILE__)
+this = Path(__FILE__).expand
 
 describe Path do
   it 'behaves like a path' do
@@ -85,7 +85,7 @@ describe Path do
 
   it 'here, dir, relative' do
     Path.here.should == Path(__FILE__).expand
-    Path.dir.should == Path(File.dirname(__FILE__))
+    Path.dir.should == Path(File.dirname(__FILE__)).expand
     Path.relative('epath_spec.rb').should == this
     Path.relative('../spec').should == this.dir.expand
   end
