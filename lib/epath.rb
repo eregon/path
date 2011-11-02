@@ -31,8 +31,9 @@ class Path
     end
     alias_method :file, :here
 
-    def dir
-      file(caller).dir
+    def dir(from = nil)
+      from ||= caller
+      file(from).dir
     end
 
     def home
