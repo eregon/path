@@ -44,6 +44,10 @@ class Path
       new(path).expand file(caller).dir
     end
 
+    def backfind(path)
+      here(caller).backfind(path)
+    end
+
     def tmpfile(basename = '', tmpdir = nil, options = nil)
       tempfile = Tempfile.new(basename, *[tmpdir, options].compact)
       file = new tempfile
@@ -153,6 +157,16 @@ class Path
     Path.new @path.relative_path_from Path.new other
   end
   alias_method :%, :relative_to
+
+  def backfind(path)
+    cur = self.expand
+    until (found = cur/path).exist?
+      parent = cur.dir
+      return nil if parent.nil? or parent == cur
+      cur = parent
+    end
+    found
+  end
 
   (Pathname.instance_methods(false) - instance_methods(false)).each do |meth|
     class_eval <<-METHOD, __FILE__, __LINE__+1

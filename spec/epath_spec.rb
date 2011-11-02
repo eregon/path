@@ -94,6 +94,17 @@ describe Path do
     Path.home.should == Path("~").expand
   end
 
+  it 'backfind' do
+    Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
+    Path.here.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+    (Path.dir/"x/y/z").backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+    (Path.dir/"x/y/z").backfind('lib/nothin/such.rb').should be_nil
+  end
+
+  it 'backfind (class method)' do
+    Path.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+  end
+
   it 'entries' do
     Path.dir.entries.should == [this]
   end
