@@ -159,11 +159,12 @@ class Path
   alias_method :%, :relative_to
 
   def backfind(path)
-    path, cond = /^(.*?)(\[(.*)\])?$/.match(path).values_at(1, 3)
-    cond ||= ""
+    condition = path[/\[(.*)\]$/, 1] || ''
+    path = $` unless condition.empty?
+
     cur = self.expand
-    until (cur/path/cond).exist?
-      return nil if cur.root?
+    until (cur/path/condition).exist?
+      return if cur.root?
       cur = cur.parent
     end
     cur/path
