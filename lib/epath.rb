@@ -31,12 +31,21 @@ class Path
     end
     alias_method :file, :here
 
-    def dir
-      file(caller).dir
+    def dir(from = nil)
+      from ||= caller
+      file(from).dir
+    end
+
+    def home
+      new(Dir.respond_to?(:home) ? Dir.home : new("~").expand)
     end
 
     def relative(path)
       new(path).expand file(caller).dir
+    end
+
+    def backfind(path)
+      here(caller).backfind(path)
     end
 
     def tmpfile(basename = '', tmpdir = nil, options = nil)
@@ -148,6 +157,17 @@ class Path
     Path.new @path.relative_path_from Path.new other
   end
   alias_method :%, :relative_to
+
+  def backfind(path)
+    path, cond = /^(.*?)(\[(.*)\])?$/.match(path).values_at(1, 3)
+    cond ||= ""
+    cur = self.expand
+    until (cur/path/cond).exist?
+      return nil if cur.root?
+      cur = cur.parent
+    end
+    cur/path
+  end
 
   (Pathname.instance_methods(false) - instance_methods(false)).each do |meth|
     class_eval <<-METHOD, __FILE__, __LINE__+1
