@@ -163,9 +163,8 @@ class Path
     cond ||= ""
     cur = self.expand
     until (cur/path/cond).exist?
-      parent = cur.dir
-      return nil if parent.nil? or parent == cur
-      cur = parent
+      return nil if cur.root?
+      cur = cur.parent
     end
     cur/path
   end
