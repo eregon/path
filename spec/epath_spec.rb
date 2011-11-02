@@ -101,6 +101,12 @@ describe Path do
     (Path.dir/"x/y/z").backfind('lib/nothin/such.rb').should be_nil
   end
 
+  it 'pathfind with xpath-like condition' do
+    Path.backfind("lib[epath.rb]").should == Path.relative('../lib').expand
+    Path.backfind('.[.git]').should == Path.relative('..')
+    (Path.dir/"x/y/z").backfind('.[.git]').should == Path.relative('..')
+  end
+
   it 'backfind (class method)' do
     Path.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
   end
