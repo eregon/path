@@ -91,24 +91,26 @@ describe Path do
   end
 
   it 'home' do
-    Path.home.should == Path("~").expand
+    Path.home.should == Path('~').expand
   end
 
-  it 'backfind' do
-    Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
-    Path.here.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
-    (Path.dir/"x/y/z").backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
-    (Path.dir/"x/y/z").backfind('lib/nothin/such.rb').should be_nil
-  end
+  context 'backfind' do
+    it 'simple' do
+      Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
+      Path.here.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+      (Path.dir/'x/y/z').backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+      (Path.dir/'x/y/z').backfind('lib/nothin/such.rb').should be_nil
+    end
 
-  it 'pathfind with xpath-like condition' do
-    Path.backfind("lib[epath.rb]").should == Path.relative('../lib').expand
-    Path.backfind('.[.git]').should == Path.relative('..')
-    (Path.dir/"x/y/z").backfind('.[.git]').should == Path.relative('..')
-  end
+    it 'class method' do
+      Path.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+    end
 
-  it 'backfind (class method)' do
-    Path.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+    it 'with xpath-like context' do
+      Path.backfind('lib[epath.rb]').should == Path.relative('../lib').expand
+      Path.backfind('.[.git]').should == Path.relative('..')
+      (Path.dir/'x/y/z').backfind('.[.git]').should == Path.relative('..')
+    end
   end
 
   it 'entries' do
