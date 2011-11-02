@@ -41,7 +41,7 @@ class Path
     end
 
     def relative(path)
-      new(path).expand file(caller).dir
+      new(path).expand dir(caller)
     end
 
     def backfind(path)
