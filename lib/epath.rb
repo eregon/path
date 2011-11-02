@@ -35,6 +35,10 @@ class Path
       file(caller).dir
     end
 
+    def home
+      new(Dir.respond_to?(:home) ? Dir.home : new("~").expand)
+    end
+
     def relative(path)
       new(path).expand file(caller).dir
     end

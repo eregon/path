@@ -90,6 +90,10 @@ describe Path do
     Path.relative('../spec').should == this.dir.expand
   end
 
+  it 'home' do
+    Path.home.should == Path("~").expand
+  end
+
   it 'entries' do
     Path.dir.entries.should == [this]
   end
