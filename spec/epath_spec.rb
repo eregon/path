@@ -3,6 +3,10 @@ $: << '../lib'
 require 'epath'
 
 this = Path(__FILE__).expand
+root = Path(File.expand_path('../..',__FILE__))
+lib = Path(File.expand_path('../../lib',__FILE__))
+lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
+spec = Path(File.expand_path('..',__FILE__))
 
 describe Path do
   it 'behaves like a path' do
@@ -83,11 +87,16 @@ describe Path do
     Path('../a').parent.should == Path('..')
   end
 
-  it 'here, dir, relative' do
+  it 'here, dir' do
     Path.here.should == Path(__FILE__).expand
     Path.dir.should == Path(File.dirname(__FILE__)).expand
+  end
+
+  it 'relative' do
     Path.relative('epath_spec.rb').should == this
-    Path.relative('../spec').should == this.dir.expand
+    Path.relative('..').should == root
+    Path.relative('../spec').should == spec
+    Path.relative('../lib/epath.rb').should == lib_epath
   end
 
   it 'home' do
@@ -97,29 +106,28 @@ describe Path do
   context 'backfind' do
     it 'simple' do
       Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
-      Path.here.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
-      (Path.dir/'x/y/z').backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+      Path.here.backfind('lib/epath.rb').should == lib_epath
+      (Path.dir/'x/y/z').backfind('lib/epath.rb').should == lib_epath
       (Path.dir/'x/y/z').backfind('lib/nothin/such.rb').should be_nil
     end
 
     it 'class method' do
-      Path.backfind('lib/epath.rb').should == Path.relative('../lib/epath.rb').expand
+      Path.backfind('lib/epath.rb').should == lib_epath
     end
 
     it 'with xpath-like context' do
-      Path.backfind('lib[epath.rb]').should == Path.relative('../lib').expand
-      Path.backfind('.[.git]').should == Path.relative('..')
-      (Path.dir/'x/y/z').backfind('.[.git]').should == Path.relative('..')
+      Path.backfind('lib[epath.rb]').should == lib
+      Path.backfind('.[.git]').should == root
+      (Path.dir/'x/y/z').backfind('.[.git]').should == root
     end
   end
 
   it 'entries' do
-    Path.dir.entries.should == [this]
+    spec.entries.should == [this]
   end
 
   it 'glob' do
-    dir = this.dir.expand
-    dir.glob('*.rb').should == [dir/'epath_spec.rb']
+    spec.glob('*.rb').should == [this]
   end
 
   it 'tmpfile' do
