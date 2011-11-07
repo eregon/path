@@ -103,6 +103,11 @@ describe Path do
     Path.home.should == Path('~').expand
   end
 
+  it 'ancestors' do
+    Path('/usr/bin/ls').ancestors.to_a.should == [
+      Path('/usr/bin/ls'), Path('/usr/bin'), Path('/usr'), Path('/')]
+  end
+
   context 'backfind' do
     it 'simple' do
       Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand

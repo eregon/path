@@ -158,16 +158,23 @@ class Path
   end
   alias_method :%, :relative_to
 
+  def ancestors
+    ancestors = lambda do |y|
+      y << path = expand
+      until (path = path.parent).root?
+        y << path
+      end
+      y << path
+    end
+    RUBY_VERSION > '1.9' ? Enumerator.new(&ancestors) : ancestors.call([])
+  end
+
   def backfind(path)
     condition = path[/\[(.*)\]$/, 1] || ''
     path = $` unless condition.empty?
 
-    cur = self.expand
-    until (cur/path/condition).exist?
-      return if cur.root?
-      cur = cur.parent
-    end
-    cur/path
+    result = ancestors.find { |ancestor| (ancestor/path/condition).exist? }
+    result/path if result
   end
 
   (Pathname.instance_methods(false) - instance_methods(false)).each do |meth|
