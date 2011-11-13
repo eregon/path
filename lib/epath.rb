@@ -3,8 +3,7 @@
 
 require 'pathname'
 require 'fileutils'
-
-autoload :Tempfile, 'tempfile'
+require 'tempfile'
 
 class Path
   DOTS = %w[. ..]
