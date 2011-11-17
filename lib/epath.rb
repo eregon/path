@@ -134,6 +134,16 @@ class Path
     Dir.glob(join(pattern), flags).map(&Path)
   end
 
+  def rm
+    FileUtils.rm(@path)
+    self
+  end
+
+  def rm_f
+    FileUtils.rm_f(@path)
+    self
+  end
+
   def rm_rf
     FileUtils.rm_rf(@path)
     self
