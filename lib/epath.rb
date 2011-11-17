@@ -119,6 +119,8 @@ class Path
     dir / base
   end
 
+  # NOTE: Pathname has a similar feature named sub_ext
+  # It might be a better method name
   def replace_extension(ext)
     ext = ".#{ext}" unless ext.start_with? '.'
     Path.new(without_extension.to_s + ext)
