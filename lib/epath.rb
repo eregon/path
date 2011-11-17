@@ -134,10 +134,12 @@ class Path
 
   def rm_rf
     FileUtils.rm_rf(@path)
+    self
   end
 
   def mkdir_p
     FileUtils.mkdir_p(@path)
+    self
   end
 
   def write(contents, open_args = nil)

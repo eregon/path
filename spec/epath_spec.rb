@@ -157,4 +157,13 @@ describe Path do
     # This may be delayed a bit, notably on JRuby
     # tmpdir.exist?.should be_false
   end
+
+  it 'mkdir_p, rm_rf' do
+    Path.tmpdir do |dir|
+      d = (dir/:test/:mkdir)
+      d.mkdir_p.should equal d
+      test = d.parent
+      test.rm_rf.should equal test
+    end
+  end
 end
