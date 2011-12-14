@@ -13,10 +13,10 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def self.get_linenum
-    if /:(\d+):/ =~ caller[1]
+    if /:(\d+):?/ =~ caller[1]
       $1.to_i
     else
-      nil
+      raise
     end
   end
 
