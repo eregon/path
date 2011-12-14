@@ -1,6 +1,5 @@
 require 'rspec/autorun'
-$: << '../lib'
-require 'epath'
+require File.expand_path('../../lib/epath', __FILE__)
 
 this = Path(__FILE__).expand
 root = Path(File.expand_path('../..',__FILE__))
