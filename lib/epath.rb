@@ -86,10 +86,6 @@ class Path
     end
   end
 
-  def inspect
-    "#<#{self.class} #{@path}>"
-  end
-
   def / part
     join part.to_s
   end

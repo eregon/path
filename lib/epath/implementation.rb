@@ -51,8 +51,8 @@ class Path
   # to_path is implemented so Path objects are usable with File.open, etc.
   alias_method TO_PATH, :to_s
 
-  def inspect # :nodoc:
-    "#<#{self.class}:#{@path}>"
+  def inspect
+    "#<#{self.class} #{@path}>"
   end
 
   # Return a pathname which is substituted by String#sub.
