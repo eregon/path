@@ -1258,10 +1258,6 @@ class TestPathname < Test::Unit::TestCase
     }
   end
 
-  def test_matchop
-    assert_raise(NoMethodError) { Path("a") =~ /a/ }
-  end
-
   def test_file_basename
     assert_equal("bar", File.basename(Path.new("foo/bar")))
   end
