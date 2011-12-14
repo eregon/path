@@ -78,9 +78,12 @@ class Path
     if Tempfile === path
       @_tmpfile = path # We would not want it to be GC'd
       @path = path.path
+    elsif String === path
+      @path = path.dup
     else
       @path = path.to_s
     end
+    taint if @path.tainted?
   end
 
   def / part
