@@ -226,6 +226,69 @@ class Path
   end
   private :cleanpath_conservative
 
+  if File.respond_to?(:realpath) and File.respond_to?(:realdirpath)
+    def real_path_internal(strict = false, basedir = nil)
+      strict ? File.realpath(@path, basedir) : File.realdirpath(@path, basedir)
+    end
+    private :real_path_internal
+  else
+    def realpath_rec(prefix, unresolved, h, strict, last = true)
+      resolved = []
+      until unresolved.empty?
+        n = unresolved.shift
+        if n == '.'
+          next
+        elsif n == '..'
+          resolved.pop
+        else
+          path = prepend_prefix(prefix, File.join(*(resolved + [n])))
+          if h.include? path
+            if h[path] == :resolving
+              raise Errno::ELOOP.new(path)
+            else
+              prefix, *resolved = h[path]
+            end
+          else
+            begin
+              s = File.lstat(path)
+            rescue Errno::ENOENT => e
+              raise e if strict || !last || !unresolved.empty?
+              resolved << n
+              break
+            end
+            if s.symlink?
+              h[path] = :resolving
+              link_prefix, link_names = split_names(File.readlink(path))
+              if link_prefix == ''
+                prefix, *resolved = h[path] = realpath_rec(prefix, resolved + link_names, h, strict, unresolved.empty?)
+              else
+                prefix, *resolved = h[path] = realpath_rec(link_prefix, link_names, h, strict, unresolved.empty?)
+              end
+            else
+              resolved << n
+              h[path] = [prefix, *resolved]
+            end
+          end
+        end
+      end
+      return prefix, *resolved
+    end
+    private :realpath_rec
+
+    def real_path_internal(strict = false, basedir = nil)
+      path = @path
+      path = File.join(basedir, path) if basedir
+      prefix, names = split_names(path)
+      if prefix == ''
+        prefix, names2 = split_names(Dir.pwd)
+        names = names2 + names
+      end
+      prefix, *names = realpath_rec(prefix, names, {}, strict)
+      prepend_prefix(prefix, File.join(*names))
+    end
+    private :real_path_internal
+  end
+
   #
   # Returns the real (absolute) pathname of +self+ in the actual
   # filesystem not containing symlinks or useless dots.
@@ -234,7 +297,7 @@ class Path
   # called.
   #
   def realpath(basedir=nil)
-    Path.new(File.realpath(@path, basedir))
+    Path.new(real_path_internal(true, basedir))
   end
 
   #
@@ -244,7 +307,7 @@ class Path
   # The last component of the real pathname can be nonexistent.
   #
   def realdirpath(basedir=nil)
-    Path.new(File.realdirpath(@path, basedir))
+    Path.new(real_path_internal(false, basedir))
   end
 
   # #parent returns the parent directory.
