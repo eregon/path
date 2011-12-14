@@ -111,7 +111,7 @@ class Path
   end
 
   def entries
-    (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry) }
+    (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry).cleanpath }
   end
 
   def glob(pattern, flags = 0)
