@@ -47,7 +47,7 @@ class Path
   alias to_str to_s if RUBY_VERSION < '1.9'
 
   def inspect
-    "#<#{self.class} #{@path}>"
+    "#<Path #{@path}>"
   end
 
   # Return a pathname which is substituted by String#sub.
@@ -66,7 +66,7 @@ class Path
     else
       path = @path.sub(pattern, *rest)
     end
-    self.class.new(path)
+    Path.new(path)
   end
 
   if File::ALT_SEPARATOR
@@ -83,7 +83,7 @@ class Path
   # If self has no extension part, <i>repl</i> is appended.
   def sub_ext(repl)
     ext = File.extname(@path)
-    self.class.new(@path.chomp(ext) + repl)
+    Path.new(@path.chomp(ext) + repl)
   end
 
   # chop_basename(path) -> [pre-basename, basename] or nil
@@ -162,7 +162,7 @@ class Path
     if /#{SEPARATOR_PAT}/o =~ File.basename(pre)
       names.shift while names[0] == '..'
     end
-    self.class.new(prepend_prefix(pre, File.join(*names)))
+    Path.new(prepend_prefix(pre, File.join(*names)))
   end
   private :cleanpath_aggressive
 
@@ -211,16 +211,16 @@ class Path
       names.shift while names[0] == '..'
     end
     if names.empty?
-      self.class.new(File.dirname(pre))
+      Path.new(File.dirname(pre))
     else
       if names.last != '..' && File.basename(path) == '.'
         names << '.'
       end
       result = prepend_prefix(pre, File.join(*names))
       if /\A(?:\.|\.\.)\z/ !~ names.last && has_trailing_separator?(path)
-        self.class.new(add_trailing_separator(result))
+        Path.new(add_trailing_separator(result))
       else
-        self.class.new(result)
+        Path.new(result)
       end
     end
   end
@@ -234,7 +234,7 @@ class Path
   # called.
   #
   def realpath(basedir=nil)
-    self.class.new(File.realpath(@path, basedir))
+    Path.new(File.realpath(@path, basedir))
   end
 
   #
@@ -244,7 +244,7 @@ class Path
   # The last component of the real pathname can be nonexistent.
   #
   def realdirpath(basedir=nil)
-    self.class.new(File.realdirpath(@path, basedir))
+    Path.new(File.realdirpath(@path, basedir))
   end
 
   # #parent returns the parent directory.
@@ -358,7 +358,7 @@ class Path
     while r = chop_basename(path)
       path, = r
       break if path.empty?
-      yield self.class.new(del_trailing_separator(path))
+      yield Path.new(del_trailing_separator(path))
     end
   end
 
@@ -465,9 +465,9 @@ class Path
     Dir.foreach(@path) {|e|
       next if e == '.' || e == '..'
       if with_directory
-        result << self.class.new(File.join(@path, e))
+        result << Path.new(File.join(@path, e))
       else
-        result << self.class.new(e)
+        result << Path.new(e)
       end
     }
     result
@@ -621,7 +621,7 @@ class Path    # * File *
   end
 
   # See <tt>File.readlink</tt>.  Read symbolic link.
-  def readlink() self.class.new(File.readlink(@path)) end
+  def readlink() Path.new(File.readlink(@path)) end
 
   # See <tt>File.rename</tt>.  Rename the file.
   def rename(to) File.rename(@path, to) end
@@ -642,20 +642,20 @@ class Path    # * File *
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 
   # See <tt>File.basename</tt>.  Returns the last component of the path.
-  def basename(*args) self.class.new(File.basename(@path, *args)) end
+  def basename(*args) Path.new(File.basename(@path, *args)) end
 
   # See <tt>File.dirname</tt>.  Returns all but the last component of the path.
-  def dirname() self.class.new(File.dirname(@path)) end
+  def dirname() Path.new(File.dirname(@path)) end
 
   # See <tt>File.extname</tt>.  Returns the file's extension.
   def extname() File.extname(@path) end
 
   # See <tt>File.expand_path</tt>.
-  def expand_path(*args) self.class.new(File.expand_path(@path, *args)) end
+  def expand_path(*args) Path.new(File.expand_path(@path, *args)) end
 
   # See <tt>File.split</tt>.  Returns the #dirname and the #basename in an
   # Array.
-  def split() File.split(@path).map {|f| self.class.new(f) } end
+  def split() File.split(@path).map {|f| Path.new(f) } end
 end
 
 
@@ -751,14 +751,14 @@ class Path    # * Dir *
 
   # Return the entries (files and subdirectories) in the directory, each as a
   # Path object.
-  def entries() Dir.entries(@path).map {|f| self.class.new(f) } end
+  def entries() Dir.entries(@path).map {|f| Path.new(f) } end
 
   # Iterates over the entries (files and subdirectories) in the directory.  It
   # yields a Path object for each entry.
   #
   # This method has existed since 1.8.1.
   def each_entry(&block) # :yield: pathname
-    Dir.foreach(@path) {|f| yield self.class.new(f) }
+    Dir.foreach(@path) {|f| yield Path.new(f) }
   end
 
   # See <tt>Dir.mkdir</tt>.  Create the referenced directory.
@@ -788,9 +788,9 @@ class Path    # * Find *
   def find(&block) # :yield: pathname
     require 'find'
     if @path == '.'
-      Find.find(@path) {|f| yield self.class.new(f.sub(%r{\A\./}, '')) }
+      Find.find(@path) {|f| yield Path.new(f.sub(%r{\A\./}, '')) }
     else
-      Find.find(@path) {|f| yield self.class.new(f) }
+      Find.find(@path) {|f| yield Path.new(f) }
     end
   end
 end
