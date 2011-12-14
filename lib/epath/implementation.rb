@@ -28,11 +28,9 @@ class Path
   # Be aware that two different paths (<tt>foo.txt</tt> and <tt>./foo.txt</tt>)
   # can refer to the same file.
   #
-  def ==(other)
-    return false unless Path === other
-    other.to_s == @path
+  def == other
+    Path === other and @path == other.to_s
   end
-  alias === ==
   alias eql? ==
 
   # Provides for comparing pathnames, case-sensitively.

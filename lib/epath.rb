@@ -90,11 +90,6 @@ class Path
     "#<#{self.class} #{@path}>"
   end
 
-  def == other
-    Path === other and @path == other.to_s
-  end
-  alias_method :eql?, :==
-
   def / part
     join part.to_s
   end
