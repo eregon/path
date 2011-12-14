@@ -670,13 +670,15 @@ class TestPathname < Test::Unit::TestCase
       Path("a").each_line("2") {|line| a << line }
       assert_equal(["1\n2", "\n"], a)
 
-      a = []
-      Path("a").each_line(1) {|line| a << line }
-      assert_equal(["1", "\n", "2", "\n"], a)
+      if RUBY_VERSION > '1.9'
+        a = []
+        Path("a").each_line(1) {|line| a << line }
+        assert_equal(["1", "\n", "2", "\n"], a)
 
-      a = []
-      Path("a").each_line("2", 1) {|line| a << line }
-      assert_equal(["1", "\n", "2", "\n"], a)
+        a = []
+        Path("a").each_line("2", 1) {|line| a << line }
+        assert_equal(["1", "\n", "2", "\n"], a)
+      end
 
       a = []
       enum = Path("a").each_line
