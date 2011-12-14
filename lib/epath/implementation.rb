@@ -1,5 +1,7 @@
 # Path's low-level implementation based on Pathname
 
+require 'fileutils'
+
 class Path
   # :stopdoc:
   if RUBY_VERSION < "1.9"
@@ -820,7 +822,6 @@ class Path    # * FileUtils *
   # See <tt>FileUtils.mkpath</tt>.  Creates a full path, including any
   # intermediate directories that don't yet exist.
   def mkpath
-    require 'fileutils'
     FileUtils.mkpath(@path)
     nil
   end
@@ -829,7 +830,6 @@ class Path    # * FileUtils *
   def rmtree
     # The name "rmtree" is borrowed from File::Path of Perl.
     # File::Path provides "mkpath" and "rmtree".
-    require 'fileutils'
     FileUtils.rm_r(@path)
     nil
   end

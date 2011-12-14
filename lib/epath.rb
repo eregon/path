@@ -2,7 +2,6 @@
 # Use the composite pattern with a Pathname
 
 require File.expand_path('../epath/implementation', __FILE__)
-require 'fileutils'
 require 'tempfile'
 
 class Path
