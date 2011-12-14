@@ -11,8 +11,14 @@ spec = Path(File.expand_path('..',__FILE__))
 describe Path do
   it 'behaves like a path' do
     path = Path.new('/')
-    [:to_s, :to_str, :to_path, :to_sym].each do |meth|
+    [:to_s, :to_sym, :to_path].each do |meth|
       path.should respond_to meth
+    end
+
+    if RUBY_VERSION > '1.9'
+      path.should_not respond_to :to_str
+    else
+      path.should respond_to :to_str
     end
   end
 

@@ -4,13 +4,6 @@ require 'fileutils'
 
 class Path
   # :stopdoc:
-  if RUBY_VERSION < "1.9"
-    TO_PATH = :to_str
-  else
-    # to_path is implemented so Path objects are usable with File.open, etc.
-    TO_PATH = :to_path
-  end
-
   SAME_PATHS = if File::FNM_SYSCASE.nonzero?
     proc {|a, b| a.casecmp(b).zero?}
   else
@@ -49,7 +42,9 @@ class Path
   end
 
   # to_path is implemented so Path objects are usable with File.open, etc.
-  alias_method TO_PATH, :to_s
+  alias to_path to_s
+
+  alias to_str to_s if RUBY_VERSION < '1.9'
 
   def inspect
     "#<#{self.class} #{@path}>"

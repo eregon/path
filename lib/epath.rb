@@ -174,9 +174,6 @@ class Path
     result/path if result
   end
 
-  alias_method :to_path, :to_s unless method_defined? :to_path
-  alias_method :to_str, :to_s unless method_defined? :to_str
-
   alias_method :expand, :expand_path
   alias_method :dir, :dirname
 end
