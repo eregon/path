@@ -11,7 +11,7 @@ class Path
 
   class << self
     def new(*args)
-      if args.size == 1 and EPath === args[0]
+      if args.size == 1 and Path === args[0]
         args[0]
       else
         super(*args)
