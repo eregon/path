@@ -19,21 +19,6 @@ class Path
 
   # :startdoc:
 
-  #
-  # Create a Path object from the given String (or String-like object).
-  # If +path+ contains a NUL character (<tt>\0</tt>), an ArgumentError is raised.
-  #
-  def initialize(path)
-    path = path.__send__(TO_PATH) if path.respond_to? TO_PATH
-    @path = path.dup
-
-    if /\0/ =~ @path
-      raise ArgumentError, "pathname contains \\0: #{@path.inspect}"
-    end
-
-    self.taint if @path.tainted?
-  end
-
   def freeze() super; @path.freeze; self end
   def taint() super; @path.taint; self end
   def untaint() super; @path.untaint; self end
