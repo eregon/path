@@ -75,14 +75,11 @@ class Path
 
   def initialize(*parts)
     path = parts.size > 1 ? parts.join(File::SEPARATOR) : parts.first
-    @path = case path
-    when String
-      path
-    when Tempfile
+    if Tempfile === path
       @_tmpfile = path # We would not want it to be GC'd
-      path.path
+      @path = path.path
     else
-      path.to_s
+      @path = path.to_s
     end
   end
 
