@@ -1,7 +1,7 @@
 # Enchanced Pathname
 # Use the composite pattern with a Pathname
 
-require 'pathname'
+require File.expand_path('../epath/implementation', __FILE__)
 require 'fileutils'
 require 'tempfile'
 
@@ -79,17 +79,13 @@ class Path
   def initialize(*parts)
     path = parts.size > 1 ? parts.join(File::SEPARATOR) : parts.first
     @path = case path
-    when Pathname
-      path
     when String
-      Pathname.new(path)
-    when Symbol
-      Pathname.new(path.to_s)
+      path
     when Tempfile
       @_tmpfile = path # We would not want it to be GC'd
-      Pathname.new(path.path)
+      path.path
     else
-      raise "Invalid arguments: #{parts}"
+      path.to_s
     end
   end
 
@@ -107,12 +103,12 @@ class Path
   end
 
   def base # basename(extname)
-    Path.new @path.basename(@path.extname)
+    basename(extname)
   end
 
   def ext # extname without leading .
-    extname = @path.extname
-    extname.empty? ? extname : extname[1..-1]
+    ext = extname
+    ext.empty? ? ext : ext[1..-1]
   end
 
   def without_extension # rm_ext
@@ -163,11 +159,11 @@ class Path
   end
 
   def to_sym
-    @path.to_s.to_sym
+    to_s.to_sym
   end
 
   def relative_to other
-    Path.new @path.relative_path_from Path.new other
+    relative_path_from Path.new other
   end
   alias_method :%, :relative_to
 
@@ -188,15 +184,6 @@ class Path
 
     result = ancestors.find { |ancestor| (ancestor/path/condition).exist? }
     result/path if result
-  end
-
-  (Pathname.instance_methods(false) - instance_methods(false)).each do |meth|
-    class_eval <<-METHOD, __FILE__, __LINE__+1
-      def #{meth}(*args, &block)
-        result = @path.#{meth}(*args, &block)
-        Pathname === result ? #{self}.new(result) : result
-      end
-    METHOD
   end
 
   alias_method :to_path, :to_s unless method_defined? :to_path
