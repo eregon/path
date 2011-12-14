@@ -1177,7 +1177,7 @@ class TestPathname < Test::Unit::TestCase
     with_tmpchdir('rubytest-pathname') {|dir|
       open("a", "w") {}
       open("b", "w") {}
-      assert_equal([Path("."), Path(".."), Path("a"), Path("b")], Path(".").entries.sort)
+      assert_equal([Path("a"), Path("b")], Path(".").entries.sort)
     }
   end
 
