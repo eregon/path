@@ -40,6 +40,10 @@ class TestPathname < Test::Unit::TestCase
   DOSISH_DRIVE_LETTER = File.dirname("A:") == "A:."
   DOSISH_UNC = File.dirname("//") == "//"
 
+  def ruby19?
+    RUBY_VERSION > '1.9'
+  end
+
   def cleanpath_aggressive(path)
     Path.new(path).cleanpath.to_s
   end
@@ -590,7 +594,7 @@ class TestPathname < Test::Unit::TestCase
     obj = Path.new("a")
     obj.freeze
     assert_equal(false, obj.tainted?)
-    assert_raise(RuntimeError) { obj.taint }
+    assert_raise(ruby19? ? RuntimeError : TypeError) { obj.taint }
 
     obj = Path.new("a")
     obj.taint
@@ -670,7 +674,7 @@ class TestPathname < Test::Unit::TestCase
       Path("a").each_line("2") {|line| a << line }
       assert_equal(["1\n2", "\n"], a)
 
-      if RUBY_VERSION > '1.9'
+      if ruby19?
         a = []
         Path("a").each_line(1) {|line| a << line }
         assert_equal(["1", "\n", "2", "\n"], a)
