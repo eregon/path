@@ -7,6 +7,7 @@ root = Path(File.expand_path('../..',__FILE__))
 lib = Path(File.expand_path('../../lib',__FILE__))
 lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
+test_implementation = Path(File.expand_path('../test_implementation.rb',__FILE__))
 
 describe Path do
   it 'behaves like a path' do
@@ -134,11 +135,11 @@ describe Path do
   end
 
   it 'entries' do
-    spec.entries.should == [this]
+    spec.entries.should == [this, test_implementation]
   end
 
   it 'glob' do
-    spec.glob('*.rb').should == [this]
+    spec.glob('*.rb').should == [this, test_implementation]
   end
 
   it 'tmpfile' do
