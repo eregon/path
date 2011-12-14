@@ -7,8 +7,6 @@ require 'tempfile'
 class Path
   DOTS = %w[. ..]
 
-  attr_reader :path
-
   class << self
     def new(*args)
       if args.size == 1 and Path === args[0]
@@ -93,7 +91,7 @@ class Path
   end
 
   def == other
-    Path === other and @path == other.path
+    Path === other and @path == other.to_s
   end
   alias_method :eql?, :==
 
