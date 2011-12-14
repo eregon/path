@@ -434,10 +434,6 @@ class TestPathname < Test::Unit::TestCase
     assert_equal(p1, p2)
   end
 
-  def test_initialize_nul
-    assert_raise(ArgumentError) { Path.new("a\0") }
-  end
-
   class AnotherStringLike # :nodoc:
     def initialize(s) @s = s end
     def to_str() @s end
@@ -542,10 +538,6 @@ class TestPathname < Test::Unit::TestCase
     path = Path.new("a")
     path.to_s.replace "b"
     assert_equal(Path.new("a"), path)
-  end
-
-  def test_null_character
-    assert_raise(ArgumentError) { Path.new("\0") }
   end
 
   def test_taint
