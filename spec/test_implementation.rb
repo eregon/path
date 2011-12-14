@@ -850,9 +850,11 @@ class TestPathname < Test::Unit::TestCase
       assert_equal(0444, File.stat("b").mode & 0777)
       assert_equal("def", File.read("b"))
 
-      Path("c").open("w", 0444, {}) {|f| f.write "ghi" }
-      assert_equal(0444, File.stat("c").mode & 0777)
-      assert_equal("ghi", File.read("c"))
+      if ruby19?
+        Path("c").open("w", 0444, {}) {|f| f.write "ghi" }
+        assert_equal(0444, File.stat("c").mode & 0777)
+        assert_equal("ghi", File.read("c"))
+      end
 
       g = path.open
       assert_equal("abc", g.read)
