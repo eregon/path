@@ -84,6 +84,17 @@ describe Path do
     end
   end
 
+  it 'append' do
+    begin
+      tmp = Path('.tmp')
+      tmp.write("hello\n")
+      tmp.append("world\n")
+      tmp.read.should eq("hello\nworld\n")
+    ensure
+      tmp.unlink if tmp.exist?
+    end
+  end
+
   it 'parent' do
     Path('a/b/c').parent.should == Path('a/b')
     Path('a').parent.should == Path('.')
