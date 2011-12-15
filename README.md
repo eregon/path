@@ -81,6 +81,7 @@ Path.backfind('.[.git]') # => the root of this repository
 
 * read
 * write(contents)
+* append(contents)
 
 ### management
 
