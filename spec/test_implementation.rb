@@ -509,7 +509,7 @@ class TestPathname < Test::Unit::TestCase
   defassert(:pathsubext, 'lex.yy.o', 'lex.yy.c', '.o')
   defassert(:pathsubext, 'fooaa.o', 'fooaa', '.o')
   defassert(:pathsubext, 'd.e/aa.o', 'd.e/aa', '.o')
-  defassert(:pathsubext, 'long_enough.bug-3664', 'long_enough.not_to_be_embeded[ruby-core:31640]', '.bug-3664')
+  defassert(:pathsubext, 'long_enough.bug-3664', 'long_enough.not_to_be_embeded[ruby-core-31640]', '.bug-3664') # [ruby-core:31640]
 
   def root?(path)
     Path.new(path).root?
