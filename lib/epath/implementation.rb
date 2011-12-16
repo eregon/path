@@ -365,9 +365,6 @@ class Path
   #     #<Path:path/to/some/file.rb>
   #
   # It doesn't access actual filesystem.
-  #
-  # This method is available since 1.8.5.
-  #
   def descend
     vs = []
     ascend {|v| vs << v }
@@ -392,9 +389,6 @@ class Path
   #     #<Path:path>
   #
   # It doesn't access actual filesystem.
-  #
-  # This method is available since 1.8.5.
-  #
   def ascend
     path = @path
     yield self
@@ -500,8 +494,6 @@ class Path
   # Note that the results never contain the entries <tt>.</tt> and <tt>..</tt> in
   # the directory because they are not children.
   #
-  # This method has existed since 1.8.1.
-  #
   def children(with_directory=true)
     with_directory = false if @path == '.'
     result = []
@@ -555,8 +547,6 @@ class Path
   #
   # ArgumentError is raised when it cannot find a relative path.
   #
-  # This method has existed since 1.8.1.
-  #
   def relative_path_from(base_directory)
     dest_directory = cleanpath.to_s
     base_directory = base_directory.cleanpath.to_s
@@ -598,8 +588,6 @@ class Path    # * IO *
   #
   # #each_line iterates over the line in the file.  It yields a String object
   # for each line.
-  #
-  # This method has existed since 1.8.1.
   #
   def each_line(*args, &block) # :yield: line
     IO.foreach(@path, *args, &block)
@@ -813,8 +801,6 @@ class Path    # * Dir *
 
   # Iterates over the entries (files and subdirectories) in the directory.  It
   # yields a Path object for each entry.
-  #
-  # This method has existed since 1.8.1.
   def each_entry(&block) # :yield: pathname
     Dir.foreach(@path) {|f| yield Path.new(f) }
   end
