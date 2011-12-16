@@ -301,8 +301,8 @@ class Path
   # #mountpoint? returns +true+ if <tt>self</tt> points to a mountpoint.
   def mountpoint?
     begin
-      stat1 = self.lstat
-      stat2 = self.parent.lstat
+      stat1 = lstat
+      stat2 = parent.lstat
       stat1.dev == stat2.dev && stat1.ino == stat2.ino ||
         stat1.dev != stat2.dev
     rescue Errno::ENOENT
@@ -559,7 +559,7 @@ class Path
   # This method has existed since 1.8.1.
   #
   def relative_path_from(base_directory)
-    dest_directory = self.cleanpath.to_s
+    dest_directory = cleanpath.to_s
     base_directory = base_directory.cleanpath.to_s
     dest_prefix = dest_directory
     dest_names = []
@@ -794,18 +794,23 @@ end
 
 
 class Path    # * Dir *
-  # See <tt>Dir.glob</tt>.  Returns or yields Path objects.
-  def Path.glob(*args) # :yield: pathname
-    if block_given?
-      Dir.glob(*args) {|f| yield self.new(f) }
-    else
-      Dir.glob(*args).map {|f| self.new(f) }
+  class << self
+    # See <tt>Dir.glob</tt>.  Returns or yields Path objects.
+    def glob(*args) # :yield: pathname
+      if block_given?
+        Dir.glob(*args) {|f| yield new(f) }
+      else
+        Dir.glob(*args).map {|f| new(f) }
+      end
     end
-  end
 
-  # See <tt>Dir.getwd</tt>.  Returns the current working directory as a Path.
-  def Path.getwd() self.new(Dir.getwd) end
-  class << self; alias pwd getwd end
+    # See <tt>Dir.getwd</tt>.  Returns the current working directory as a Path.
+    def Path.getwd
+      new Dir.getwd
+    end
+
+    alias pwd getwd
+  end
 
   # Iterates over the entries (files and subdirectories) in the directory.  It
   # yields a Path object for each entry.
