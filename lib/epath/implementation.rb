@@ -303,8 +303,7 @@ class Path
     begin
       stat1 = lstat
       stat2 = parent.lstat
-      stat1.dev == stat2.dev && stat1.ino == stat2.ino ||
-        stat1.dev != stat2.dev
+      stat1.dev != stat2.dev or stat1.ino == stat2.ino
     rescue Errno::ENOENT
       false
     end
