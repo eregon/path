@@ -131,6 +131,7 @@ describe Path do
       Path.here.backfind('lib/epath.rb').should == lib_epath
       (Path.dir/'x/y/z').backfind('lib/epath.rb').should == lib_epath
       (Path.dir/'x/y/z').backfind('lib/nothin/such.rb').should be_nil
+      Path('x/y/z').backfind('lib/nothin/such.rb').should be_nil # relative paths should work too
     end
 
     it 'class method' do
