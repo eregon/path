@@ -121,8 +121,9 @@ describe Path do
   end
 
   it 'ancestors' do
-    Path('/usr/bin/ls').ancestors.to_a.should == [
-      Path('/usr/bin/ls'), Path('/usr/bin'), Path('/usr'), Path('/')]
+    r = Path.new(File.dirname('C:') != '.' ? 'C:' : '/')
+    (r/'usr/bin/ls').ancestors.to_a.should == [
+      r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
   end
 
   context 'backfind' do
