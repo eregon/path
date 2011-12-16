@@ -499,9 +499,6 @@ class TestPathname < Test::Unit::TestCase
     assert_equal(nil, "a" <=> Path.new("a"))
   end
 
-  def pathsub(path, pat, repl) Path.new(path).sub(pat, repl).to_s end
-  defassert(:pathsub, "a.o", "a.c", /\.c\z/, ".o")
-
   def pathsubext(path, repl) Path.new(path).sub_ext(repl).to_s end
   defassert(:pathsubext, 'a.o', 'a.c', '.o')
   defassert(:pathsubext, 'a.o', 'a.c++', '.o')
@@ -513,15 +510,6 @@ class TestPathname < Test::Unit::TestCase
   defassert(:pathsubext, 'fooaa.o', 'fooaa', '.o')
   defassert(:pathsubext, 'd.e/aa.o', 'd.e/aa', '.o')
   defassert(:pathsubext, 'long_enough.bug-3664', 'long_enough.not_to_be_embeded[ruby-core:31640]', '.bug-3664')
-
-  def test_sub_matchdata
-    result = Path("abc.gif").sub(/\..*/) {
-      assert_not_nil($~)
-      assert_equal(".gif", $~[0])
-      ".png"
-    }
-    assert_equal("abc.png", result.to_s)
-  end
 
   def root?(path)
     Path.new(path).root?
