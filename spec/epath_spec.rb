@@ -145,11 +145,11 @@ describe Path do
   end
 
   it 'entries' do
-    spec.entries.should == [this, test_implementation]
+    spec.entries.sort.should == [this, test_implementation]
   end
 
   it 'glob' do
-    spec.glob('*.rb').should == [this, test_implementation]
+    spec.glob('*.rb').sort.should == [this, test_implementation]
   end
 
   it 'tmpfile' do
