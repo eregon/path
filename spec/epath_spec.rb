@@ -152,6 +152,9 @@ describe Path do
 
   it 'glob' do
     spec.glob('*.rb').sort.should == [this, test_implementation]
+    Dir.chdir spec do
+      Path.glob('*.rb').map(&:expand).sort.should == [this, test_implementation]
+    end
   end
 
   it 'tmpfile' do
