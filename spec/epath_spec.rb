@@ -146,13 +146,22 @@ describe Path do
     end
   end
 
+  it 'chdir' do
+    called = false
+    spec.chdir do
+      called = true
+      Path.getwd.should == spec
+    end
+    called.should be_true
+  end
+
   it 'entries' do
     spec.entries.sort.should == [this, test_implementation]
   end
 
   it 'glob' do
     spec.glob('*.rb').sort.should == [this, test_implementation]
-    Dir.chdir spec do
+    spec.chdir do
       Path.glob('*.rb').map(&:expand).sort.should == [this, test_implementation]
     end
   end

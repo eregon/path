@@ -795,7 +795,6 @@ class Path    # * Dir *
     def Path.getwd
       new Dir.getwd
     end
-
     alias pwd getwd
   end
 

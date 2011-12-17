@@ -118,6 +118,10 @@ class Path
     Dir.glob(join(pattern), flags).map(&Path)
   end
 
+  def chdir(&block)
+    Dir.chdir(self, &block)
+  end
+
   def rm
     FileUtils.rm(@path)
     self
