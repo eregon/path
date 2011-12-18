@@ -58,15 +58,6 @@ class Path
     SEPARATOR_PAT = /#{Regexp.quote File::SEPARATOR}/
   end
 
-  # Return a pathname which the extension of the basename is substituted by
-  # <i>repl</i>.
-  #
-  # If self has no extension part, <i>repl</i> is appended.
-  def sub_ext(repl)
-    ext = File.extname(@path)
-    Path.new(@path.chomp(ext) + repl)
-  end
-
   # chop_basename(path) -> [pre-basename, basename] or nil
   def chop_basename(path)
     base = File.basename(path)

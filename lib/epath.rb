@@ -100,15 +100,17 @@ class Path
   end
 
   def without_extension # rm_ext
-    dir / base
+    Path.new @path[0..-extname.size-1]
   end
 
   # NOTE: Pathname has a similar feature named sub_ext
   # It might be a better method name
   def replace_extension(ext)
+    return without_extension if ext.empty?
     ext = ".#{ext}" unless ext.start_with? '.'
-    Path.new(without_extension.to_s + ext)
+    Path.new(@path[0..-extname.size-1] << ext)
   end
+  alias sub_ext replace_extension
 
   def entries
     (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry).cleanpath }
