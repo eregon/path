@@ -22,7 +22,7 @@ class Path
   # can refer to the same file.
   #
   def == other
-    Path === other and @path == other.to_s
+    Path === other and @path == other.to_path
   end
   alias eql? ==
 
@@ -42,9 +42,11 @@ class Path
   end
 
   # to_path is implemented so Path objects are usable with File.open, etc.
-  alias to_path to_s
+  def to_path
+    @path
+  end
 
-  alias to_str to_s if RUBY_VERSION < '1.9'
+  alias to_str to_path if RUBY_VERSION < '1.9'
 
   def inspect
     "#<Path #{@path}>"
