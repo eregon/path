@@ -166,7 +166,7 @@ describe Path do
   end
 
   it 'ancestors' do
-    r = Path.new(File.dirname('C:') != '.' ? 'C:' : '/')
+    r = Path.new(File.dirname('C:') != '.' ? 'C:/' : '/')
     (r/'usr/bin/ls').ancestors.to_a.should == [
       r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
   end
