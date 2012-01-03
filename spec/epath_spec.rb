@@ -88,7 +88,7 @@ describe Path do
     Path('hello/world').replace_extension('ext').should == Path('hello/world.ext')
   end
 
-  it 'relative_to' do
+  it '%, relative_to' do
     Path('/a/b/Array/sort.rb').relative_to(Path('/')).should == Path('a/b/Array/sort.rb')
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b')).should == Path('Array/sort.rb')
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b/')).should == Path('Array/sort.rb')
