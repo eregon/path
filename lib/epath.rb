@@ -99,6 +99,13 @@ class Path
     ext.empty? ? ext : ext[1..-1]
   end
 
+  def add_extension(ext)
+    return self if ext.empty?
+    ext = ".#{ext}" unless ext.start_with? '.'
+    Path.new @path+ext
+  end
+  alias add_ext add_extension
+
   def without_extension # rm_ext
     Path.new @path[0..-extname.size-1]
   end

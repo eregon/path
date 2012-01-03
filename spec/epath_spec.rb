@@ -64,6 +64,17 @@ describe Path do
     Path('.hidden').ext.should == ''
   end
 
+  it 'add_ext, add_extension' do
+    path = Path('file')
+    path = path.add_extension('.txt')
+    path.ext.should == 'txt'
+    path = path.add_extension('.mkv')
+    path.ext.should == 'mkv'
+    path = path.add_ext('tar.gz')
+    path.ext.should == 'gz'
+    path.to_s.should == 'file.txt.mkv.tar.gz'
+  end
+
   it 'without_extension' do
     Path('/usr/bin/ls').without_extension.should == Path('/usr/bin/ls')
     Path('/usr/bin/ls.rb').without_extension.should == Path('/usr/bin/ls')
