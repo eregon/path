@@ -139,6 +139,11 @@ class Path
     self
   end
 
+  def touch
+    FileUtils.touch(@path)
+    self
+  end
+
   def mkdir_p
     FileUtils.mkdir_p(@path)
     self

@@ -39,7 +39,7 @@ describe Path do
       dir, file = Path('dir'), Path('file')
       tmpdir.chdir do
         dir.mkdir
-        file.write ''
+        file.touch
         dir.dir?.should be_true
         dir.file?.should be_false
         file.file?.should be_true
@@ -106,6 +106,18 @@ describe Path do
       tmp.read.should eq("hello\nworld\n")
     ensure
       tmp.unlink if tmp.exist?
+    end
+  end
+
+  it 'touch' do
+    Path.tmpdir do |dir|
+      dir.chdir do
+        file = Path('file')
+        file.exist?.should be_false
+        file.touch
+        file.exist?.should be_true
+        file.size.should == 0
+      end
     end
   end
 
