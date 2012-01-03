@@ -104,12 +104,12 @@ class Path
     ext = ".#{ext}" unless ext.start_with? '.'
     Path.new @path+ext
   end
-  alias add_ext add_extension
+  alias_method :add_ext, :add_extension
 
   def without_extension
     Path.new @path[0..-extname.size-1]
   end
-  alias rm_ext without_extension
+  alias_method :rm_ext, :without_extension
 
   # NOTE: Pathname has a similar feature named sub_ext
   # It might be a better method name
@@ -118,7 +118,7 @@ class Path
     ext = ".#{ext}" unless ext.start_with? '.'
     Path.new(@path[0..-extname.size-1] << ext)
   end
-  alias sub_ext replace_extension
+  alias_method :sub_ext, :replace_extension
 
   def entries
     (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry).cleanpath }
