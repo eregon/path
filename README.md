@@ -101,6 +101,6 @@ This is still in the early development stage, you should expect many additions a
 
 Benoit Daloze - eregon
 
-### Contributors
+## Contributors
 
 Bernard Lambeau - blambeau
