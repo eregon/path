@@ -1,4 +1,4 @@
-# Path - Enhanced Pathname
+# Path - a Path manipulation library
 
 Path is a library to manage paths.  
 It is similar to Pathname, but has some extra goodness.  
