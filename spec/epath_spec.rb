@@ -75,12 +75,12 @@ describe Path do
     path.to_s.should == 'file.txt.mkv.tar.gz'
   end
 
-  it 'without_extension' do
+  it 'rm_ext, without_extension' do
     Path('/usr/bin/ls').without_extension.should == Path('/usr/bin/ls')
-    Path('/usr/bin/ls.rb').without_extension.should == Path('/usr/bin/ls')
+    Path('/usr/bin/ls.rb').rm_ext.should == Path('/usr/bin/ls')
   end
 
-  it 'replace_extension' do
+  it 'sub_ext, replace_extension' do
     Path('hello/world.rb').replace_extension('.ext').should == Path('hello/world.ext')
     Path('hello/world').replace_extension('.ext').should == Path('hello/world.ext')
 
