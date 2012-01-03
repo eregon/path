@@ -121,6 +121,14 @@ describe Path do
     end
   end
 
+  it 'empty?' do
+    Path.tmpfile do |file|
+      file.should be_empty
+      file.write 'Hello World!'
+      file.should_not be_empty
+    end
+  end
+
   it 'parent' do
     Path('a/b/c').parent.should == Path('a/b')
     Path('a').parent.should == Path('.')

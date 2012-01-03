@@ -149,6 +149,10 @@ class Path
     self
   end
 
+  def empty?
+    size == 0
+  end
+
   def write(contents, open_args = nil)
     if IO.respond_to? :write
       IO.write(@path, contents, *[open_args].compact)
