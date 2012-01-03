@@ -191,6 +191,7 @@ class Path
 
   alias_method :expand, :expand_path
   alias_method :dir, :dirname
+  alias_method :dir?, :directory?
 end
 
 EPath = Path # to meet everyone's expectations

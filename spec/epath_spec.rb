@@ -34,6 +34,20 @@ describe Path do
     %w[foo bar].map(&Path).should == [Path('foo'), Path('bar')]
   end
 
+  it 'file?, dir?' do
+    Path.tmpdir do |tmpdir|
+      dir, file = Path('dir'), Path('file')
+      tmpdir.chdir do
+        dir.mkdir
+        file.write ''
+        dir.dir?.should be_true
+        dir.file?.should be_false
+        file.file?.should be_true
+        file.dir?.should be_false
+      end
+    end
+  end
+
   it 'base, basename' do
     Path('file.ext').basename.should == Path('file.ext')
     Path('file.ext').basename('xt').should == Path('file.e')
