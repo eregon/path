@@ -75,4 +75,25 @@ class Path
   # See <tt>File.split</tt>.  Returns the #dirname and the #basename in an
   # Array.
   def split() File.split(@path).map {|f| Path.new(f) } end
+
+  #
+  # Returns the real (absolute) pathname of +self+ in the actual
+  # filesystem not containing symlinks or useless dots.
+  #
+  # All components of the pathname must exist when this method is
+  # called.
+  #
+  def realpath(basedir=nil)
+    Path.new(real_path_internal(true, basedir))
+  end
+
+  #
+  # Returns the real (absolute) pathname of +self+ in the actual filesystem.
+  # The real pathname doesn't contain symlinks or useless dots.
+  #
+  # The last component of the real pathname can be nonexistent.
+  #
+  def realdirpath(basedir=nil)
+    Path.new(real_path_internal(false, basedir))
+  end
 end
