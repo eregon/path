@@ -74,7 +74,7 @@ class Path
 
   # See <tt>File.split</tt>.  Returns the #dirname and the #basename in an
   # Array.
-  def split() File.split(@path).map {|f| Path.new(f) } end
+  def split() File.split(@path).map(&Path) end
 
   #
   # Returns the real (absolute) pathname of +self+ in the actual

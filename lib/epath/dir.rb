@@ -5,7 +5,7 @@ class Path
       if block_given?
         Dir.glob(*args) {|f| yield new(f) }
       else
-        Dir.glob(*args).map {|f| new(f) }
+        Dir.glob(*args).map(&Path)
       end
     end
 
