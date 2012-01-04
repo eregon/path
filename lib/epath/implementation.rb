@@ -3,9 +3,9 @@
 class Path
   # :stopdoc:
   SAME_PATHS = if File::FNM_SYSCASE.nonzero?
-    proc {|a, b| a.casecmp(b).zero?}
+    proc { |a, b| a.casecmp(b).zero? }
   else
-    proc {|a, b| a == b}
+    proc { |a, b| a == b }
   end
 
   # :startdoc:
@@ -307,27 +307,27 @@ class Path
   #
   # Iterates over each component of the path.
   #
-  #   Path.new("/usr/bin/ruby").each_filename {|filename| ... }
+  #   Path.new("/usr/bin/ruby").each_filename { |filename| ... }
   #     # yields "usr", "bin", and "ruby".
   #
   def each_filename # :yield: filename
     return to_enum(__method__) unless block_given?
     _, names = split_names(@path)
-    names.each {|filename| yield filename }
+    names.each { |filename| yield filename }
     nil
   end
 
   # Iterates over and yields a new Path object
   # for each element in the given path in descending order.
   #
-  #  Path.new('/path/to/some/file.rb').descend {|v| p v}
+  #  Path.new('/path/to/some/file.rb').descend { |v| p v }
   #     #<Path:/>
   #     #<Path:/path>
   #     #<Path:/path/to>
   #     #<Path:/path/to/some>
   #     #<Path:/path/to/some/file.rb>
   #
-  #  Path.new('path/to/some/file.rb').descend {|v| p v}
+  #  Path.new('path/to/some/file.rb').descend { |v| p v }
   #     #<Path:path>
   #     #<Path:path/to>
   #     #<Path:path/to/some>
@@ -336,22 +336,22 @@ class Path
   # It doesn't access actual filesystem.
   def descend
     vs = []
-    ascend {|v| vs << v }
-    vs.reverse_each {|v| yield v }
+    ascend { |v| vs << v }
+    vs.reverse_each { |v| yield v }
     nil
   end
 
   # Iterates over and yields a new Path object
   # for each element in the given path in ascending order.
   #
-  #  Path.new('/path/to/some/file.rb').ascend {|v| p v}
+  #  Path.new('/path/to/some/file.rb').ascend { |v| p v }
   #     #<Path:/path/to/some/file.rb>
   #     #<Path:/path/to/some>
   #     #<Path:/path/to>
   #     #<Path:/path>
   #     #<Path:/>
   #
-  #  Path.new('path/to/some/file.rb').ascend {|v| p v}
+  #  Path.new('path/to/some/file.rb').ascend { |v| p v }
   #     #<Path:path/to/some/file.rb>
   #     #<Path:path/to/some>
   #     #<Path:path/to>
@@ -436,7 +436,7 @@ class Path
     result = args.pop
     result = Path.new(result) unless Path === result
     return result if result.absolute?
-    args.reverse_each {|arg|
+    args.reverse_each { |arg|
       arg = Path.new(arg) unless Path === arg
       result = arg + result
       return result if result.absolute?
@@ -466,7 +466,7 @@ class Path
   def children(with_directory=true)
     with_directory = false if @path == '.'
     result = []
-    Dir.foreach(@path) {|e|
+    Dir.foreach(@path) { |e|
       next if e == '.' || e == '..'
       if with_directory
         result << Path.new(File.join(@path, e))
@@ -483,7 +483,7 @@ class Path
   # By default, the yielded pathnames will have enough information to access the files.
   # If you set +with_directory+ to +false+, then the returned pathnames will contain the filename only.
   #
-  #   Path("/usr/local").each_child {|f| p f }
+  #   Path("/usr/local").each_child { |f| p f }
   #   #=> #<Path:/usr/local/share>
   #   #   #<Path:/usr/local/bin>
   #   #   #<Path:/usr/local/games>
@@ -493,7 +493,7 @@ class Path
   #   #   #<Path:/usr/local/src>
   #   #   #<Path:/usr/local/man>
   #
-  #   Path("/usr/local").each_child(false) {|f| p f }
+  #   Path("/usr/local").each_child(false) { |f| p f }
   #   #=> #<Path:share>
   #   #   #<Path:bin>
   #   #   #<Path:games>

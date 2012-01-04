@@ -3,7 +3,7 @@ class Path
     # See <tt>Dir.glob</tt>.  Returns or yields Path objects.
     def glob(*args) # :yield: pathname
       if block_given?
-        Dir.glob(*args) {|f| yield new(f) }
+        Dir.glob(*args) { |f| yield new(f) }
       else
         Dir.glob(*args).map(&Path)
       end
@@ -19,7 +19,7 @@ class Path
   # Iterates over the entries (files and subdirectories) in the directory.  It
   # yields a Path object for each entry.
   def each_entry(&block) # :yield: pathname
-    Dir.foreach(@path) {|f| yield Path.new(f) }
+    Dir.foreach(@path) { |f| yield Path.new(f) }
   end
 
   # See <tt>Dir.mkdir</tt>.  Create the referenced directory.

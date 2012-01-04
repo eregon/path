@@ -22,7 +22,7 @@ class TestPathname < Test::Unit::TestCase
 
   def self.defassert(name, result, *args)
     define_assertion(name, get_linenum) {
-      mesg = "#{name}(#{args.map {|a| a.inspect }.join(', ')})"
+      mesg = "#{name}(#{args.map { |a| a.inspect }.join(', ')})"
       assert_nothing_raised(mesg) {
         assert_equal(result, self.send(name, *args), mesg)
       }
@@ -31,7 +31,7 @@ class TestPathname < Test::Unit::TestCase
 
   def self.defassert_raise(name, exc, *args)
     define_assertion(name, get_linenum) {
-      message = "#{name}(#{args.map {|a| a.inspect }.join(', ')})"
+      message = "#{name}(#{args.map { |a| a.inspect }.join(', ')})"
       assert_raise(exc, message) { self.send(name, *args) }
     }
   end
@@ -314,7 +314,7 @@ class TestPathname < Test::Unit::TestCase
   defassert_raise(:relative_path_from, ArgumentError, ".", "..")
 
   def with_tmpchdir(base=nil)
-    Dir.mktmpdir(base) {|d|
+    Dir.mktmpdir(base) { |d|
       d = Path.new(d).realpath.to_s
       Dir.chdir(d) {
         yield d
@@ -338,7 +338,7 @@ class TestPathname < Test::Unit::TestCase
 
   def test_realpath
     return if !has_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       assert_raise(Errno::ENOENT) { realpath("#{dir}/not-exist") }
       File.symlink("not-exist-target", "#{dir}/not-exist")
       assert_raise(Errno::ENOENT) { realpath("#{dir}/not-exist") }
@@ -397,7 +397,7 @@ class TestPathname < Test::Unit::TestCase
 
   def test_realdirpath
     return if !has_symlink?
-    Dir.mktmpdir('rubytest-pathname') {|dir|
+    Dir.mktmpdir('rubytest-pathname') { |dir|
       rdir = realpath(dir)
       assert_equal("#{rdir}/not-exist", realdirpath("#{dir}/not-exist"))
       assert_raise(Errno::ENOENT) { realdirpath("#{dir}/not-exist/not-exist-child") }
@@ -414,7 +414,7 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def descend(path)
-    Path.new(path).enum_for(:descend).map {|v| v.to_s }
+    Path.new(path).enum_for(:descend).map { |v| v.to_s }
   end
 
   defassert(:descend, %w[/ /a /a/b /a/b/c], "/a/b/c")
@@ -423,7 +423,7 @@ class TestPathname < Test::Unit::TestCase
   defassert(:descend, %w[a/], "a/")
 
   def ascend(path)
-    Path.new(path).enum_for(:ascend).map {|v| v.to_s }
+    Path.new(path).enum_for(:ascend).map { |v| v.to_s }
   end
 
   defassert(:ascend, %w[/a/b/c /a/b /a /], "/a/b/c")
@@ -488,7 +488,7 @@ class TestPathname < Test::Unit::TestCase
       a0
     )
     s1 = ss.shift
-    ss.each {|s2|
+    ss.each { |s2|
       assert_pathname_cmp(-1, s1, s2)
       s1 = s2
     }
@@ -602,7 +602,7 @@ class TestPathname < Test::Unit::TestCase
 
   def test_kernel_open
     count = 0
-    result = Kernel.open(Path.new(__FILE__)) {|f|
+    result = Kernel.open(Path.new(__FILE__)) { |f|
       assert(File.identical?(__FILE__, f))
       count += 1
       2
@@ -613,7 +613,7 @@ class TestPathname < Test::Unit::TestCase
 
   def test_each_filename
     result = []
-    Path.new("/usr/bin/ruby").each_filename {|f| result << f }
+    Path.new("/usr/bin/ruby").each_filename { |f| result << f }
     assert_equal(%w[usr bin ruby], result)
     assert_equal(%w[usr bin ruby], Path.new("/usr/bin/ruby").each_filename.to_a)
   end
@@ -623,7 +623,7 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_children
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       open("a", "w") {}
       open("b", "w") {}
       Dir.mkdir("d")
@@ -636,74 +636,74 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_each_child
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       open("a", "w") {}
       open("b", "w") {}
       Dir.mkdir("d")
       open("d/x", "w") {}
       open("d/y", "w") {}
-      a = []; Path(".").each_child {|v| a << v }; a.sort!
+      a = []; Path(".").each_child { |v| a << v }; a.sort!
       assert_equal([Path("a"), Path("b"), Path("d")], a)
-      a = []; Path("d").each_child {|v| a << v }; a.sort!
+      a = []; Path("d").each_child { |v| a << v }; a.sort!
       assert_equal([Path("d/x"), Path("d/y")], a)
-      a = []; Path("d").each_child(false) {|v| a << v }; a.sort!
+      a = []; Path("d").each_child(false) { |v| a << v }; a.sort!
       assert_equal([Path("x"), Path("y")], a)
     }
   end
 
   def test_each_line
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.puts 1, 2 }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.puts 1, 2 }
       a = []
-      Path("a").each_line {|line| a << line }
+      Path("a").each_line { |line| a << line }
       assert_equal(["1\n", "2\n"], a)
 
       a = []
-      Path("a").each_line("2") {|line| a << line }
+      Path("a").each_line("2") { |line| a << line }
       assert_equal(["1\n2", "\n"], a)
 
       if ruby19?
         a = []
-        Path("a").each_line(1) {|line| a << line }
+        Path("a").each_line(1) { |line| a << line }
         assert_equal(["1", "\n", "2", "\n"], a)
 
         a = []
-        Path("a").each_line("2", 1) {|line| a << line }
+        Path("a").each_line("2", 1) { |line| a << line }
         assert_equal(["1", "\n", "2", "\n"], a)
       end
 
       a = []
       enum = Path("a").each_line
-      enum.each {|line| a << line }
+      enum.each { |line| a << line }
       assert_equal(["1\n", "2\n"], a)
     }
   end
 
   def test_readlines
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.puts 1, 2 }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.puts 1, 2 }
       a = Path("a").readlines
       assert_equal(["1\n", "2\n"], a)
     }
   end
 
   def test_read
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.puts 1, 2 }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.puts 1, 2 }
       assert_equal("1\n2\n", Path("a").read)
     }
   end
 
   def test_binread
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       assert_equal("abc", Path("a").read)
     }
   end
 
   def test_sysopen
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       fd = Path("a").sysopen
       io = IO.new(fd)
       begin
@@ -727,8 +727,8 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_chmod
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       path = Path("a")
       old = path.stat.mode
       path.chmod(0444)
@@ -739,8 +739,8 @@ class TestPathname < Test::Unit::TestCase
 
   def test_lchmod
     return if !has_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       File.symlink("a", "l")
       path = Path("l")
       old = path.lstat.mode
@@ -755,8 +755,8 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_chown
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       path = Path("a")
       old_uid = path.stat.uid
       old_gid = path.stat.gid
@@ -773,8 +773,8 @@ class TestPathname < Test::Unit::TestCase
 
   def test_lchown
     return if !has_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       File.symlink("a", "l")
       path = Path("l")
       old_uid = path.stat.uid
@@ -805,8 +805,8 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_ftype
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal("file", Path("f").ftype)
       Dir.mkdir("d")
       assert_equal("directory", Path("d").ftype)
@@ -814,32 +814,32 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_make_link
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       Path("l").make_link(Path("a"))
       assert_equal("abc", Path("l").read)
     }
   end
 
   def test_open
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       path = Path("a")
 
-      path.open {|f|
+      path.open { |f|
         assert_equal("abc", f.read)
       }
 
-      path.open("r") {|f|
+      path.open("r") { |f|
         assert_equal("abc", f.read)
       }
 
-      Path("b").open("w", 0444) {|f| f.write "def" }
+      Path("b").open("w", 0444) { |f| f.write "def" }
       assert_equal(0444, File.stat("b").mode & 0777)
       assert_equal("def", File.read("b"))
 
       if ruby19?
-        Path("c").open("w", 0444, {}) {|f| f.write "ghi" }
+        Path("c").open("w", 0444, {}) { |f| f.write "ghi" }
         assert_equal(0444, File.stat("c").mode & 0777)
         assert_equal("ghi", File.read("c"))
       end
@@ -852,24 +852,24 @@ class TestPathname < Test::Unit::TestCase
 
   def test_readlink
     return if !has_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       File.symlink("a", "l")
       assert_equal(Path("a"), Path("l").readlink)
     }
   end
 
   def test_rename
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       Path("a").rename(Path("b"))
       assert_equal("abc", File.read("b"))
     }
   end
 
   def test_stat
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       s = Path("a").stat
       assert_equal(3, s.size)
     }
@@ -877,8 +877,8 @@ class TestPathname < Test::Unit::TestCase
 
   def test_lstat
     return if !has_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       File.symlink("a", "l")
       s = Path("l").lstat
       assert_equal(true, s.symlink?)
@@ -893,8 +893,8 @@ class TestPathname < Test::Unit::TestCase
 
   def test_make_symlink
     return if !has_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       Path("l").make_symlink(Path("a"))
       s = Path("l").lstat
       assert_equal(true, s.symlink?)
@@ -902,16 +902,16 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_truncate
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       Path("a").truncate(2)
       assert_equal("ab", File.read("a"))
     }
   end
 
   def test_utime
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("a", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("a", "w") { |f| f.write "abc" }
       atime = Time.utc(2000)
       mtime = Time.utc(1999)
       Path("a").utime(atime, mtime)
@@ -948,52 +948,52 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_blockdev?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").blockdev?)
     }
   end
 
   def test_chardev?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").chardev?)
     }
   end
 
   def test_executable?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").executable?)
     }
   end
 
   def test_executable_real?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").executable_real?)
     }
   end
 
   def test_exist?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").exist?)
     }
   end
 
   def test_grpowned?
     skip "Unix file owner test" if DOSISH
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       File.chown(-1, Process.gid, "f")
       assert_equal(true, Path("f").grpowned?)
     }
   end
 
   def test_directory?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").directory?)
       Dir.mkdir("d")
       assert_equal(true, Path("d").directory?)
@@ -1001,8 +1001,8 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_file?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").file?)
       Dir.mkdir("d")
       assert_equal(false, Path("d").file?)
@@ -1010,37 +1010,37 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_pipe?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").pipe?)
     }
   end
 
   def test_socket?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").socket?)
     }
   end
 
   def test_owned?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").owned?)
     }
   end
 
   def test_readable?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").readable?)
     }
   end
 
   def test_world_readable?
     skip "Unix file mode bit test" if DOSISH
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       File.chmod(0400, "f")
       assert_equal(nil, Path("f").world_readable?)
       File.chmod(0444, "f")
@@ -1049,41 +1049,41 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_readable_real?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").readable_real?)
     }
   end
 
   def test_setuid?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").setuid?)
     }
   end
 
   def test_setgid?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").setgid?)
     }
   end
 
   def test_size
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(3, Path("f").size)
-      open("z", "w") {|f| }
+      open("z", "w") {}
       assert_equal(0, Path("z").size)
       assert_raise(Errno::ENOENT) { Path("not-exist").size }
     }
   end
 
   def test_size?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(3, Path("f").size?)
-      open("z", "w") {|f| }
+      open("z", "w") {}
       assert_equal(nil, Path("z").size?)
       assert_equal(nil, Path("not-exist").size?)
     }
@@ -1091,30 +1091,30 @@ class TestPathname < Test::Unit::TestCase
 
   def test_sticky?
     skip "Unix file mode bit test" if DOSISH
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").sticky?)
     }
   end
 
   def test_symlink?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").symlink?)
     }
   end
 
   def test_writable?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").writable?)
     }
   end
 
   def test_world_writable?
     skip "Unix file mode bit test" if DOSISH
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       File.chmod(0600, "f")
       assert_equal(nil, Path("f").world_writable?)
       File.chmod(0666, "f")
@@ -1123,29 +1123,29 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_writable_real?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(true, Path("f").writable?)
     }
   end
 
   def test_zero?
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       assert_equal(false, Path("f").zero?)
-      open("z", "w") {|f| }
+      open("z", "w") {}
       assert_equal(true, Path("z").zero?)
       assert_equal(false, Path("not-exist").zero?)
     }
   end
 
   def test_s_glob
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       Dir.mkdir("d")
       assert_equal([Path("d"), Path("f")], Path.glob("*").sort)
       a = []
-      Path.glob("*") {|path| a << path }
+      Path.glob("*") { |path| a << path }
       a.sort!
       assert_equal([Path("d"), Path("f")], a)
     }
@@ -1162,7 +1162,7 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_entries
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       open("a", "w") {}
       open("b", "w") {}
       assert_equal([Path("a"), Path("b")], Path(".").entries.sort)
@@ -1170,17 +1170,17 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_each_entry
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       open("a", "w") {}
       open("b", "w") {}
       a = []
-      Path(".").each_entry {|v| a << v }
+      Path(".").each_entry { |v| a << v }
       assert_equal([Path("."), Path(".."), Path("a"), Path("b")], a.sort)
     }
   end
 
   def test_mkdir
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       Path("d").mkdir
       assert(File.directory?("d"))
       Path("e").mkdir(0770)
@@ -1189,7 +1189,7 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_rmdir
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       Path("d").mkdir
       assert(File.directory?("d"))
       Path("d").rmdir
@@ -1198,27 +1198,27 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_opendir
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       open("a", "w") {}
       open("b", "w") {}
       a = []
-      Path(".").opendir {|d|
-        d.each {|e| a << e }
+      Path(".").opendir { |d|
+        d.each { |e| a << e }
       }
       assert_equal([".", "..", "a", "b"], a.sort)
     }
   end
 
   def test_find
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       open("a", "w") {}
       open("b", "w") {}
       Dir.mkdir("d")
       open("d/x", "w") {}
       open("d/y", "w") {}
-      a = []; Path(".").find {|v| a << v }; a.sort!
+      a = []; Path(".").find { |v| a << v }; a.sort!
       assert_equal([Path("."), Path("a"), Path("b"), Path("d"), Path("d/x"), Path("d/y")], a)
-      a = []; Path("d").find {|v| a << v }; a.sort!
+      a = []; Path("d").find { |v| a << v }; a.sort!
       assert_equal([Path("d"), Path("d/x"), Path("d/y")], a)
       a = Path(".").find.sort
       assert_equal([Path("."), Path("a"), Path("b"), Path("d"), Path("d/x"), Path("d/y")], a)
@@ -1228,14 +1228,14 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_mkpath
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       Path("a/b/c/d").mkpath
       assert(File.directory?("a/b/c/d"))
     }
   end
 
   def test_rmtree
-    with_tmpchdir('rubytest-pathname') {|dir|
+    with_tmpchdir('rubytest-pathname') { |dir|
       Path("a/b/c/d").mkpath
       assert(File.exist?("a/b/c/d"))
       Path("a").rmtree
@@ -1244,8 +1244,8 @@ class TestPathname < Test::Unit::TestCase
   end
 
   def test_unlink
-    with_tmpchdir('rubytest-pathname') {|dir|
-      open("f", "w") {|f| f.write "abc" }
+    with_tmpchdir('rubytest-pathname') { |dir|
+      open("f", "w") { |f| f.write "abc" }
       Path("f").unlink
       assert(!File.exist?("f"))
       Dir.mkdir("d")

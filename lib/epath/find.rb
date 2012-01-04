@@ -13,9 +13,9 @@ class Path
     return to_enum(__method__) unless block_given?
     require 'find'
     if @path == '.'
-      Find.find(@path) {|f| yield Path.new(f.sub(%r{\A\./}, '')) }
+      Find.find(@path) { |f| yield Path.new(f.sub(%r{\A\./}, '')) }
     else
-      Find.find(@path) {|f| yield Path.new(f) }
+      Find.find(@path) { |f| yield Path.new(f) }
     end
   end
 end
