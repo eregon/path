@@ -1,7 +1,8 @@
 # Enchanced Pathname
 # Use the composite pattern with a Pathname
 
-require File.expand_path('../epath/implementation', __FILE__)
+Dir.glob(File.expand_path('../epath/*.rb',__FILE__)) { |file| require file }
+
 require 'tempfile'
 
 class Path
