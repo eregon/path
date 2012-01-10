@@ -131,31 +131,6 @@ class Path
     Dir.chdir(self, &block)
   end
 
-  def rm
-    FileUtils.rm(@path)
-    self
-  end
-
-  def rm_f
-    FileUtils.rm_f(@path)
-    self
-  end
-
-  def rm_rf
-    FileUtils.rm_rf(@path)
-    self
-  end
-
-  def touch
-    FileUtils.touch(@path)
-    self
-  end
-
-  def mkdir_p
-    FileUtils.mkdir_p(@path)
-    self
-  end
-
   def empty?
     size == 0
   end

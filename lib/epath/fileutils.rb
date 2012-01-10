@@ -15,4 +15,29 @@ class Path
     FileUtils.rm_r(@path)
     nil
   end
+
+  def rm
+    FileUtils.rm(@path)
+    self
+  end
+
+  def rm_f
+    FileUtils.rm_f(@path)
+    self
+  end
+
+  def rm_rf
+    FileUtils.rm_rf(@path)
+    self
+  end
+
+  def touch
+    FileUtils.touch(@path)
+    self
+  end
+
+  def mkdir_p
+    FileUtils.mkdir_p(@path)
+    self
+  end
 end
