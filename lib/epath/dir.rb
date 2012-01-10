@@ -32,4 +32,12 @@ class Path
   def opendir(&block) # :yield: dir
     Dir.open(@path, &block)
   end
+
+  def glob(pattern, flags = 0)
+    Dir.glob(join(pattern), flags).map(&Path)
+  end
+
+  def chdir(&block)
+    Dir.chdir(self, &block)
+  end
 end

@@ -123,14 +123,6 @@ class Path
     (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry).cleanpath }
   end
 
-  def glob(pattern, flags = 0)
-    Dir.glob(join(pattern), flags).map(&Path)
-  end
-
-  def chdir(&block)
-    Dir.chdir(self, &block)
-  end
-
   def empty?
     size == 0
   end
