@@ -112,8 +112,6 @@ class Path
   end
   alias_method :rm_ext, :without_extension
 
-  # NOTE: Pathname has a similar feature named sub_ext
-  # It might be a better method name
   def replace_extension(ext)
     return without_extension if ext.empty?
     ext = ".#{ext}" unless ext.start_with? '.'
