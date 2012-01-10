@@ -3,6 +3,8 @@ class Path
   # Path#find is an iterator to traverse a directory tree in a depth first
   # manner.  It yields a Path for each file under "this" directory.
   #
+  # Returns an enumerator if no block is given.
+  #
   # Since it is implemented by <tt>find.rb</tt>, <tt>Find.prune</tt> can be used
   # to control the traversal.
   #
