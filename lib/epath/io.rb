@@ -29,12 +29,12 @@ class Path
     end
   end
 
-  def append(contents, open_args = nil)
+  def append(contents, open_args = {})
     if IO.respond_to? :write
-      open_args = (Array(open_args) << {:mode => 'a'})
-      IO.write(@path, contents, *open_args.compact)
+      open_args[:mode] = 'a'
+      IO.write(@path, contents, open_args)
     else
-      open('a', *[open_args].compact) { |f| f.write(contents) }
+      open('a') { |f| f.write(contents) }
     end
   end
 end
