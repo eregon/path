@@ -248,7 +248,8 @@ class Path
     private :realpath_rec
 
     def real_path_internal(strict = false, basedir = nil)
-      path = File.join(basedir, @path) if basedir and relative?
+      path = @path
+      path = File.join(basedir, path) if basedir and relative?
       prefix, names = split_names(path)
       if prefix == ''
         prefix, names2 = split_names(Dir.pwd)
