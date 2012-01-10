@@ -127,23 +127,6 @@ class Path
     size == 0
   end
 
-  def write(contents, open_args = nil)
-    if IO.respond_to? :write
-      IO.write(@path, contents, *[open_args].compact)
-    else
-      open('w', *[open_args].compact) { |f| f.write(contents) }
-    end
-  end
-
-  def append(contents, open_args = nil)
-    if IO.respond_to? :write
-      open_args = (Array(open_args) << {:mode => 'a'})
-      IO.write(@path, contents, *open_args.compact)
-    else
-      open('a', *[open_args].compact) { |f| f.write(contents) }
-    end
-  end
-
   def to_sym
     to_s.to_sym
   end
