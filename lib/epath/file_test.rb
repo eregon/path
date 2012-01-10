@@ -60,6 +60,10 @@ class Path
   # See <tt>FileTest.size?</tt>.
   def size?() FileTest.size?(@path) end
 
+  def empty?
+    FileTest.size(@path) == 0
+  end
+
   # See <tt>FileTest.sticky?</tt>.
   def sticky?() FileTest.sticky?(@path) end
 
