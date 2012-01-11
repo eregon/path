@@ -6,8 +6,6 @@ Dir.glob(File.expand_path('../epath/*.rb',__FILE__)) { |file| require file }
 require 'tempfile'
 
 class Path
-  DOTS = %w[. ..]
-
   class << self
     def new(*args)
       if args.size == 1 and Path === args[0]
@@ -118,10 +116,6 @@ class Path
     Path.new(@path[0..-extname.size-1] << ext)
   end
   alias_method :sub_ext, :replace_extension
-
-  def entries
-    (Dir.entries(@path) - DOTS).map { |entry| Path.new(@path, entry).cleanpath }
-  end
 
   def to_sym
     to_s.to_sym

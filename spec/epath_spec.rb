@@ -201,7 +201,7 @@ describe Path do
   end
 
   it 'entries' do
-    spec.entries.sort.should == [this, test_implementation]
+    spec.entries.sort.should == [Path('.'), Path('..'), Path('epath_spec.rb'), Path('test_implementation.rb')]
   end
 
   it 'glob' do

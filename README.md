@@ -88,10 +88,6 @@ Path.backfind('.[.git]') # => the root of this repository
 * mkdir_p
 * rm_rf
 
-### Incompatibilities with Pathname
-
-* #entries never returns . and ..
-
 ## Status
 
 This is still in the early development stage, you should expect many additions and some changes.
