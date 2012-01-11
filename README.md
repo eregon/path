@@ -55,10 +55,9 @@ Path.tmpdir
 Path('/usr')/'bin'
 ```
 
-These method names are too long, any idea to make them shorter and clear?
-
-* without_extension
-* replace_extension(new_ext)
+* add_ext / add_extension
+* rm_ext / without_extension
+* sub_ext(new_ext) / replace_extension(new_ext)
 
 ### glob
 
