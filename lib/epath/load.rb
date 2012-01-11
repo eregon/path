@@ -12,6 +12,8 @@ class Path
     when ".json"
       require 'json'
       JSON.load(self.read)
+    else
+      raise "Unable to load #{self} (unrecognized extension)"
     end
   end
 end

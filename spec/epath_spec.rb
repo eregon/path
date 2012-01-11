@@ -250,5 +250,7 @@ describe Path do
     (fixtures/"data.json").load.should == {"kind" => "json"}
     (fixtures/"data.rb").load.should == {"kind" => "rb"}
     (fixtures/"data.ruby").load.should == {"kind" => "ruby"}
+    lambda{ (fixtures/"no-such-one.yml").load }.should raise_error(Errno::ENOENT)
+    lambda{ (root/"README.md").load }.should raise_error(RuntimeError, /Unable to load.*unrecognized extension/)
   end
 end
