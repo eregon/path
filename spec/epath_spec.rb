@@ -6,6 +6,7 @@ root = Path(File.expand_path('../..',__FILE__))
 lib = Path(File.expand_path('../../lib',__FILE__))
 lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
+fixtures = Path(File.expand_path('../fixtures',__FILE__))
 test_implementation = Path(File.expand_path('../test_implementation.rb',__FILE__))
 
 describe Path do
@@ -201,7 +202,7 @@ describe Path do
   end
 
   it 'entries' do
-    spec.entries.sort.should == [this, test_implementation]
+    spec.entries.sort.should == [this, fixtures, test_implementation]
   end
 
   it 'glob' do
@@ -241,5 +242,15 @@ describe Path do
       test = d.parent
       test.rm_rf.should equal test
     end
+  end
+  
+  it 'load' do
+    (fixtures/"data.yml").load.should == {"kind" => "yml"}
+    (fixtures/"data.yaml").load.should == {"kind" => "yaml"}
+    (fixtures/"data.json").load.should == {"kind" => "json"}
+    (fixtures/"data.rb").load.should == {"kind" => "rb"}
+    (fixtures/"data.ruby").load.should == {"kind" => "ruby"}
+    lambda{ (fixtures/"no-such-one.yml").load }.should raise_error(Errno::ENOENT)
+    lambda{ (root/"README.md").load }.should raise_error(RuntimeError, /Unable to load.*unrecognized extension/)
   end
 end
