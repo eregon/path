@@ -1,6 +1,8 @@
 # Path's low-level implementation based on Pathname
 
 class Path
+  include Comparable
+  
   # :stopdoc:
   SAME_PATHS = if File::FNM_SYSCASE.nonzero?
     proc { |a, b| a.casecmp(b).zero? }
