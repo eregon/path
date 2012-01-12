@@ -22,8 +22,11 @@ class Path
     Dir.foreach(@path) { |f| yield Path.new(f) }
   end
 
-  # See <tt>Dir.mkdir</tt>.  Create the referenced directory.
-  def mkdir(*args) Dir.mkdir(@path, *args) end
+  # See <tt>Dir.mkdir</tt>.  Create the referenced directory and returns self.
+  def mkdir(*args)
+    Dir.mkdir(@path, *args)
+    self
+  end
 
   # See <tt>Dir.rmdir</tt>.  Remove the referenced directory.
   def rmdir() Dir.rmdir(@path) end
