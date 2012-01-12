@@ -51,9 +51,12 @@ class Path
   # See <tt>File.lstat</tt>.
   def lstat() File.lstat(@path) end
 
-  # See <tt>File.symlink</tt>.  Creates a symbolic link and returns self.
-  def make_symlink(old)
-    File.symlink(old, @path)
+  # Creates a symbolic link to +target+ and returns self.
+  #
+  # Raises Errno::EEXIST if self already exist.
+  # See <tt>File.symlink</tt> (arguments are swapped).
+  def make_symlink(target)
+    File.symlink(target, @path)
     self
   end
 
