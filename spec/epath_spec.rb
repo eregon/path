@@ -1,4 +1,3 @@
-require 'rspec/autorun'
 require File.expand_path('../../lib/epath', __FILE__)
 
 this = Path(__FILE__).expand
@@ -6,7 +5,6 @@ root = Path(File.expand_path('../..',__FILE__))
 lib = Path(File.expand_path('../../lib',__FILE__))
 lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
-test_implementation = Path(File.expand_path('../test_implementation.rb',__FILE__))
 
 describe Path do
   it 'behaves like a path' do
@@ -201,13 +199,13 @@ describe Path do
   end
 
   it 'entries' do
-    spec.entries.sort.should == [Path('.'), Path('..'), Path('epath_spec.rb'), Path('test_implementation.rb')]
+    spec.entries.sort.should == [Path('.'), Path('..'), Path('epath'), Path('epath_spec.rb')]
   end
 
   it 'glob' do
-    spec.glob('*.rb').sort.should == [this, test_implementation]
+    spec.glob('*.rb').sort.should == [this]
     spec.chdir do
-      Path.glob('*.rb').map(&:expand).sort.should == [this, test_implementation]
+      Path.glob('*.rb').map(&:expand).sort.should == [this]
     end
   end
 
