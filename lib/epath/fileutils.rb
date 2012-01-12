@@ -16,6 +16,7 @@ class Path
     FileUtils.rm_r(@path)
     self
   end
+  alias rm_r rmtree
 
   def rm
     FileUtils.rm(@path)
