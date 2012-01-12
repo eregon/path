@@ -148,6 +148,11 @@ describe Path do
     Path('../..').parent.should == Path('../../..')
     Path('../a').parent.should == Path('..')
   end
+  
+  it '<' do
+    (root < spec).should be_true
+    (spec < root).should be_false
+  end
 
   it 'here, dir' do
     Path.here.should == Path(__FILE__).expand
