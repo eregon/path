@@ -7,6 +7,7 @@ class Path
     FileUtils.mkpath(@path)
     self
   end
+  alias mkdir_p mkpath
 
   # See <tt>FileUtils.rm_r</tt>.  Deletes a directory and all beneath it.
   def rmtree
@@ -33,11 +34,6 @@ class Path
 
   def touch
     FileUtils.touch(@path)
-    self
-  end
-
-  def mkdir_p
-    FileUtils.mkdir_p(@path)
     self
   end
 end
