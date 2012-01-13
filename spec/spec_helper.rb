@@ -18,7 +18,6 @@ RSpec.configure do |config|
 
   config.around(:each, :tmpchdir) { |example|
     Path.tmpdir('path-test') do |dir|
-      dir = dir.realpath
       dir.chdir do
         example.run
       end
