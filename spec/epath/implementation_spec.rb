@@ -532,7 +532,7 @@ describe 'Path implementation' do
     path.to_s.should_not be path.to_s
   end
 
-  it 'Kernel#open', :fails_on => [:rbx, :rbx19] do
+  it 'Kernel#open', :fails_on => [:rbx, :rbx19, :jruby19] do
     count = 0
     Kernel.open(Path(__FILE__)) { |f|
       File.should be_identical(__FILE__, f)
@@ -654,7 +654,7 @@ describe 'Path implementation' do
     path.chmod(old)
   end
 
-  it 'chown', :tmpchdir, :fails_on => [:rbx, :rbx19, :jruby] do
+  it 'chown', :tmpchdir, :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
     path = Path('a')
     path.write 'abc'
     old_uid = path.stat.uid
@@ -702,7 +702,7 @@ describe 'Path implementation' do
     Path('d').mkdir.ftype.should == 'directory'
   end
 
-  it 'make_link', :tmpchdir, :fails_on => [:jruby] do
+  it 'make_link', :tmpchdir, :fails_on => [:jruby, :jruby19] do
     Path('a').write 'abc'
     Path('l').make_link('a').read.should == 'abc'
   end
@@ -724,7 +724,7 @@ describe 'Path implementation' do
     g.close
   end
 
-  it 'open 1.9', :tmpchdir, :ruby => 1.9, :fails_on => [:rbx19] do
+  it 'open 1.9', :tmpchdir, :ruby => 1.9, :fails_on => [:rbx19, :jruby19] do
     c = Path('c')
     c.open('w', 0444, {}) { |f| f.write "ghi" }
     (c.stat.mode & 0777).should == 0444
