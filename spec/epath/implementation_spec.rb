@@ -1,4 +1,4 @@
-require File.expand_path('../../../lib/epath', __FILE__)
+require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Path implementation' do
 
@@ -14,15 +14,6 @@ describe 'Path implementation' do
     false
   rescue TypeError
     true
-  end
-
-  def with_tmpchdir
-    Path.tmpdir('path-test') do |dir|
-      dir = dir.realpath
-      dir.chdir do
-        yield dir
-      end
-    end
   end
 
   describe 'cleanpath' do
@@ -306,62 +297,61 @@ describe 'Path implementation' do
     end
   end
 
-  it 'realpath', :if => has_symlink do
-    with_tmpchdir do |dir|
-      not_exist = dir/'not-exist'
-      lambda { not_exist.realpath }.should raise_error(Errno::ENOENT)
-      not_exist.make_symlink('not-exist-target')
-      lambda { not_exist.realpath }.should raise_error(Errno::ENOENT)
+  it 'realpath', :tmpchdir, :if => has_symlink do
+    dir = Path.getwd
+    not_exist = dir/'not-exist'
+    lambda { not_exist.realpath }.should raise_error(Errno::ENOENT)
+    not_exist.make_symlink('not-exist-target')
+    lambda { not_exist.realpath }.should raise_error(Errno::ENOENT)
 
-      looop = dir/'loop'
-      looop.make_symlink('loop')
-      lambda { looop.realpath }.should raise_error(Errno::ELOOP)
-      lambda { looop.realpath(dir) }.should raise_error(Errno::ELOOP)
+    looop = dir/'loop'
+    looop.make_symlink('loop')
+    lambda { looop.realpath }.should raise_error(Errno::ELOOP)
+    lambda { looop.realpath(dir) }.should raise_error(Errno::ELOOP)
 
-      not_exist2 = dir/'not-exist2'
-      not_exist2.make_symlink("../#{dir.basename}/./not-exist-target")
-      lambda { not_exist2.realpath }.should raise_error(Errno::ENOENT)
+    not_exist2 = dir/'not-exist2'
+    not_exist2.make_symlink("../#{dir.basename}/./not-exist-target")
+    lambda { not_exist2.realpath }.should raise_error(Errno::ENOENT)
 
-      exist_target, exist2 = (dir/'exist-target').touch, dir/'exist2'
-      exist2.make_symlink(exist_target)
-      exist2.realpath.should == exist_target
+    exist_target, exist2 = (dir/'exist-target').touch, dir/'exist2'
+    exist2.make_symlink(exist_target)
+    exist2.realpath.should == exist_target
 
-      loop_relative = Path('loop-relative')
-      loop_relative.make_symlink(loop_relative)
-      lambda { loop_relative.realpath }.should raise_error(Errno::ELOOP)
+    loop_relative = Path('loop-relative')
+    loop_relative.make_symlink(loop_relative)
+    lambda { loop_relative.realpath }.should raise_error(Errno::ELOOP)
 
-      exist = Path('exist').mkdir
-      exist.realpath.should == dir/'exist'
-      lambda { Path('../loop').realpath(exist) }.should raise_error(Errno::ELOOP)
+    exist = Path('exist').mkdir
+    exist.realpath.should == dir/'exist'
+    lambda { Path('../loop').realpath(exist) }.should raise_error(Errno::ELOOP)
 
-      Path('loop1').make_symlink('loop1/loop1')
-      lambda { (dir/'loop1').realpath }.should raise_error(Errno::ELOOP)
+    Path('loop1').make_symlink('loop1/loop1')
+    lambda { (dir/'loop1').realpath }.should raise_error(Errno::ELOOP)
 
-      loop2, loop3 = Path('loop2'), Path('loop3')
-      loop2.make_symlink(loop3)
-      loop3.make_symlink(loop2)
-      lambda { loop2.realpath }.should raise_error(Errno::ELOOP)
+    loop2, loop3 = Path('loop2'), Path('loop3')
+    loop2.make_symlink(loop3)
+    loop3.make_symlink(loop2)
+    lambda { loop2.realpath }.should raise_error(Errno::ELOOP)
 
-      b = dir/'b'
-      Path('c').make_symlink(Path('b').mkdir)
-      Path('c').realpath.should == b
-      Path('c/../c').realpath.should == b
-      Path('c/../c/../c/.').realpath.should == b
+    b = dir/'b'
+    Path('c').make_symlink(Path('b').mkdir)
+    Path('c').realpath.should == b
+    Path('c/../c').realpath.should == b
+    Path('c/../c/../c/.').realpath.should == b
 
-      Path('b/d').make_symlink('..')
-      Path('c/d/c/d/c').realpath.should == b
+    Path('b/d').make_symlink('..')
+    Path('c/d/c/d/c').realpath.should == b
 
-      e = Path('e').make_symlink(b)
-      e.realpath.should == b
+    e = Path('e').make_symlink(b)
+    e.realpath.should == b
 
-      f = Path('f').mkdir
-      g = dir / (f/'g').mkdir
-      h = Path('h').make_symlink(g)
-      f.chmod(0000)
-      lambda { h.realpath }.should raise_error(Errno::EACCES)
-      f.chmod(0755)
-      h.realpath.should == g
-    end
+    f = Path('f').mkdir
+    g = dir / (f/'g').mkdir
+    h = Path('h').make_symlink(g)
+    f.chmod(0000)
+    lambda { h.realpath }.should raise_error(Errno::EACCES)
+    f.chmod(0755)
+    h.realpath.should == g
   end
 
   it 'realdirpath', :if => has_symlink do
@@ -572,88 +562,74 @@ describe 'Path implementation' do
     Path('a').should == Path.new('a')
   end
 
-  it 'children' do
-    with_tmpchdir do
-      a = Path('a').touch
-      b = Path('b').touch
-      d = Path('d').mkdir
-      x = Path('d/x').touch
-      y = Path('d/y').touch
+  it 'children', :tmpchdir do
+    a = Path('a').touch
+    b = Path('b').touch
+    d = Path('d').mkdir
+    x = Path('d/x').touch
+    y = Path('d/y').touch
 
-      Path('.').children.sort.should == [a, b, d]
-      d.children.sort.should == [x, y]
-      d.children(false).sort.should == [Path('x'), Path('y')]
-    end
+    Path('.').children.sort.should == [a, b, d]
+    d.children.sort.should == [x, y]
+    d.children(false).sort.should == [Path('x'), Path('y')]
   end
 
-  it 'each_child' do
-    with_tmpchdir do
-      a = Path('a').touch
-      b = Path('b').touch
-      d = Path('d').mkdir
-      x = Path('d/x').touch
-      y = Path('d/y').touch
+  it 'each_child', :tmpchdir do
+    a = Path('a').touch
+    b = Path('b').touch
+    d = Path('d').mkdir
+    x = Path('d/x').touch
+    y = Path('d/y').touch
 
-      r = []; Path('.').each_child { |c| r << c }
-      r.sort.should == [a, b, d]
-      r = []; d.each_child { |c| r << c }
-      r.sort.should == [x, y]
-      r = []; d.each_child(false) { |c| r << c }
-      r.sort.should == [Path('x'), Path('y')]
-    end
+    r = []; Path('.').each_child { |c| r << c }
+    r.sort.should == [a, b, d]
+    r = []; d.each_child { |c| r << c }
+    r.sort.should == [x, y]
+    r = []; d.each_child(false) { |c| r << c }
+    r.sort.should == [Path('x'), Path('y')]
   end
 
-  it 'each_line' do
-    with_tmpchdir do
-      a = Path('a')
+  it 'each_line', :tmpchdir do
+    a = Path('a')
 
-      a.open('w') { |f| f.puts 1, 2 }
-      r = []
-      a.each_line { |line| r << line }
-      r.should == ["1\n", "2\n"]
+    a.open('w') { |f| f.puts 1, 2 }
+    r = []
+    a.each_line { |line| r << line }
+    r.should == ["1\n", "2\n"]
 
-      a.each_line('2').to_a.should == ["1\n2", "\n"]
+    a.each_line('2').to_a.should == ["1\n2", "\n"]
 
-      if ruby19
-        a.each_line(1).to_a.should == ['1', "\n", '2', "\n"]
-        a.each_line('2', 1).to_a.should == ['1', "\n", '2', "\n"]
-      end
-
-      a.each_line.to_a.should == ["1\n", "2\n"]
+    if ruby19
+      a.each_line(1).to_a.should == ['1', "\n", '2', "\n"]
+      a.each_line('2', 1).to_a.should == ['1', "\n", '2', "\n"]
     end
+
+    a.each_line.to_a.should == ["1\n", "2\n"]
   end
 
-  it 'readlines' do
-    with_tmpchdir do
-      Path('a').open('w') { |f| f.puts 1, 2 }
-      Path('a').readlines.should == ["1\n", "2\n"]
-    end
+  it 'readlines', :tmpchdir do
+    Path('a').open('w') { |f| f.puts 1, 2 }
+    Path('a').readlines.should == ["1\n", "2\n"]
   end
 
-  it 'read' do
-    with_tmpchdir do
-      Path('a').open('w') { |f| f.puts 1, 2 }
-      Path('a').read.should == "1\n2\n"
-    end
+  it 'read', :tmpchdir do
+    Path('a').open('w') { |f| f.puts 1, 2 }
+    Path('a').read.should == "1\n2\n"
   end
 
-  it 'binread' do
-    with_tmpchdir do
-      Path('a').write 'abc'
-      Path('a').read.should == 'abc'
-    end
+  it 'binread', :tmpchdir do
+    Path('a').write 'abc'
+    Path('a').read.should == 'abc'
   end
 
-  it 'sysopen' do
-    with_tmpchdir do
-      Path('a').write 'abc'
-      fd = Path('a').sysopen
-      io = IO.new(fd)
-      begin
-        io.read.should == 'abc'
-      ensure
-        io.close
-      end
+  it 'sysopen', :tmpchdir do
+    Path('a').write 'abc'
+    fd = Path('a').sysopen
+    io = IO.new(fd)
+    begin
+      io.read.should == 'abc'
+    ensure
+      io.close
     end
   end
 
@@ -663,64 +639,56 @@ describe 'Path implementation' do
     Path(__FILE__).mtime.should be_kind_of Time
   end
 
-  it 'chmod' do
-    with_tmpchdir do
-      path = Path('a')
-      path.write 'abc'
-      old = path.stat.mode
-      path.chmod(0444)
-      (path.stat.mode & 0777).should == 0444
-      path.chmod(old)
-    end
+  it 'chmod', :tmpchdir do
+    path = Path('a')
+    path.write 'abc'
+    old = path.stat.mode
+    path.chmod(0444)
+    (path.stat.mode & 0777).should == 0444
+    path.chmod(old)
   end
 
-  it 'lchmod', :if => has_symlink do
-    with_tmpchdir do
-      Path('a').write 'abc'
-      path = Path('l').make_symlink('a')
-      old = path.lstat.mode
-      begin
-        path.lchmod(0444)
-      rescue NotImplementedError
-        next
-      end
-      (path.lstat.mode & 0777).should == 0444
-      path.chmod(old)
+  it 'lchmod', :tmpchdir, :if => has_symlink do
+    Path('a').write 'abc'
+    path = Path('l').make_symlink('a')
+    old = path.lstat.mode
+    begin
+      path.lchmod(0444)
+    rescue NotImplementedError
+      next
     end
+    (path.lstat.mode & 0777).should == 0444
+    path.chmod(old)
   end
 
-  it 'chown' do
-    with_tmpchdir do
-      path = Path('a')
-      path.write 'abc'
-      old_uid = path.stat.uid
-      old_gid = path.stat.gid
-      begin
-        path.chown(0, 0)
-      rescue Errno::EPERM
-        next
-      end
-      path.stat.uid.should == 0
-      path.stat.gid.should == 0
-      path.chown(old_uid, old_gid)
+  it 'chown', :tmpchdir do
+    path = Path('a')
+    path.write 'abc'
+    old_uid = path.stat.uid
+    old_gid = path.stat.gid
+    begin
+      path.chown(0, 0)
+    rescue Errno::EPERM
+      next
     end
+    path.stat.uid.should == 0
+    path.stat.gid.should == 0
+    path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :if => has_symlink do
-    with_tmpchdir do
-      Path('a').write 'abc'
-      path = Path('l').make_symlink('a')
-      old_uid = path.stat.uid
-      old_gid = path.stat.gid
-      begin
-        path.lchown(0, 0)
-      rescue Errno::EPERM
-        next
-      end
-      path.stat.uid.should == 0
-      path.stat.gid.should == 0
-      path.lchown(old_uid, old_gid)
+  it 'lchown', :tmpchdir, :if => has_symlink do
+    Path('a').write 'abc'
+    path = Path('l').make_symlink('a')
+    old_uid = path.stat.uid
+    old_gid = path.stat.gid
+    begin
+      path.lchown(0, 0)
+    rescue Errno::EPERM
+      next
     end
+    path.stat.uid.should == 0
+    path.stat.gid.should == 0
+    path.lchown(old_uid, old_gid)
   end
 
   it 'fnmatch, fnmatch?' do
@@ -733,113 +701,93 @@ describe 'Path implementation' do
     Path('a').fnmatch?('*.*').should be_false
   end
 
-  it 'ftype' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.ftype.should == 'file'
+  it 'ftype', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.ftype.should == 'file'
 
-      Path('d').mkdir.ftype.should == 'directory'
-    end
+    Path('d').mkdir.ftype.should == 'directory'
   end
 
-  it 'make_link' do
-    with_tmpchdir do
-      Path('a').write 'abc'
-      Path('l').make_link('a').read.should == 'abc'
-    end
+  it 'make_link', :tmpchdir do
+    Path('a').write 'abc'
+    Path('l').make_link('a').read.should == 'abc'
   end
 
-  it 'open' do
-    with_tmpchdir do
-      path = Path('a')
-      path.write 'abc'
+  it 'open', :tmpchdir do
+    path = Path('a')
+    path.write 'abc'
 
-      path.open { |f| f.read.should == 'abc' }
-      path.open('r') { |f| f.read.should == 'abc' }
+    path.open { |f| f.read.should == 'abc' }
+    path.open('r') { |f| f.read.should == 'abc' }
 
-      b = Path('b')
-      b.open('w', 0444) { |f| f.write 'def' }
-      (b.stat.mode & 0777).should == 0444
-      b.read.should == 'def'
+    b = Path('b')
+    b.open('w', 0444) { |f| f.write 'def' }
+    (b.stat.mode & 0777).should == 0444
+    b.read.should == 'def'
 
-      if ruby19
-        c = Path('c')
-        c.open('w', 0444, {}) { |f| f.write "ghi" }
-        (c.stat.mode & 0777).should == 0444
-        c.read.should == 'ghi'
-      end
-
-      g = path.open
-      g.read.should == 'abc'
-      g.close
+    if ruby19
+      c = Path('c')
+      c.open('w', 0444, {}) { |f| f.write "ghi" }
+      (c.stat.mode & 0777).should == 0444
+      c.read.should == 'ghi'
     end
+
+    g = path.open
+    g.read.should == 'abc'
+    g.close
   end
 
-  it 'readlink', :if => has_symlink do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      Path('l').make_symlink(a).readlink.should == a
-    end
+  it 'readlink', :tmpchdir, :if => has_symlink do
+    a = Path('a')
+    a.write 'abc'
+    Path('l').make_symlink(a).readlink.should == a
   end
 
-  it 'rename' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.rename('b')
-      Path('b').read.should == 'abc'
-    end
+  it 'rename', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.rename('b')
+    Path('b').read.should == 'abc'
   end
 
-  it 'stat' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.stat.size.should == 3
-    end
+  it 'stat', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.stat.size.should == 3
   end
 
-  it 'lstat', :if => has_symlink do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      path = Path('l').make_symlink(a)
-      path.lstat.should be_a_symlink
-      path.stat.should_not be_a_symlink
-      path.stat.size.should == 3
-      a.lstat.should_not be_a_symlink
-      a.lstat.size.should == 3
-    end
+  it 'lstat', :tmpchdir, :if => has_symlink do
+    a = Path('a')
+    a.write 'abc'
+    path = Path('l').make_symlink(a)
+    path.lstat.should be_a_symlink
+    path.stat.should_not be_a_symlink
+    path.stat.size.should == 3
+    a.lstat.should_not be_a_symlink
+    a.lstat.size.should == 3
   end
 
-  it 'make_symlink', :if => has_symlink do
-    with_tmpchdir do
-      Path('a').write 'abc'
-      Path('l').make_symlink('a').lstat.should be_a_symlink
-    end
+  it 'make_symlink', :tmpchdir, :if => has_symlink do
+    Path('a').write 'abc'
+    Path('l').make_symlink('a').lstat.should be_a_symlink
   end
 
-  it 'truncate' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.truncate 2
-      a.size.should == 2
-      a.read.should == 'ab'
-    end
+  it 'truncate', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.truncate 2
+    a.size.should == 2
+    a.read.should == 'ab'
   end
 
-  it 'utime' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      atime, mtime = Time.utc(2000), Time.utc(1999)
-      a.utime(atime, mtime)
-      a.stat.atime.should == atime
-      a.stat.mtime.should == mtime
-    end
+  it 'utime', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    atime, mtime = Time.utc(2000), Time.utc(1999)
+    a.utime(atime, mtime)
+    a.stat.atime.should == atime
+    a.stat.mtime.should == mtime
   end
 
   it 'basename' do
@@ -868,194 +816,152 @@ describe 'Path implementation' do
     Path('dirname/basename').split.should == [Path('dirname'), Path('basename')]
   end
 
-  it 'blockdev?, chardev?' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.should_not be_a_blockdev
-      a.should_not be_a_chardev
-    end
+  it 'blockdev?, chardev?', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.should_not be_a_blockdev
+    a.should_not be_a_chardev
   end
 
-  it 'executable?' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.should_not be_executable
-    end
+  it 'executable?', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.should_not be_executable
   end
 
-  it 'executable_real?' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.should_not be_executable_real
-    end
+  it 'executable_real?', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.should_not be_executable_real
   end
 
-  it 'exist?' do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.exist?.should be_true
-    end
+  it 'exist?', :tmpchdir do
+    a = Path('a')
+    a.write 'abc'
+    a.exist?.should be_true
   end
 
-  it 'grpowned?', :if => !dosish do
-    with_tmpchdir do
-      a = Path('a')
-      a.write 'abc'
-      a.chown(-1, Process.gid)
-      a.should be_grpowned
-    end
+  it 'grpowned?', :tmpchdir, :if => !dosish do
+    a = Path('a')
+    a.write 'abc'
+    a.chown(-1, Process.gid)
+    a.should be_grpowned
   end
 
-  it 'directory?' do
-    with_tmpchdir do
-      f = Path('a')
-      f.write 'abc'
-      f.should_not be_a_directory
-      Path('d').mkdir.should be_a_directory
-    end
+  it 'directory?', :tmpchdir do
+    f = Path('a')
+    f.write 'abc'
+    f.should_not be_a_directory
+    Path('d').mkdir.should be_a_directory
   end
 
-  it 'file?' do
-    with_tmpchdir do
-      f = Path('a')
-      f.write 'abc'
-      f.should be_a_file
-      Path('d').mkdir.should_not be_a_file
-    end
+  it 'file?', :tmpchdir do
+    f = Path('a')
+    f.write 'abc'
+    f.should be_a_file
+    Path('d').mkdir.should_not be_a_file
   end
 
-  it 'pipe?, socket?' do
-    with_tmpchdir do
-      f = Path('a')
-      f.write 'abc'
-      f.should_not be_a_pipe
-      f.should_not be_a_socket
-    end
+  it 'pipe?, socket?', :tmpchdir do
+    f = Path('a')
+    f.write 'abc'
+    f.should_not be_a_pipe
+    f.should_not be_a_socket
   end
 
-  it 'owned?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should be_owned
-    end
+  it 'owned?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should be_owned
   end
 
-  it 'readable?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should be_readable
-    end
+  it 'readable?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should be_readable
   end
 
-  it 'world_readable?', :if => !dosish do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.chmod 0400
-      f.world_readable?.should be_nil
-      f.chmod 0444
-      f.world_readable?.should == 0444
-    end
+  it 'world_readable?', :tmpchdir, :if => !dosish do
+    f = Path('f')
+    f.write 'abc'
+    f.chmod 0400
+    f.world_readable?.should be_nil
+    f.chmod 0444
+    f.world_readable?.should == 0444
   end
 
-  it 'readable_real?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should be_readable_real
-    end
+  it 'readable_real?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should be_readable_real
   end
 
-  it 'setuid?, setgid?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should_not be_setuid
-      f.should_not be_setgid
-    end
+  it 'setuid?, setgid?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should_not be_setuid
+    f.should_not be_setgid
   end
 
-  it 'size' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.size.should == 3
+  it 'size', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.size.should == 3
 
-      Path('z').touch.size.should == 0
-      lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
-    end
+    Path('z').touch.size.should == 0
+    lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
   end
 
-  it 'sticky?', :if => !dosish do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should_not be_sticky
-    end
+  it 'sticky?', :tmpchdir, :if => !dosish do
+    f = Path('f')
+    f.write 'abc'
+    f.should_not be_sticky
   end
 
-  it 'symlink?', :if => !dosish do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should_not be_a_symlink
-    end
+  it 'symlink?', :tmpchdir, :if => !dosish do
+    f = Path('f')
+    f.write 'abc'
+    f.should_not be_a_symlink
   end
 
-  it 'writable?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should be_writable
-    end
+  it 'writable?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should be_writable
   end
 
-  it 'world_writable?', :if => !dosish do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.chmod 0600
-      f.world_readable?.should be_nil
-      f.chmod 0666
-      f.world_readable?.should == 0666
-    end
+  it 'world_writable?', :tmpchdir, :if => !dosish do
+    f = Path('f')
+    f.write 'abc'
+    f.chmod 0600
+    f.world_readable?.should be_nil
+    f.chmod 0666
+    f.world_readable?.should == 0666
   end
 
-  it 'writable_real?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should be_writable_real
-    end
+  it 'writable_real?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should be_writable_real
   end
 
-  it 'zero?' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.should_not be_zero
-      Path('z').touch.should be_zero
-      Path('not-exist').should_not be_zero
-    end
+  it 'zero?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.should_not be_zero
+    Path('z').touch.should be_zero
+    Path('not-exist').should_not be_zero
   end
 
-  it 'glob' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      d = Path('d').mkdir
-      Path.glob('*').sort.should == [d,f]
+  it 'glob', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    d = Path('d').mkdir
+    Path.glob('*').sort.should == [d,f]
 
-      r = []
-      Path.glob('*') { |path| r << path }
-      r.sort.should == [d,f]
-    end
+    r = []
+    Path.glob('*') { |path| r << path }
+    r.sort.should == [d,f]
   end
 
   it 'getwd, pwd' do
@@ -1063,89 +969,71 @@ describe 'Path implementation' do
     Path.pwd.should be_kind_of Path
   end
 
-  it 'entries' do
-    with_tmpchdir do
-      a, b = Path('a').touch, Path('b').touch
-      Path('.').entries.sort.should == [Path('.'), Path('..'), a, b]
-    end
+  it 'entries', :tmpchdir do
+    a, b = Path('a').touch, Path('b').touch
+    Path('.').entries.sort.should == [Path('.'), Path('..'), a, b]
   end
 
-  it 'each_entry' do
-    with_tmpchdir do
-      a, b = Path('a').touch, Path('b').touch
-      r = []
-      Path('.').each_entry { |entry| r << entry }
-      r.sort.should == [Path('.'), Path('..'), a, b]
-    end
+  it 'each_entry', :tmpchdir do
+    a, b = Path('a').touch, Path('b').touch
+    r = []
+    Path('.').each_entry { |entry| r << entry }
+    r.sort.should == [Path('.'), Path('..'), a, b]
   end
 
-  it 'mkdir' do
-    with_tmpchdir do
-      Path('d').mkdir.should be_a_directory
-      Path('e').mkdir(0770).should be_a_directory
-    end
+  it 'mkdir', :tmpchdir do
+    Path('d').mkdir.should be_a_directory
+    Path('e').mkdir(0770).should be_a_directory
   end
 
-  it 'rmdir' do
-    with_tmpchdir do
-      d = Path('d').mkdir
-      d.should be_a_directory
-      d.rmdir
-      d.exist?.should be_false
-    end
+  it 'rmdir', :tmpchdir do
+    d = Path('d').mkdir
+    d.should be_a_directory
+    d.rmdir
+    d.exist?.should be_false
   end
 
-  it 'opendir' do
-    with_tmpchdir do
-      Path('a').touch
-      Path('b').touch
-      r = []
-      Path('.').opendir { |d|
-        d.each { |e| r << e }
-      }
-      r.sort.should == ['.', '..', 'a', 'b']
-    end
+  it 'opendir', :tmpchdir do
+    Path('a').touch
+    Path('b').touch
+    r = []
+    Path('.').opendir { |d|
+      d.each { |e| r << e }
+    }
+    r.sort.should == ['.', '..', 'a', 'b']
   end
 
-  it 'find' do
-    with_tmpchdir do
-      a, b = Path('a').touch, Path('b').touch
-      d = Path('d').mkdir
-      x, y = Path('d/x').touch, Path('d/y').touch
-      here = Path('.')
+  it 'find', :tmpchdir do
+    a, b = Path('a').touch, Path('b').touch
+    d = Path('d').mkdir
+    x, y = Path('d/x').touch, Path('d/y').touch
+    here = Path('.')
 
-      r = []
-      here.find { |f| r << f }
-      r.sort.should == [here, a, b, d, x, y]
+    r = []
+    here.find { |f| r << f }
+    r.sort.should == [here, a, b, d, x, y]
 
-      d.find.sort.should == [d, x, y]
-    end
+    d.find.sort.should == [d, x, y]
   end
 
-  it 'mkpath' do
-    with_tmpchdir do
-      Path('a/b/c/d').mkpath.should be_a_directory
-    end
+  it 'mkpath', :tmpchdir do
+    Path('a/b/c/d').mkpath.should be_a_directory
   end
 
-  it 'rmtree' do
-    with_tmpchdir do
-      Path('a/b/c/d').mkpath.exist?.should be_true
-      Path('a').rmtree.exist?.should be_false
-    end
+  it 'rmtree', :tmpchdir do
+    Path('a/b/c/d').mkpath.exist?.should be_true
+    Path('a').rmtree.exist?.should be_false
   end
 
-  it 'unlink' do
-    with_tmpchdir do
-      f = Path('f')
-      f.write 'abc'
-      f.unlink
-      f.exist?.should be_false
+  it 'unlink', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.unlink
+    f.exist?.should be_false
 
-      d = Path('d').mkdir
-      d.unlink
-      d.exist?.should be_false
-    end
+    d = Path('d').mkdir
+    d.unlink
+    d.exist?.should be_false
   end
 
   it 'can be used with File class-methods' do
