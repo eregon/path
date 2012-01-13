@@ -8,14 +8,6 @@ describe 'Path implementation' do
 
   ruby19 = RUBY_VERSION > '1.9'
 
-  has_symlink = begin
-    File.symlink(nil, nil)
-  rescue NotImplementedError
-    false
-  rescue TypeError
-    true
-  end
-
   describe 'cleanpath' do
     it 'aggressive' do
       cases = {
@@ -297,7 +289,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'realpath', :tmpchdir, :if => has_symlink do
+  it 'realpath', :tmpchdir, :symlink do
     dir = Path.getwd
     not_exist = dir/'not-exist'
     lambda { not_exist.realpath }.should raise_error(Errno::ENOENT)
@@ -354,7 +346,7 @@ describe 'Path implementation' do
     h.realpath.should == g
   end
 
-  it 'realdirpath', :if => has_symlink do
+  it 'realdirpath', :symlink do
     Path.tmpdir('realdirpath') do |dir|
       rdir = dir.realpath
       not_exist = dir/'not-exist'
@@ -648,7 +640,7 @@ describe 'Path implementation' do
     path.chmod(old)
   end
 
-  it 'lchmod', :tmpchdir, :if => has_symlink do
+  it 'lchmod', :tmpchdir, :symlink do
     Path('a').write 'abc'
     path = Path('l').make_symlink('a')
     old = path.lstat.mode
@@ -676,7 +668,7 @@ describe 'Path implementation' do
     path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :tmpchdir, :if => has_symlink do
+  it 'lchown', :tmpchdir, :symlink do
     Path('a').write 'abc'
     path = Path('l').make_symlink('a')
     old_uid = path.stat.uid
@@ -738,7 +730,7 @@ describe 'Path implementation' do
     g.close
   end
 
-  it 'readlink', :tmpchdir, :if => has_symlink do
+  it 'readlink', :tmpchdir, :symlink do
     a = Path('a')
     a.write 'abc'
     Path('l').make_symlink(a).readlink.should == a
@@ -757,7 +749,7 @@ describe 'Path implementation' do
     a.stat.size.should == 3
   end
 
-  it 'lstat', :tmpchdir, :if => has_symlink do
+  it 'lstat', :tmpchdir, :symlink do
     a = Path('a')
     a.write 'abc'
     path = Path('l').make_symlink(a)
@@ -768,7 +760,7 @@ describe 'Path implementation' do
     a.lstat.size.should == 3
   end
 
-  it 'make_symlink', :tmpchdir, :if => has_symlink do
+  it 'make_symlink', :tmpchdir, :symlink do
     Path('a').write 'abc'
     Path('l').make_symlink('a').lstat.should be_a_symlink
   end
@@ -841,7 +833,7 @@ describe 'Path implementation' do
     a.exist?.should be_true
   end
 
-  it 'grpowned?', :tmpchdir, :if => !dosish do
+  it 'grpowned?', :tmpchdir, :unix do
     a = Path('a')
     a.write 'abc'
     a.chown(-1, Process.gid)
@@ -881,7 +873,7 @@ describe 'Path implementation' do
     f.should be_readable
   end
 
-  it 'world_readable?', :tmpchdir, :if => !dosish do
+  it 'world_readable?', :tmpchdir, :unix do
     f = Path('f')
     f.write 'abc'
     f.chmod 0400
@@ -912,13 +904,13 @@ describe 'Path implementation' do
     lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
   end
 
-  it 'sticky?', :tmpchdir, :if => !dosish do
+  it 'sticky?', :tmpchdir, :unix do
     f = Path('f')
     f.write 'abc'
     f.should_not be_sticky
   end
 
-  it 'symlink?', :tmpchdir, :if => !dosish do
+  it 'symlink?', :tmpchdir, :unix do
     f = Path('f')
     f.write 'abc'
     f.should_not be_a_symlink
@@ -930,7 +922,7 @@ describe 'Path implementation' do
     f.should be_writable
   end
 
-  it 'world_writable?', :tmpchdir, :if => !dosish do
+  it 'world_writable?', :tmpchdir, :unix do
     f = Path('f')
     f.write 'abc'
     f.chmod 0600

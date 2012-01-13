@@ -1,5 +1,15 @@
 require File.expand_path('../../lib/epath', __FILE__)
 
+dosish = File::ALT_SEPARATOR != nil
+
+has_symlink = begin
+  File.symlink(nil, nil)
+rescue NotImplementedError
+  false
+rescue TypeError
+  true
+end
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
@@ -11,4 +21,7 @@ RSpec.configure do |config|
       end
     end
   }
+
+  config.filter_run_excluding :symlink => has_symlink
+  config.filter_run_excluding :unix => !dosish
 end
