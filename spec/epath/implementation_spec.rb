@@ -6,8 +6,6 @@ describe 'Path implementation' do
   dosish_drive_letter = File.dirname('A:') == 'A:.'
   dosish_unc = File.dirname('//') == '//'
 
-  ruby19 = RUBY_VERSION > '1.9'
-
   describe 'cleanpath' do
     it 'aggressive' do
       cases = {
@@ -512,10 +510,11 @@ describe 'Path implementation' do
     Path('a'.freeze).freeze.to_s.should_not be_frozen
   end
 
-  it 'freeze and taint', :fails_on => [:rbx] do
+  it 'freeze and taint', :fails_on => [:rbx, :rbx19] do
     path = Path('a').freeze
     path.should_not be_tainted
-    lambda { path.taint }.should raise_error(ruby19 ? RuntimeError : TypeError)
+    error = RUBY_VERSION > '1.9' ? RuntimeError : TypeError
+    lambda { path.taint }.should raise_error(error)
 
     path = Path('a')
     path.taint
@@ -533,7 +532,7 @@ describe 'Path implementation' do
     path.to_s.should_not be path.to_s
   end
 
-  it 'Kernel#open', :fails_on => [:rbx] do
+  it 'Kernel#open', :fails_on => [:rbx, :rbx19] do
     count = 0
     Kernel.open(Path(__FILE__)) { |f|
       File.should be_identical(__FILE__, f)
@@ -591,12 +590,14 @@ describe 'Path implementation' do
 
     a.each_line('2').to_a.should == ["1\n2", "\n"]
 
-    if ruby19
-      a.each_line(1).to_a.should == ['1', "\n", '2', "\n"]
-      a.each_line('2', 1).to_a.should == ['1', "\n", '2', "\n"]
-    end
-
     a.each_line.to_a.should == ["1\n", "2\n"]
+  end
+
+  it 'each_line 1.9', :tmpchdir, :ruby => 19, :fails_on => [:rbx19] do
+    a = Path('a')
+    a.open('w') { |f| f.puts 1, 2 }
+    a.each_line(1).to_a.should == ['1', "\n", '2', "\n"]
+    a.each_line('2', 1).to_a.should == ['1', "\n", '2', "\n"]
   end
 
   it 'readlines', :tmpchdir do
@@ -653,7 +654,7 @@ describe 'Path implementation' do
     path.chmod(old)
   end
 
-  it 'chown', :tmpchdir, :fails_on => [:rbx, :jruby] do
+  it 'chown', :tmpchdir, :fails_on => [:rbx, :rbx19, :jruby] do
     path = Path('a')
     path.write 'abc'
     old_uid = path.stat.uid
@@ -718,16 +719,16 @@ describe 'Path implementation' do
     (b.stat.mode & 0777).should == 0444
     b.read.should == 'def'
 
-    if ruby19
-      c = Path('c')
-      c.open('w', 0444, {}) { |f| f.write "ghi" }
-      (c.stat.mode & 0777).should == 0444
-      c.read.should == 'ghi'
-    end
-
     g = path.open
     g.read.should == 'abc'
     g.close
+  end
+
+  it 'open 1.9', :tmpchdir, :ruby => 1.9, :fails_on => [:rbx19] do
+    c = Path('c')
+    c.open('w', 0444, {}) { |f| f.write "ghi" }
+    (c.stat.mode & 0777).should == 0444
+    c.read.should == 'ghi'
   end
 
   it 'readlink', :tmpchdir, :symlink, :fails_on => [:jruby] do

@@ -11,6 +11,7 @@ rescue TypeError
 end
 
 ruby = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
+ruby = :"#{ruby}19" if RUBY_VERSION > '1.9'
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -24,6 +25,9 @@ RSpec.configure do |config|
     end
   }
 
+  config.filter_run_excluding :ruby => lambda { |version|
+    RUBY_VERSION < version.to_s
+  }
   config.filter_run_excluding :symlink => has_symlink
   config.filter_run_excluding :unix => !dosish
   config.filter_run_excluding :fails_on => lambda { |implementations|
