@@ -1038,7 +1038,7 @@ describe 'Path implementation' do
     File.fnmatch('*.*', Path.new('bar.baz')).should be_true
     File.join(Path.new('foo'), Path.new('bar')).should == 'foo/bar'
     lambda {
-      $SAFE = 1
+      $SAFE = 1 unless RUBY_DESCRIPTION.start_with? 'jruby'
       File.join(Path.new('foo'), Path.new('bar').taint).should == 'foo/bar'
     }.call
   end
