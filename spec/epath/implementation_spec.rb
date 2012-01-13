@@ -289,7 +289,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'realpath', :tmpchdir, :symlink do
+  it 'realpath', :tmpchdir, :symlink, :fails_on => [:jruby] do
     dir = Path.getwd
     not_exist = dir/'not-exist'
     lambda { not_exist.realpath }.should raise_error(Errno::ENOENT)
@@ -346,7 +346,7 @@ describe 'Path implementation' do
     h.realpath.should == g
   end
 
-  it 'realdirpath', :symlink do
+  it 'realdirpath', :symlink, :fails_on => [:jruby] do
     Path.tmpdir('realdirpath') do |dir|
       rdir = dir.realpath
       not_exist = dir/'not-exist'
@@ -512,7 +512,7 @@ describe 'Path implementation' do
     Path('a'.freeze).freeze.to_s.should_not be_frozen
   end
 
-  it 'freeze and taint' do
+  it 'freeze and taint', :fails_on => [:rbx] do
     path = Path('a').freeze
     path.should_not be_tainted
     lambda { path.taint }.should raise_error(ruby19 ? RuntimeError : TypeError)
@@ -533,7 +533,7 @@ describe 'Path implementation' do
     path.to_s.should_not be path.to_s
   end
 
-  it 'Kernel#open' do
+  it 'Kernel#open', :fails_on => [:rbx] do
     count = 0
     Kernel.open(Path(__FILE__)) { |f|
       File.should be_identical(__FILE__, f)
@@ -640,7 +640,7 @@ describe 'Path implementation' do
     path.chmod(old)
   end
 
-  it 'lchmod', :tmpchdir, :symlink do
+  it 'lchmod', :tmpchdir, :symlink, :fails_on => [:rbx, :jruby] do
     Path('a').write 'abc'
     path = Path('l').make_symlink('a')
     old = path.lstat.mode
@@ -653,7 +653,7 @@ describe 'Path implementation' do
     path.chmod(old)
   end
 
-  it 'chown', :tmpchdir do
+  it 'chown', :tmpchdir, :fails_on => [:rbx, :jruby] do
     path = Path('a')
     path.write 'abc'
     old_uid = path.stat.uid
@@ -668,7 +668,7 @@ describe 'Path implementation' do
     path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :tmpchdir, :symlink do
+  it 'lchown', :tmpchdir, :symlink, :fails_on => [:rbx, :jruby] do
     Path('a').write 'abc'
     path = Path('l').make_symlink('a')
     old_uid = path.stat.uid
@@ -701,7 +701,7 @@ describe 'Path implementation' do
     Path('d').mkdir.ftype.should == 'directory'
   end
 
-  it 'make_link', :tmpchdir do
+  it 'make_link', :tmpchdir, :fails_on => [:jruby] do
     Path('a').write 'abc'
     Path('l').make_link('a').read.should == 'abc'
   end
@@ -730,7 +730,7 @@ describe 'Path implementation' do
     g.close
   end
 
-  it 'readlink', :tmpchdir, :symlink do
+  it 'readlink', :tmpchdir, :symlink, :fails_on => [:jruby] do
     a = Path('a')
     a.write 'abc'
     Path('l').make_symlink(a).readlink.should == a
