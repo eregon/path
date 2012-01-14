@@ -5,16 +5,18 @@ class Path
   # intermediate directories that don't yet exist.
   def mkpath
     FileUtils.mkpath(@path)
-    nil
+    self
   end
+  alias mkdir_p mkpath
 
   # See <tt>FileUtils.rm_r</tt>.  Deletes a directory and all beneath it.
   def rmtree
     # The name "rmtree" is borrowed from File::Path of Perl.
     # File::Path provides "mkpath" and "rmtree".
     FileUtils.rm_r(@path)
-    nil
+    self
   end
+  alias rm_r rmtree
 
   def rm
     FileUtils.rm(@path)
@@ -33,11 +35,6 @@ class Path
 
   def touch
     FileUtils.touch(@path)
-    self
-  end
-
-  def mkdir_p
-    FileUtils.mkdir_p(@path)
     self
   end
 end
