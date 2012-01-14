@@ -137,6 +137,14 @@ class Path
     RUBY_VERSION > '1.9' ? Enumerator.new(&ancestors) : ancestors.call([])
   end
 
+  def inside? ancestor
+    @path.start_with?(ancestor.to_s) and @path[dir.to_path.size, 1] == File::SEPARATOR
+  end
+  
+  def outside? ancestor
+    !inside?(ancestor)
+  end
+  
   def backfind(path)
     condition = path[/\[(.*)\]$/, 1] || ''
     path = $` unless condition.empty?
