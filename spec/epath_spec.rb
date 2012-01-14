@@ -173,10 +173,10 @@ describe Path do
   context "inside?" do
   
     it 'should work when path are related' do
-      test_implementation.inside?(test_implementation).should be_true
-      test_implementation.inside?(spec).should be_true
-      test_implementation.inside?(root).should be_true
-      spec.inside?(test_implementation).should be_false
+      this.inside?(this).should be_true
+      this.inside?(spec).should be_true
+      this.inside?(root).should be_true
+      spec.inside?(this).should be_false
     end
 
     it "should work when path are not related" do
@@ -184,12 +184,12 @@ describe Path do
     end
     
     it 'should accept a string' do
-      test_implementation.inside?(spec.to_s).should be_true
+      this.inside?(spec.to_s).should be_true
     end
     
     it 'should be negated as outside?' do
-      test_implementation.outside?(root).should be_false
-      spec.outside?(test_implementation).should be_true
+      this.outside?(root).should be_false
+      spec.outside?(this).should be_true
     end
     
   end
