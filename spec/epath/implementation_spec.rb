@@ -641,7 +641,7 @@ describe 'Path implementation' do
     path.chmod(old)
   end
 
-  it 'lchmod', :tmpchdir, :symlink, :fails_on => [:rbx, :jruby] do
+  it 'lchmod', :tmpchdir, :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
     Path('a').write 'abc'
     path = Path('l').make_symlink('a')
     old = path.lstat.mode
@@ -669,7 +669,7 @@ describe 'Path implementation' do
     path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :tmpchdir, :symlink, :fails_on => [:rbx, :jruby] do
+  it 'lchown', :tmpchdir, :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
     Path('a').write 'abc'
     path = Path('l').make_symlink('a')
     old_uid = path.stat.uid
