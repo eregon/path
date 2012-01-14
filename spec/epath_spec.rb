@@ -242,12 +242,12 @@ describe Path do
       test.rm_rf.should equal test
     end
   end
-  
+
   it 'load' do
-    (fixtures/"data.yml").load.should == {"kind" => "yml"}
-    (fixtures/"data.yaml").load.should == {"kind" => "yaml"}
-    (fixtures/"data.json").load.should == {"kind" => "json"}
-    lambda{ (fixtures/"no-such-one.yml").load }.should raise_error(Errno::ENOENT)
-    lambda{ (root/"README.md").load }.should raise_error(RuntimeError, /Unable to load.*unrecognized extension/)
+    (fixtures/'data.yml').load.should == {'kind' => 'yml'}
+    (fixtures/'data.yaml').load.should == {'kind' => 'yaml'}
+    (fixtures/'data.json').load.should == {'kind' => 'json'}
+    lambda{ (fixtures/'no-such-one.yml').load }.should raise_error(Errno::ENOENT)
+    lambda{ (root/'README.md').load }.should raise_error(RuntimeError, /Unable to load .*unrecognized extension/)
   end
 end
