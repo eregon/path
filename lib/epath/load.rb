@@ -15,7 +15,9 @@ class Path
     JSON.load(path.read)
   end
 
-  # Path#load helps loading data from YAML, JSON and ruby files.
+  # Path#load helps loading data from various files.
+  # JSON and YAML loaders are provided by default.
+  # See Path.register_loader.
   def load
     if LOADERS.key? ext
       LOADERS[ext].call(self)
