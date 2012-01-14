@@ -4,8 +4,6 @@ class Path
   #
   def load
     case extname
-    when ".rb", ".ruby"
-      ::Kernel.eval(self.read, TOPLEVEL_BINDING, self.to_s)
     when ".yml", ".yaml"
       require 'yaml'
       YAML.load(self.read)
