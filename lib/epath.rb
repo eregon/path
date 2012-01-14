@@ -138,13 +138,13 @@ class Path
   end
 
   def inside? ancestor
-    @path.start_with?(ancestor.to_s) and @path[dir.to_path.size, 1] == File::SEPARATOR
+    @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)
   end
-  
+
   def outside? ancestor
     !inside?(ancestor)
   end
-  
+
   def backfind(path)
     condition = path[/\[(.*)\]$/, 1] || ''
     path = $` unless condition.empty?
