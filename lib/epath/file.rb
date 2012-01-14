@@ -31,8 +31,14 @@ class Path
   # etc).
   def ftype() File.ftype(@path) end
 
-  # See <tt>File.link</tt>.  Creates a hard link.
-  def make_link(old) File.link(old, @path) end
+  # Creates a hard link to +target+ and returns self.
+  #
+  # Raises Errno::EEXIST if self already exist.
+  # See <tt>File.link</tt> (arguments are swapped).
+  def make_link(target)
+    File.link(target, @path)
+    self
+  end
 
   # See <tt>File.open</tt>.  Opens the file for reading or writing.
   def open(*args, &block) # :yield: file
@@ -51,8 +57,14 @@ class Path
   # See <tt>File.lstat</tt>.
   def lstat() File.lstat(@path) end
 
-  # See <tt>File.symlink</tt>.  Creates a symbolic link.
-  def make_symlink(old) File.symlink(old, @path) end
+  # Creates a symbolic link to +target+ and returns self.
+  #
+  # Raises Errno::EEXIST if self already exist.
+  # See <tt>File.symlink</tt> (arguments are swapped).
+  def make_symlink(target)
+    File.symlink(target, @path)
+    self
+  end
 
   # See <tt>File.truncate</tt>.  Truncate the file to +length+ bytes.
   def truncate(length) File.truncate(@path, length) end

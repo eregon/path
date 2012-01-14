@@ -1,6 +1,7 @@
-desc "Run tests"
+desc "Run specs"
+task(:spec) do
+  require 'rspec'
+  exit RSpec::Core::Runner.run(%w[--color .])
+end
 
-task(:spec) { require File.expand_path('../spec/epath_spec', __FILE__) }
-task(:test) { ARGV.shift; require File.expand_path('../spec/test_implementation', __FILE__) }
-
-task :default => [:spec, :test]
+task :default => [:spec]
