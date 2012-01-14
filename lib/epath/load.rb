@@ -6,7 +6,7 @@ class Path
     case extname
     when ".yml", ".yaml"
       require 'yaml'
-      YAML.load(self.read)
+      YAML.load_file(self)
     when ".json"
       require 'json'
       JSON.load(self.read)
