@@ -2,12 +2,13 @@ require File.expand_path('../../lib/epath', __FILE__)
 
 dosish = File::ALT_SEPARATOR != nil
 
-has_symlink = begin
-  File.symlink(nil, nil)
-rescue NotImplementedError
-  false
-rescue TypeError
-  true
+has_symlink = true
+Path.tmpdir do |dir|
+  begin
+    File.symlink('a', "#{dir}/l")
+  rescue NotImplementedError
+    has_symlink = false
+  end
 end
 
 ruby = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
