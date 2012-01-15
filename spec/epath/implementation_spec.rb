@@ -131,6 +131,8 @@ describe 'Path implementation' do
       })
     end
 
+    cases["a\\"] = 'a' if dosish
+
     platform = if dosish_unc
       {
         '//' => '//',
@@ -149,16 +151,15 @@ describe 'Path implementation' do
     end
     cases.merge!(platform)
 
-    if dosish
-      cases["a\\"] = 'a'
-      require 'Win32API'
-      if Win32API.new('kernel32', 'GetACP', nil, 'L').call == 932
-        cases["\225\\\\"] = "\225\\" # SJIS
-      end
-    end
-
     cases.each_pair do |path, expected|
       Path.allocate.send(:del_trailing_separator, path).should == expected
+    end
+  end
+
+  it 'del_trailing_separator win32', :if => dosish, :fails_on => [:jruby, :jruby19] do
+    require 'Win32API'
+    if Win32API.new('kernel32', 'GetACP', nil, 'L').call == 932
+      Path.allocate.send(:del_trailing_separator, "\225\\\\").should == "\225\\" # SJIS
     end
   end
 
