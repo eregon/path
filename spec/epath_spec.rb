@@ -161,7 +161,7 @@ describe Path do
   end
 
   it 'home' do
-    Path.home.should == Path('~').expand
+    Path.home.should == Path('~').expand # fails on JRuby 1.9 as Dir.home gives backslashes (only / on MRI)
   end
 
   it 'ancestors' do
