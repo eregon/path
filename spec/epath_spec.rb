@@ -171,6 +171,28 @@ describe Path do
       r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
   end
 
+  context 'inside?' do
+    it 'works when path are related' do
+      this.inside?(this).should be_true
+      this.inside?(spec).should be_true
+      this.inside?(root).should be_true
+      spec.inside?(this).should be_false
+    end
+
+    it 'works when path are not related' do
+      Path('/etc/passwd').inside?(spec).should be_false
+    end
+
+    it 'accepts a string' do
+      this.inside?(spec.to_s).should be_true
+    end
+
+    it 'is negated as outside?' do
+      this.outside?(root).should be_false
+      spec.outside?(this).should be_true
+    end
+  end
+
   context 'backfind' do
     it 'simple' do
       Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
