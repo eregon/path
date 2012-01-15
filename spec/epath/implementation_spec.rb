@@ -124,7 +124,7 @@ describe 'Path implementation' do
       cases.merge!({
         'A:' => 'A:',
         'A:/' => 'A:/',
-        'A://' => 'A:/',
+        'A://' => 'A:/', # fails on JRuby, File.basename('A://') = 'A:' vs '/' on MRI
         'A:.' => 'A:.',
         'A:./' => 'A:.',
         'A:.//' => 'A:.',
