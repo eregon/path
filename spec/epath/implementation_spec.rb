@@ -6,7 +6,7 @@ describe 'Path implementation' do
   dosish_drive_letter = File.dirname('A:') == 'A:.'
   dosish_unc = File.dirname('//') == '//'
 
-  describe 'cleanpath' do
+  context 'cleanpath' do
     it 'aggressive' do
       cases = {
         '/' => '/',
