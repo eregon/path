@@ -1,5 +1,5 @@
 class Path
-  def self.require_tree(directory='.')
+  def self.require_tree(directory=Path.dir(caller))
     new(directory).require_tree
   end
 

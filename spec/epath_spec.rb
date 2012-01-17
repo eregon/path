@@ -293,7 +293,10 @@ describe Path do
       end
 
       specify 'default directory' do
-        expect { Path.require_tree }.to change { features.size }.by 3
+        expect {
+          Path('bar.rb').write('Path.require_tree')
+          load Path('bar.rb').expand_path
+        }.to change { features.size }.by 3
       end
 
       specify 'epath directory' do

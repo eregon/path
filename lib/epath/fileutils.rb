@@ -41,6 +41,5 @@ class Path
   def touch!
     dirname.mkpath
     touch
-    self
   end
 end
