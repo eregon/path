@@ -293,7 +293,11 @@ describe Path do
       end
 
       specify 'default directory' do
-        expect { Path.require_tree }.to change {features.size }.by 3
+        expect { Path.require_tree }.to change { features.size }.by 3
+      end
+
+      specify 'epath directory' do
+        expect { Path['foo'].require_tree }.to change { features.size }.by 2
       end
     end
   end
