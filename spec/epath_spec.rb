@@ -272,5 +272,29 @@ describe Path do
     it 'touch!' do
       Path('foo/bar/baz.rb').touch!.should be_exist
     end
+
+    describe 'require_tree' do
+      before(:each) do
+        %w{
+          foo/foo1.rb
+          foo/foo2.rb
+          bar.rb
+        }.each {|it| Path(it).touch! }
+      end
+
+      let(:features) { $LOADED_FEATURES }
+
+      around(:each) do |it|
+        features.replace features.dup.tap { it.run }
+      end
+
+      specify 'given directory' do
+        expect { Path.require_tree 'foo' }.to change { features.size }.by 2
+      end
+
+      specify 'default directory' do
+        expect { Path.require_tree }.to change {features.size }.by 3
+      end
+    end
   end
 end
