@@ -263,4 +263,14 @@ describe Path do
       test.rm_rf.should equal test
     end
   end
+
+  context 'playground' do
+    around(:each) do |it|
+      Path.tmpdir {|dir| dir.chdir { it.run }}
+    end
+
+    it 'touch!' do
+      Path('foo/bar/baz.rb').touch!.should be_exist
+    end
+  end
 end
