@@ -1,6 +1,10 @@
 class Path
   LOADERS = {}
 
+  # Registers a new loader (a block which will be called with the Path to load)
+  # for the given extensions (either with the leading dot or not)
+  #
+  #     Path.register_loader('.marshal') { |file| Marshal.load file.read }
   def self.register_loader(*extensions, &loader)
     extensions.each { |ext|
       ext = ext[1..-1] if ext.start_with? '.'
