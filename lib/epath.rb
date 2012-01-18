@@ -20,12 +20,14 @@ class Path
       lambda { |path| new(path) }
     end
 
-    def here(from = caller)
+    def here(from = nil)
+      from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       new(from.first.split(/:\d+(?:$|:in)/).first).expand
     end
     alias_method :file, :here
 
-    def dir(from = caller)
+    def dir(from = nil)
+      from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       file(from).dir
     end
 
