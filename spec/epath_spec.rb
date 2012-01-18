@@ -171,14 +171,14 @@ describe Path do
   end
 
   context 'inside?' do
-    it 'works when path are related' do
+    it 'works when paths are related' do
       this.inside?(this).should be_true
       this.inside?(spec).should be_true
       this.inside?(root).should be_true
       spec.inside?(this).should be_false
     end
 
-    it 'works when path are not related' do
+    it 'works when paths are not related' do
       Path('/etc/passwd').inside?(spec).should be_false
     end
 
