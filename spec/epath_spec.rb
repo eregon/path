@@ -34,18 +34,12 @@ describe Path do
     %w[foo bar].map(&Path).should == [Path('foo'), Path('bar')]
   end
 
-  it 'file?, dir?' do
-    Path.tmpdir do |tmpdir|
-      dir, file = Path('dir'), Path('file')
-      tmpdir.chdir do
-        dir.mkdir
-        file.touch
-        dir.dir?.should be_true
-        dir.file?.should be_false
-        file.file?.should be_true
-        file.dir?.should be_false
-      end
-    end
+  it 'file?, dir?', :tmpchdir do
+    dir, file = Path('dir').mkdir, Path('file').touch
+    dir.dir?.should be_true
+    dir.file?.should be_false
+    file.file?.should be_true
+    file.dir?.should be_false
   end
 
   it 'base, basename' do
@@ -120,16 +114,12 @@ describe Path do
     end
   end
 
-  it 'touch' do
-    Path.tmpdir do |dir|
-      dir.chdir do
-        file = Path('file')
-        file.exist?.should be_false
-        file.touch
-        file.exist?.should be_true
-        file.size.should == 0
-      end
-    end
+  it 'touch', :tmpchdir do
+    file = Path('file')
+    file.exist?.should be_false
+    file.touch
+    file.exist?.should be_true
+    file.size.should == 0
   end
 
   it 'empty?' do
