@@ -263,4 +263,31 @@ describe Path do
       test.rm_rf.should equal test
     end
   end
+
+  it 'touch!', :tmpchdir do
+    Path('foo/bar/baz.rb').touch!.should be_exist
+  end
+
+  describe 'require_tree', :tmpchdir do
+    before(:each) do
+      %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path).each(&:touch!)
+    end
+
+    let(:features) { $LOADED_FEATURES }
+
+    specify 'given directory' do
+      expect { Path.require_tree 'foo' }.to change { features.size }.by 2
+    end
+
+    specify 'default directory' do
+      expect {
+        Path('bar.rb').write('Path.require_tree')
+        require Path('bar.rb').expand
+      }.to change { features.size }.by 3
+    end
+
+    specify 'epath directory' do
+      expect { Path['foo'].require_tree }.to change { features.size }.by 2
+    end
+  end
 end
