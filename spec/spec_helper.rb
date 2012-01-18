@@ -13,6 +13,7 @@ end
 
 ruby = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
 ruby = :"#{ruby}19" if RUBY_VERSION > '1.9'
+ruby = nil if $DEBUG
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
