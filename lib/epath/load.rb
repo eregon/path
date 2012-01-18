@@ -2,7 +2,10 @@ class Path
   LOADERS = {}
 
   def self.register_loader(*extensions, &loader)
-    extensions.each { |ext| LOADERS[ext] = loader }
+    extensions.each { |ext|
+      ext = ext[1..-1] if ext.start_with? '.'
+      LOADERS[ext] = loader
+    }
   end
 
   register_loader 'yml', 'yaml' do |path|
