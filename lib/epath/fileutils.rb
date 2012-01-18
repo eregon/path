@@ -37,4 +37,9 @@ class Path
     FileUtils.touch(@path)
     self
   end
+
+  def touch!
+    dirname.mkpath
+    touch
+  end
 end
