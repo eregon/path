@@ -270,18 +270,10 @@ describe Path do
 
   describe 'require_tree', :tmpchdir do
     before(:each) do
-      %w{
-        foo/foo1.rb
-        foo/foo2.rb
-        bar.rb
-      }.each {|it| Path(it).touch! }
+      %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path).each(&:touch!)
     end
 
     let(:features) { $LOADED_FEATURES }
-
-    around(:each) do |it|
-      features.replace features.dup.tap { it.run }
-    end
 
     specify 'given directory' do
       expect { Path.require_tree 'foo' }.to change { features.size }.by 2
@@ -290,7 +282,7 @@ describe Path do
     specify 'default directory' do
       expect {
         Path('bar.rb').write('Path.require_tree')
-        load Path('bar.rb').expand_path
+        require Path('bar.rb').expand
       }.to change { features.size }.by 3
     end
 
