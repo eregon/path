@@ -5,6 +5,7 @@ root = Path(File.expand_path('../..',__FILE__))
 lib = Path(File.expand_path('../../lib',__FILE__))
 lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
+fixtures = Path(File.expand_path('../fixtures',__FILE__))
 spec_helper = Path(File.expand_path('../spec_helper.rb',__FILE__))
 
 describe Path do
@@ -222,7 +223,7 @@ describe Path do
   end
 
   it 'entries' do
-    spec.entries.sort.should == [Path('.'), Path('..'), Path('epath'), Path('epath_spec.rb'), Path('spec_helper.rb')]
+    spec.entries.sort.should == [Path('.'), Path('..'), Path('epath'), Path('epath_spec.rb'), Path('fixtures'), Path('spec_helper.rb')]
   end
 
   it 'glob' do
@@ -288,6 +289,30 @@ describe Path do
 
     specify 'epath directory' do
       expect { Path['foo'].require_tree }.to change { features.size }.by 2
+    end
+  end
+
+  describe 'load' do
+    it 'knows how to load yaml and json' do
+      (fixtures/'data.yml').load.should == {'kind' => 'yml'}
+      (fixtures/'data.yaml').load.should == {'kind' => 'yaml'}
+      (fixtures/'data.json').load.should == {'kind' => 'json'}
+
+      lambda {
+        (fixtures/'no-such-one.yml').load
+      }.should raise_error(Errno::ENOENT)
+
+      lambda {
+        (root/'README.md').load
+      }.should raise_error(RuntimeError, /Unable to load .*unrecognized extension/)
+    end
+
+    it 'loads new extensions with Path.register_loader' do
+      Path.register_loader('test_ext1') { |file| eval file.read }
+      (fixtures/'data.test_ext1').load.should == 42
+
+      Path.register_loader('.test_ext2') { |file| eval file.read }
+      (fixtures/'data.test_ext2').load.should == 24
     end
   end
 end
