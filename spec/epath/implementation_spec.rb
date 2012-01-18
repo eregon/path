@@ -346,7 +346,8 @@ describe 'Path implementation' do
   end
 
   it 'realdirpath', :symlink, :fails_on => [:jruby] do
-    Path.tmpdir('realdirpath') do |dir|
+    Dir.mktmpdir('realdirpath') do |dir|
+      dir = Path(dir)
       rdir = dir.realpath
       not_exist = dir/'not-exist'
 

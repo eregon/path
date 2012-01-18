@@ -19,10 +19,8 @@ RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
   config.around(:each, :tmpchdir) { |example|
-    Path.tmpdir('path-test') do |dir|
-      dir.chdir do
-        example.run
-      end
+    Path.tmpchdir('path-test') do |dir|
+      example.run
     end
   }
 

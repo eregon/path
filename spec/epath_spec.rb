@@ -246,6 +246,12 @@ describe Path do
     # tmpdir.exist?.should be_false
   end
 
+  it 'tmpchdir' do
+    Path.tmpchdir do |dir|
+      dir.should == Path.getwd
+    end
+  end
+
   it 'mkdir_p, rm_rf' do
     Path.tmpdir do |dir|
       d = (dir/:test/:mkdir)
