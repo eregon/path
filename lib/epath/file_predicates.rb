@@ -1,3 +1,5 @@
+# All methods from FileTest and all predicates from File are included
+
 class Path
   # See <tt>File.blockdev?</tt>.
   def blockdev?() File.blockdev?(@path) end
@@ -13,6 +15,7 @@ class Path
 
   # See <tt>File.exist?</tt>.
   def exist?() File.exist?(@path) end
+  alias exists? exist?
 
   # See <tt>File.grpowned?</tt>.
   def grpowned?() File.grpowned?(@path) end
@@ -83,6 +86,21 @@ class Path
   def writable_real?() File.writable_real?(@path) end
 
   # See <tt>File.zero?</tt>.
+  # empty? is not defined in File/FileTest, but is is clearer
   def zero?() File.zero?(@path) end
   alias empty? zero?
+
+  # See <tt>File.identical?</tt>.
+  def identical?(path)
+    File.identical?(@path, path)
+  end
+
+  # Only in File, not FileTest
+
+  # See <tt>File.fnmatch</tt>.  Return +true+ if the receiver matches the given
+  # pattern.
+  def fnmatch(pattern, *args) File.fnmatch(pattern, @path, *args) end
+
+  # See <tt>File.fnmatch?</tt> (same as #fnmatch).
+  def fnmatch?(pattern, *args) File.fnmatch?(pattern, @path, *args) end
 end
