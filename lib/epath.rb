@@ -60,9 +60,7 @@ class Path
 
     def tmpdir(prefix_suffix = nil, *rest)
       require 'tmpdir'
-      dir = Dir.mktmpdir(prefix_suffix, *rest)
-      # realpath is needed as mktmpdir might gives /var when it is actually /private/var
-      dir = new(dir).realpath
+      dir = new Dir.mktmpdir(prefix_suffix, *rest)
       if block_given?
         begin
           yield dir

@@ -246,9 +246,9 @@ describe Path do
     # tmpdir.exist?.should be_false
   end
 
-  it 'tmpchdir' do
+  it 'tmpchdir', :fails_on => [:rbx] do
     Path.tmpchdir do |dir|
-      dir.should == Path.getwd
+      File.should be_identical(dir, Path.getwd)
     end
   end
 
