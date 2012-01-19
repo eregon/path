@@ -686,6 +686,13 @@ describe 'Path implementation' do
     path.lchown(old_uid, old_gid)
   end
 
+  it 'identical?', :tmpchdir, :fails_on => [:rbx] do
+    a = Path('a').touch
+    a.should be_identical(Path('a'))
+    Path.getwd.should be_identical(Path('.'))
+    Path('b').touch.should_not be_identical(a)
+  end
+
   it 'fnmatch, fnmatch?' do
     Path('a').fnmatch('*').should be_true
     Path('a').fnmatch('*.*').should be_false

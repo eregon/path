@@ -248,7 +248,7 @@ describe Path do
 
   it 'tmpchdir', :fails_on => [:rbx] do
     Path.tmpchdir do |dir|
-      File.should be_identical(dir, Path.getwd)
+      dir.should be_identical(Path.getwd)
     end
   end
 
