@@ -56,6 +56,6 @@ class Path
   end
 
   def chdir(&block)
-    Dir.chdir(self, &block)
+    Dir.chdir(@path, &block)
   end
 end
