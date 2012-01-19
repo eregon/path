@@ -97,10 +97,10 @@ class Path
 
   # Only in File, not FileTest
 
-  # See <tt>File.fnmatch</tt>.  Return +true+ if the receiver matches the given
-  # pattern.
+  # See <tt>File.fnmatch</tt> (same as #fnmatch?).
   def fnmatch(pattern, *args) File.fnmatch(pattern, @path, *args) end
 
-  # See <tt>File.fnmatch?</tt> (same as #fnmatch).
+  # See <tt>File.fnmatch?</tt>.
+  # Return +true+ if the receiver matches the given pattern.
   def fnmatch?(pattern, *args) File.fnmatch?(pattern, @path, *args) end
 end
