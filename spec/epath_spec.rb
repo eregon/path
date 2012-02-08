@@ -89,31 +89,6 @@ describe Path do
     (Path('/a/b/Array/sort.rb') % Path('/a/b/')).should == Path('Array/sort.rb')
   end
 
-  it 'read, write, size' do
-    contents = this.read
-    this.read.should == contents
-    this.read.size.should == this.size
-
-    begin
-      tmp = Path('.tmp')
-      tmp.write(contents)
-      tmp.read.should == contents
-    ensure
-      tmp.unlink if tmp.exist?
-    end
-  end
-
-  it 'append' do
-    begin
-      tmp = Path('.tmp')
-      tmp.write("hello\n")
-      tmp.append("world\n")
-      tmp.read.should eq("hello\nworld\n")
-    ensure
-      tmp.unlink if tmp.exist?
-    end
-  end
-
   it 'touch', :tmpchdir do
     file = Path('file')
     file.exist?.should be_false
