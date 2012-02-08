@@ -10,23 +10,31 @@ class Path
   end
   alias lines each_line
 
-  # See <tt>IO.read</tt>.  Returns all data from the file, or the first +N+ bytes
-  # if specified.
-  def read(*args) IO.read(@path, *args) end
+  # Returns all data from the file, or the first +N+ bytes if specified.
+  # See <tt>IO.read</tt>.
+  def read(*args)
+    IO.read(@path, *args)
+  end
 
-  # See <tt>IO.binread</tt>.  Returns all the bytes from the file, or the first +N+
-  # if specified.
+  # Returns all the bytes from the file, or the first +N+ if specified.
+  # See <tt>IO.binread</tt>.
   if IO.respond_to? :binread
-    def binread(*args) IO.binread(@path, *args) end
+    def binread(*args)
+      IO.binread(@path, *args)
+    end
   else
     alias binread read
   end
 
   # See <tt>IO.readlines</tt>.  Returns all the lines from the file.
-  def readlines(*args) IO.readlines(@path, *args) end
+  def readlines(*args)
+    IO.readlines(@path, *args)
+  end
 
   # See <tt>IO.sysopen</tt>.
-  def sysopen(*args) IO.sysopen(@path, *args) end
+  def sysopen(*args)
+    IO.sysopen(@path, *args)
+  end
 
   def write(contents, open_args = nil)
     if IO.respond_to? :write

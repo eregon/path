@@ -1,33 +1,36 @@
 class Path
-  # See <tt>File.atime</tt>.  Returns last access time.
+  # Returns last access time. See <tt>File.atime</tt>.
   def atime
     File.atime(@path)
   end
 
-  # See <tt>File.ctime</tt>.  Returns last (directory entry, not file) change time.
+  # Returns last (directory entry, not file) change time. See <tt>File.ctime</tt>.
   def ctime
     File.ctime(@path)
   end
 
-  # See <tt>File.mtime</tt>.  Returns last modification time.
+  # Returns last modification time. See <tt>File.mtime</tt>.
   def mtime
     File.mtime(@path)
   end
 
-  # See <tt>File.chmod</tt>.  Changes permissions.
+  # Changes permissions. See <tt>File.chmod</tt>.
   def chmod(mode) File.chmod(mode, @path) end
 
   # See <tt>File.lchmod</tt>.
   def lchmod(mode) File.lchmod(mode, @path) end
 
-  # See <tt>File.chown</tt>.  Change owner and group of file.
-  def chown(owner, group) File.chown(owner, group, @path) end
+  # Change owner and group of file. See <tt>File.chown</tt>.
+  def chown(owner, group)
+    File.chown(owner, group, @path)
+  end
 
   # See <tt>File.lchown</tt>.
-  def lchown(owner, group) File.lchown(owner, group, @path) end
+  def lchown(owner, group)
+    File.lchown(owner, group, @path)
+  end
 
-  # See <tt>File.ftype</tt>.  Returns "type" of file ("file", "directory",
-  # etc).
+  # See <tt>File.ftype</tt>.  Returns "type" of file ("file", "directory", etc).
   def ftype
     File.ftype(@path)
   end
@@ -80,7 +83,9 @@ class Path
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 
   # See <tt>File.expand_path</tt>.
-  def expand_path(*args) Path.new(File.expand_path(@path, *args)) end
+  def expand_path(*args)
+    Path.new(File.expand_path(@path, *args))
+  end
   alias_method :expand, :expand_path
 
   #
