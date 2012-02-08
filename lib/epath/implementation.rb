@@ -7,18 +7,29 @@ class Path
   else
     proc { |a, b| a == b }
   end
-
   # :startdoc:
 
-  def freeze() super; @path.freeze; self end
-  def taint() super; @path.taint; self end
-  def untaint() super; @path.untaint; self end
+  def freeze
+    super
+    @path.freeze
+    self
+  end
 
-  #
+  def taint
+    super
+    @path.taint
+    self
+  end
+
+  def untaint
+    super
+    @path.untaint
+    self
+  end
+
   # Compare this pathname with +other+.  The comparison is string-based.
   # Be aware that two different paths (<tt>foo.txt</tt> and <tt>./foo.txt</tt>)
   # can refer to the same file.
-  #
   def == other
     Path === other and @path == other.to_path
   end

@@ -348,9 +348,15 @@ describe 'Path implementation' do
 
   it 'equality' do
     anotherStringLike = Class.new do
-      def initialize(s) @s = s end
-      def to_str() @s end
-      def ==(other) @s == other end
+      def initialize(s)
+        @s = s
+      end
+      def to_str
+        @s
+      end
+      def == other
+        @s == other
+      end
     end
     path, str, sym = Path('a'), 'a', :a
     ano = anotherStringLike.new('a')

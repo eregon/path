@@ -16,20 +16,22 @@ class Path
     alias pwd getwd
   end
 
-  # Iterates over the entries (files and subdirectories) in the directory.  It
-  # yields a Path object for each entry.
+  # Iterates over the entries (files and subdirectories) in the directory.
+  # It yields a Path object for each entry.
   def each_entry(&block) # :yield: pathname
     Dir.foreach(@path) { |f| yield Path.new(f) }
   end
 
-  # See <tt>Dir.mkdir</tt>.  Create the referenced directory and returns self.
+  # Create the referenced directory and returns self. See <tt>Dir.mkdir</tt>.
   def mkdir(*args)
     Dir.mkdir(@path, *args)
     self
   end
 
-  # See <tt>Dir.rmdir</tt>.  Remove the referenced directory.
-  def rmdir() Dir.rmdir(@path) end
+  # Remove the referenced directory. See <tt>Dir.rmdir</tt>.
+  def rmdir
+    Dir.rmdir(@path)
+  end
 
   # See <tt>Dir.open</tt>.
   def opendir(&block) # :yield: dir

@@ -1,12 +1,18 @@
 class Path
   # See <tt>File.atime</tt>.  Returns last access time.
-  def atime() File.atime(@path) end
+  def atime
+    File.atime(@path)
+  end
 
   # See <tt>File.ctime</tt>.  Returns last (directory entry, not file) change time.
-  def ctime() File.ctime(@path) end
+  def ctime
+    File.ctime(@path)
+  end
 
   # See <tt>File.mtime</tt>.  Returns last modification time.
-  def mtime() File.mtime(@path) end
+  def mtime
+    File.mtime(@path)
+  end
 
   # See <tt>File.chmod</tt>.  Changes permissions.
   def chmod(mode) File.chmod(mode, @path) end
@@ -22,7 +28,9 @@ class Path
 
   # See <tt>File.ftype</tt>.  Returns "type" of file ("file", "directory",
   # etc).
-  def ftype() File.ftype(@path) end
+  def ftype
+    File.ftype(@path)
+  end
 
   # Creates a hard link to +target+ and returns self.
   #
@@ -39,19 +47,27 @@ class Path
   end
 
   # See <tt>File.readlink</tt>.  Read symbolic link.
-  def readlink() Path.new(File.readlink(@path)) end
+  def readlink
+    Path.new(File.readlink(@path))
+  end
 
   # See <tt>File.rename</tt>.  Rename the file.
   def rename(to) File.rename(@path, to) end
 
   # See <tt>File.stat</tt>.  Returns a <tt>File::Stat</tt> object.
-  def stat() File.stat(@path) end
+  def stat
+    File.stat(@path)
+  end
 
   # See <tt>File.lstat</tt>.
-  def lstat() File.lstat(@path) end
+  def lstat
+    File.lstat(@path)
+  end
 
   # See <tt>File.size</tt>.
-  def size() File.size(@path) end
+  def size
+    File.size(@path)
+  end
 
   # Creates a symbolic link to +target+ and returns self.
   #

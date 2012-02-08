@@ -1,7 +1,7 @@
 class Path
   # Removes a file or directory, using <tt>File.unlink</tt> or
   # <tt>Dir.unlink</tt> as necessary.
-  def unlink()
+  def unlink
     if directory?
       Dir.unlink @path
     else
