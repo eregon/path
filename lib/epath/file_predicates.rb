@@ -66,8 +66,8 @@ class Path
   if File.respond_to? :world_readable?
     # See <tt>File.world_readable?</tt>.
     def world_readable?
-    File.world_readable?(@path)
-  end
+      File.world_readable?(@path)
+    end
   else
     def world_readable?
       mode = File.stat(@path).mode & 0777
@@ -113,8 +113,8 @@ class Path
   if File.respond_to? :world_writable?
     # See <tt>File.world_writable?</tt>.
     def world_writable?
-    File.world_writable?(@path)
-  end
+      File.world_writable?(@path)
+    end
   else
     def world_writable?
       mode = File.stat(@path).mode & 0777
