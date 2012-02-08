@@ -208,36 +208,6 @@ describe 'Path implementation' do
     Path('a').join(Path('b'), Path('c')).should ==  Path('a/b/c')
   end
 
-  it 'absolute?' do
-    Path('/').should be_absolute
-    Path('a').should_not be_absolute
-  end
-
-  it 'relative?' do
-    Path('/').should_not be_relative
-    Path('/a').should_not be_relative
-    Path('/..').should_not be_relative
-    Path('a').should be_relative
-    Path('a/b').should be_relative
-
-    if dosish_drive_letter
-      Path('A:').should_not be_relative
-      Path('A:/').should_not be_relative
-      Path('A:/a').should_not be_relative
-    end
-
-    if File.dirname('//') == '//'
-      [
-        '//',
-        '//a',
-        '//a/',
-        '//a/b',
-        '//a/b/',
-        '//a/b/c',
-      ].each { |path| Path(path).should_not be_relative }
-    end
-  end
-
   it 'relative_path_from' do
     {
       ['a', 'b'] => '../a',
@@ -428,18 +398,6 @@ describe 'Path implementation' do
     Path('d.e/aa').sub_ext('.o').should == Path('d.e/aa.o')
     Path('long_enough.not_to_be_embeded[ruby-core-31640]').
       sub_ext('.bug-3664').should == Path('long_enough.bug-3664')
-  end
-
-  it 'root?' do
-    Path('/').should be_root
-    Path('//').should be_root
-    Path('///').should be_root
-    Path('').should_not be_root
-    Path('a').should_not be_root
-  end
-
-  it 'mountpoint?' do
-    [true, false].should include Path('/').mountpoint?
   end
 
   it 'destructive update of #to_s should not affect the path' do
