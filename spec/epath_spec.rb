@@ -36,10 +36,10 @@ describe Path do
 
   it 'file?, dir?', :tmpchdir do
     dir, file = Path('dir').mkdir, Path('file').touch
-    dir.dir?.should be_true
-    dir.file?.should be_false
-    file.file?.should be_true
-    file.dir?.should be_false
+    dir.should be_a_dir
+    dir.should_not be_a_file
+    file.should be_a_file
+    file.should_not be_a_dir
   end
 
   it 'base, basename' do
