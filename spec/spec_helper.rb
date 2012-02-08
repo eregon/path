@@ -1,6 +1,9 @@
 if ENV['COVERAGE']
   require 'simplecov'
-  SimpleCov.start
+  SimpleCov.start do
+    add_group 'lib', 'lib'
+    add_group 'spec', 'spec'
+  end
 end
 
 require File.expand_path('../../lib/epath', __FILE__)
