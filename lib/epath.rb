@@ -97,34 +97,6 @@ class Path
     join part.to_s
   end
 
-  def base # basename(extname)
-    basename(extname)
-  end
-
-  def ext # extname without leading .
-    ext = extname
-    ext.empty? ? ext : ext[1..-1]
-  end
-
-  def add_extension(ext)
-    return self if ext.empty?
-    ext = ".#{ext}" unless ext.start_with? '.'
-    Path.new @path+ext
-  end
-  alias_method :add_ext, :add_extension
-
-  def without_extension
-    Path.new @path[0..-extname.size-1]
-  end
-  alias_method :rm_ext, :without_extension
-
-  def replace_extension(ext)
-    return without_extension if ext.empty?
-    ext = ".#{ext}" unless ext.start_with? '.'
-    Path.new(@path[0..-extname.size-1] << ext)
-  end
-  alias_method :sub_ext, :replace_extension
-
   def to_sym
     to_s.to_sym
   end
@@ -160,8 +132,6 @@ class Path
     result = ancestors.find { |ancestor| (ancestor/path/condition).exist? }
     result/path if result
   end
-
-  alias_method :dir, :dirname
 end
 
 EPath = Path # to meet everyone's expectations

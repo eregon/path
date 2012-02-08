@@ -33,46 +33,6 @@ describe Path do
     %w[foo bar].map(&Path).should == [Path('foo'), Path('bar')]
   end
 
-  it 'base, basename' do
-    Path('file.ext').basename.should == Path('file.ext')
-    Path('file.ext').basename('xt').should == Path('file.e')
-    Path('file.ext').basename('.ext').should == Path('file')
-    Path('file.ext').base.should == Path('file')
-    Path('dir/file.ext').basename.should == Path('file.ext')
-    Path('dir/file.ext').base.should == Path('file')
-  end
-
-  it 'ext, extname' do
-    Path('file.rb').extname.should == '.rb'
-    Path('file.rb').ext.should == 'rb'
-    Path('.hidden').extname.should == ''
-    Path('.hidden').ext.should == ''
-  end
-
-  it 'add_ext, add_extension' do
-    path = Path('file')
-    path = path.add_extension('.txt')
-    path.ext.should == 'txt'
-    path = path.add_extension('.mkv')
-    path.ext.should == 'mkv'
-    path = path.add_ext('tar.gz')
-    path.ext.should == 'gz'
-    path.to_s.should == 'file.txt.mkv.tar.gz'
-  end
-
-  it 'rm_ext, without_extension' do
-    Path('/usr/bin/ls').without_extension.should == Path('/usr/bin/ls')
-    Path('/usr/bin/ls.rb').rm_ext.should == Path('/usr/bin/ls')
-  end
-
-  it 'sub_ext, replace_extension' do
-    Path('hello/world.rb').replace_extension('.ext').should == Path('hello/world.ext')
-    Path('hello/world').replace_extension('.ext').should == Path('hello/world.ext')
-
-    # should add a '.' if missing (consistent with #ext)
-    Path('hello/world').replace_extension('ext').should == Path('hello/world.ext')
-  end
-
   it '%, relative_to' do
     Path('/a/b/Array/sort.rb').relative_to(Path('/')).should == Path('a/b/Array/sort.rb')
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b')).should == Path('Array/sort.rb')

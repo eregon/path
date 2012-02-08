@@ -68,22 +68,9 @@ class Path
   # See <tt>File.utime</tt>.  Update the access and modification times.
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 
-  # See <tt>File.basename</tt>.  Returns the last component of the path.
-  def basename(*args) Path.new(File.basename(@path, *args)) end
-
-  # See <tt>File.dirname</tt>.  Returns all but the last component of the path.
-  def dirname() Path.new(File.dirname(@path)) end
-
-  # See <tt>File.extname</tt>.  Returns the file's extension.
-  def extname() File.extname(@path) end
-
   # See <tt>File.expand_path</tt>.
   def expand_path(*args) Path.new(File.expand_path(@path, *args)) end
   alias_method :expand, :expand_path
-
-  # See <tt>File.split</tt>.  Returns the #dirname and the #basename in an
-  # Array.
-  def split() File.split(@path).map(&Path) end
 
   #
   # Returns the real (absolute) pathname of +self+ in the actual

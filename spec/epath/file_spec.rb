@@ -159,19 +159,6 @@ describe 'Path : File' do
     a.stat.mtime.should == mtime
   end
 
-  it 'basename' do
-    Path('dirname/basename').basename.should == Path('basename')
-    Path('foo/bar.x').basename('.x').should == Path('bar')
-  end
-
-  it 'dirname' do
-    Path('dirname/basename').dirname.should == Path('dirname')
-  end
-
-  it 'extname' do
-    Path('basename.ext').extname.should == '.ext'
-  end
-
   it 'expand, expand_path' do
     r = dosish_drive_letter ? Dir.pwd.sub(/\/.*/, '') : ''
     Path('/a').expand_path.to_s.should == r+'/a'
@@ -179,9 +166,5 @@ describe 'Path : File' do
     Path('a').expand(Path('/')).to_s.should == r+'/a'
     Path('/b').expand(Path('/a')).to_s.should == r+'/b'
     Path('b').expand(Path('/a')).to_s.should == r+'/a/b'
-  end
-
-  it 'split' do
-    Path('dirname/basename').split.should == [Path('dirname'), Path('basename')]
   end
 end
