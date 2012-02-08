@@ -1,4 +1,9 @@
 class Path
+  # Opens the file for reading or writing. See <tt>File.open</tt>.
+  def open(*args, &block) # :yield: file
+    File.open(@path, *args, &block)
+  end
+
   # Iterates over the lines in the file. See <tt>IO.foreach</tt>.
   def each_line(*args, &block) # :yield: line
     IO.foreach(@path, *args, &block)

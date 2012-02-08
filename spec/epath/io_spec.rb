@@ -1,6 +1,30 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Path : IO' do
+  it 'open', :tmpchdir do
+    path = Path('a')
+    path.write 'abc'
+
+    path.open { |f| f.read.should == 'abc' }
+    path.open('r') { |f| f.read.should == 'abc' }
+
+    b = Path('b')
+    b.open('w', 0444) { |f| f.write 'def' }
+    (b.stat.mode & 0777).should == 0444
+    b.read.should == 'def'
+
+    g = path.open
+    g.read.should == 'abc'
+    g.close
+  end
+
+  it 'open 1.9', :tmpchdir, :ruby => 1.9, :fails_on => [:rbx19, :jruby19] do
+    c = Path('c')
+    c.open('w', 0444, {}) { |f| f.write "ghi" }
+    (c.stat.mode & 0777).should == 0444
+    c.read.should == 'ghi'
+  end
+
   it 'each_line', :tmpchdir do
     a = Path('a')
 

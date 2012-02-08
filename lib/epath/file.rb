@@ -41,11 +41,6 @@ class Path
     self
   end
 
-  # See <tt>File.open</tt>.  Opens the file for reading or writing.
-  def open(*args, &block) # :yield: file
-    File.open(@path, *args, &block)
-  end
-
   # See <tt>File.readlink</tt>.  Read symbolic link.
   def readlink
     Path.new(File.readlink(@path))
