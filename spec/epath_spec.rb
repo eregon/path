@@ -89,14 +89,6 @@ describe Path do
     (Path('/a/b/Array/sort.rb') % Path('/a/b/')).should == Path('Array/sort.rb')
   end
 
-  it 'touch', :tmpchdir do
-    file = Path('file')
-    file.exist?.should be_false
-    file.touch
-    file.exist?.should be_true
-    file.size.should == 0
-  end
-
   it 'empty?' do
     Path.tmpfile do |file|
       file.should be_empty
@@ -205,19 +197,6 @@ describe Path do
     Path.tmpchdir do |dir|
       dir.should be_identical(Path.getwd)
     end
-  end
-
-  it 'mkdir_p, rm_rf' do
-    Path.tmpdir do |dir|
-      d = (dir/:test/:mkdir)
-      d.mkdir_p.should equal d
-      test = d.parent
-      test.rm_rf.should equal test
-    end
-  end
-
-  it 'touch!', :tmpchdir do
-    Path('foo/bar/baz.rb').touch!.should be_exist
   end
 
   describe 'require_tree', :tmpchdir do

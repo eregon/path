@@ -568,15 +568,6 @@ describe 'Path implementation' do
     d.find.sort.should == [d, x, y]
   end
 
-  it 'mkpath', :tmpchdir do
-    Path('a/b/c/d').mkpath.should be_a_directory
-  end
-
-  it 'rmtree', :tmpchdir do
-    Path('a/b/c/d').mkpath.exist?.should be_true
-    Path('a').rmtree.exist?.should be_false
-  end
-
   it 'can be used with File class-methods' do
     path = Path('foo/bar')
     File.basename(path).should == 'bar'
