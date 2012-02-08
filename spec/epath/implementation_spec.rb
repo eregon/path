@@ -555,33 +555,6 @@ describe 'Path implementation' do
     Path('a').should == Path.new('a')
   end
 
-  it 'children', :tmpchdir do
-    a = Path('a').touch
-    b = Path('b').touch
-    d = Path('d').mkdir
-    x = Path('d/x').touch
-    y = Path('d/y').touch
-
-    Path('.').children.sort.should == [a, b, d]
-    d.children.sort.should == [x, y]
-    d.children(false).sort.should == [Path('x'), Path('y')]
-  end
-
-  it 'each_child', :tmpchdir do
-    a = Path('a').touch
-    b = Path('b').touch
-    d = Path('d').mkdir
-    x = Path('d/x').touch
-    y = Path('d/y').touch
-
-    r = []; Path('.').each_child { |c| r << c }
-    r.sort.should == [a, b, d]
-    r = []; d.each_child { |c| r << c }
-    r.sort.should == [x, y]
-    r = []; d.each_child(false) { |c| r << c }
-    r.sort.should == [Path('x'), Path('y')]
-  end
-
   it 'each_line', :tmpchdir do
     a = Path('a')
 
