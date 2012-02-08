@@ -49,6 +49,18 @@ describe 'Path : parts' do
 
     # should add a '.' if missing (consistent with #ext)
     Path('hello/world').replace_extension('ext').should == Path('hello/world.ext')
+
+    Path('a.c').sub_ext('.o').should == Path('a.o')
+    Path('a.c++').sub_ext('.o').should == Path('a.o')
+    Path('a.gif').sub_ext('.png').should == Path('a.png')
+    Path('ruby.tar.gz').sub_ext('.bz2').should == Path('ruby.tar.bz2')
+    Path('d/a.c').sub_ext('.o').should == Path('d/a.o')
+    Path('foo.exe').sub_ext('').should == Path('foo')
+    Path('lex.yy.c').sub_ext('.o').should == Path('lex.yy.o')
+    Path('fooaa').sub_ext('.o').should == Path('fooaa.o')
+    Path('d.e/aa').sub_ext('.o').should == Path('d.e/aa.o')
+    Path('long_enough.not_to_be_embeded[ruby-core-31640]').
+      sub_ext('.bug-3664').should == Path('long_enough.bug-3664')
   end
 
   it 'each_filename' do
