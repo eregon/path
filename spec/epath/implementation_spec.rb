@@ -693,14 +693,11 @@ describe 'Path implementation' do
     Path('b').touch.should_not be_identical(a)
   end
 
-  it 'fnmatch, fnmatch?' do
-    Path('a').fnmatch('*').should be_true
-    Path('a').fnmatch('*.*').should be_false
-    Path('.foo').fnmatch('*').should be_false
-    Path('.foo').fnmatch('*', File::FNM_DOTMATCH).should be_true
-
+  it 'fnmatch?' do
     Path('a').fnmatch?('*').should be_true
     Path('a').fnmatch?('*.*').should be_false
+    Path('.foo').fnmatch?('*').should be_false
+    Path('.foo').fnmatch?('*', File::FNM_DOTMATCH).should be_true
   end
 
   it 'ftype', :tmpchdir do

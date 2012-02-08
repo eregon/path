@@ -100,5 +100,4 @@ class Path
   # See <tt>File.fnmatch?</tt>.
   # Return +true+ if the receiver matches the given pattern.
   def fnmatch?(pattern, *args) File.fnmatch?(pattern, @path, *args) end
-  alias fnmatch fnmatch?
 end
