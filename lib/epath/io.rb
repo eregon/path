@@ -11,7 +11,11 @@ class Path
 
   # See <tt>IO.binread</tt>.  Returns all the bytes from the file, or the first +N+
   # if specified.
-  def binread(*args) IO.binread(@path, *args) end
+  if IO.respond_to? :binread
+    def binread(*args) IO.binread(@path, *args) end
+  else
+    alias binread read
+  end
 
   # See <tt>IO.readlines</tt>.  Returns all the lines from the file.
   def readlines(*args) IO.readlines(@path, *args) end

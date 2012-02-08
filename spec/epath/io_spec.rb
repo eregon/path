@@ -33,7 +33,7 @@ describe 'Path : IO' do
 
   it 'binread', :tmpchdir do
     Path('a').write 'abc'
-    Path('a').read.should == 'abc'
+    Path('a').binread.should == 'abc'
   end
 
   it 'sysopen', :tmpchdir do
