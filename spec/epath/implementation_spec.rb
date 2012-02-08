@@ -555,19 +555,6 @@ describe 'Path implementation' do
     Path('a').should == Path.new('a')
   end
 
-  it 'find', :tmpchdir do
-    a, b = Path('a').touch, Path('b').touch
-    d = Path('d').mkdir
-    x, y = Path('d/x').touch, Path('d/y').touch
-    here = Path('.')
-
-    r = []
-    here.find { |f| r << f }
-    r.sort.should == [here, a, b, d, x, y]
-
-    d.find.sort.should == [d, x, y]
-  end
-
   it 'can be used with File class-methods' do
     path = Path('foo/bar')
     File.basename(path).should == 'bar'
