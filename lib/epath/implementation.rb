@@ -58,6 +58,103 @@ class Path
     SEPARATOR_PAT = /#{Regexp.quote File::SEPARATOR}/
   end
 
+  # Returns clean pathname of +self+ with consecutive slashes and useless dots
+  # removed.  The filesystem is not accessed.
+  #
+  # If +consider_symlink+ is +true+, then a more conservative algorithm is used
+  # to avoid breaking symbolic linkages.  This may retain more <tt>..</tt>
+  # entries than absolutely necessary, but without accessing the filesystem,
+  # this can't be avoided.  See #realpath.
+  def cleanpath(consider_symlink=false)
+    if consider_symlink
+      cleanpath_conservative
+    else
+      cleanpath_aggressive
+    end
+  end
+
+  # #parent returns the parent directory.
+  #
+  # This is same as <tt>self + '..'</tt>.
+  def parent
+    self + '..'
+  end
+
+  # Path#+ appends a pathname fragment to this one to produce a new Path
+  # object.
+  #
+  #   p1 = Path.new("/usr")      # Path:/usr
+  #   p2 = p1 + "bin/ruby"           # Path:/usr/bin/ruby
+  #   p3 = p1 + "/etc/passwd"        # Path:/etc/passwd
+  #
+  # This method doesn't access the file system; it is pure string manipulation.
+  def +(other)
+    other = Path.new(other) unless Path === other
+    Path.new(plus(@path, other.to_s))
+  end
+
+  # Path#join joins pathnames.
+  #
+  # <tt>path0.join(path1, ..., pathN)</tt> is the same as
+  # <tt>path0 + path1 + ... + pathN</tt>.
+  def join(*args)
+    args.unshift self
+    result = args.pop
+    result = Path.new(result) unless Path === result
+    return result if result.absolute?
+    args.reverse_each { |arg|
+      arg = Path.new(arg) unless Path === arg
+      result = arg + result
+      return result if result.absolute?
+    }
+    result
+  end
+
+  # #relative_path_from returns a relative path from the argument to the
+  # receiver.  If +self+ is absolute, the argument must be absolute too.  If
+  # +self+ is relative, the argument must be relative too.
+  #
+  # #relative_path_from doesn't access the filesystem.  It assumes no symlinks.
+  #
+  # ArgumentError is raised when it cannot find a relative path.
+  def relative_path_from(base_directory)
+    dest_directory = cleanpath.to_s
+    base_directory = base_directory.cleanpath.to_s
+    dest_prefix = dest_directory
+    dest_names = []
+    while r = chop_basename(dest_prefix)
+      dest_prefix, basename = r
+      dest_names.unshift basename if basename != '.'
+    end
+    base_prefix = base_directory
+    base_names = []
+    while r = chop_basename(base_prefix)
+      base_prefix, basename = r
+      base_names.unshift basename if basename != '.'
+    end
+    unless SAME_PATHS[dest_prefix, base_prefix]
+      raise ArgumentError, "different prefix: #{dest_prefix.inspect} and #{base_directory.inspect}"
+    end
+    while !dest_names.empty? &&
+          !base_names.empty? &&
+          SAME_PATHS[dest_names.first, base_names.first]
+      dest_names.shift
+      base_names.shift
+    end
+    if base_names.include? '..'
+      raise ArgumentError, "base_directory has ..: #{base_directory.inspect}"
+    end
+    base_names.fill('..')
+    relpath_names = base_names + dest_names
+    if relpath_names.empty?
+      Path.new('.')
+    else
+      Path.new(File.join(*relpath_names))
+    end
+  end
+
+  private
+
   # chop_basename(path) -> [pre-basename, basename] or nil
   def chop_basename(path)
     base = File.basename(path)
@@ -67,7 +164,6 @@ class Path
       return path[0, path.rindex(base)], base
     end
   end
-  private :chop_basename
 
   # split_names(path) -> prefix, [name, ...]
   def split_names(path)
@@ -78,7 +174,6 @@ class Path
     end
     return path, names
   end
-  private :split_names
 
   def prepend_prefix(prefix, relpath)
     if relpath.empty?
@@ -91,28 +186,37 @@ class Path
       prefix + relpath
     end
   end
-  private :prepend_prefix
 
-  # Returns clean pathname of +self+ with consecutive slashes and useless dots
-  # removed.  The filesystem is not accessed.
-  #
-  # If +consider_symlink+ is +true+, then a more conservative algorithm is used
-  # to avoid breaking symbolic linkages.  This may retain more <tt>..</tt>
-  # entries than absolutely necessary, but without accessing the filesystem,
-  # this can't be avoided.  See #realpath.
-  #
-  def cleanpath(consider_symlink=false)
-    if consider_symlink
-      cleanpath_conservative
+  def has_trailing_separator?(path)
+    if r = chop_basename(path)
+      pre, basename = r
+      pre.length + basename.length < path.length
     else
-      cleanpath_aggressive
+      false
     end
   end
 
-  #
+  def add_trailing_separator(path)
+    if File.basename(path + 'a') == 'a'
+      path
+    else
+      File.join(path, "") # xxx: Is File.join is appropriate to add separator?
+    end
+  end
+
+  def del_trailing_separator(path)
+    if r = chop_basename(path)
+      pre, basename = r
+      pre + basename
+    elsif /#{SEPARATOR_PAT}+\z/o =~ path
+      $` + File.dirname(path)[/#{SEPARATOR_PAT}*\z/o]
+    else
+      path
+    end
+  end
+
   # Clean the path simply by resolving and removing excess "." and ".." entries.
   # Nothing more, nothing less.
-  #
   def cleanpath_aggressive
     path = @path
     names = []
@@ -136,40 +240,6 @@ class Path
     end
     Path.new(prepend_prefix(pre, File.join(*names)))
   end
-  private :cleanpath_aggressive
-
-  # has_trailing_separator?(path) -> bool
-  def has_trailing_separator?(path)
-    if r = chop_basename(path)
-      pre, basename = r
-      pre.length + basename.length < path.length
-    else
-      false
-    end
-  end
-  private :has_trailing_separator?
-
-  # add_trailing_separator(path) -> path
-  def add_trailing_separator(path)
-    if File.basename(path + 'a') == 'a'
-      path
-    else
-      File.join(path, "") # xxx: Is File.join is appropriate to add separator?
-    end
-  end
-  private :add_trailing_separator
-
-  def del_trailing_separator(path)
-    if r = chop_basename(path)
-      pre, basename = r
-      pre + basename
-    elsif /#{SEPARATOR_PAT}+\z/o =~ path
-      $` + File.dirname(path)[/#{SEPARATOR_PAT}*\z/o]
-    else
-      path
-    end
-  end
-  private :del_trailing_separator
 
   def cleanpath_conservative
     path = @path
@@ -196,13 +266,11 @@ class Path
       end
     end
   end
-  private :cleanpath_conservative
 
   if File.respond_to?(:realpath) and File.respond_to?(:realdirpath)
     def real_path_internal(strict = false, basedir = nil)
       strict ? File.realpath(@path, basedir) : File.realdirpath(@path, basedir)
     end
-    private :real_path_internal
   else
     def realpath_rec(prefix, unresolved, h, strict, last = true)
       resolved = []
@@ -245,7 +313,6 @@ class Path
       end
       return prefix, *resolved
     end
-    private :realpath_rec
 
     def real_path_internal(strict = false, basedir = nil)
       path = @path
@@ -258,29 +325,6 @@ class Path
       prefix, *names = realpath_rec(prefix, names, {}, strict)
       prepend_prefix(prefix, File.join(*names))
     end
-    private :real_path_internal
-  end
-
-  # #parent returns the parent directory.
-  #
-  # This is same as <tt>self + '..'</tt>.
-  def parent
-    self + '..'
-  end
-
-  #
-  # Path#+ appends a pathname fragment to this one to produce a new Path
-  # object.
-  #
-  #   p1 = Path.new("/usr")      # Path:/usr
-  #   p2 = p1 + "bin/ruby"           # Path:/usr/bin/ruby
-  #   p3 = p1 + "/etc/passwd"        # Path:/etc/passwd
-  #
-  # This method doesn't access the file system; it is pure string manipulation.
-  #
-  def +(other)
-    other = Path.new(other) unless Path === other
-    Path.new(plus(@path, other.to_s))
   end
 
   def plus(path1, path2) # -> path
@@ -321,71 +365,6 @@ class Path
       r1 ? File.join(prefix1, suffix2) : prefix1 + suffix2
     else
       r1 ? prefix1 : File.dirname(prefix1)
-    end
-  end
-  private :plus
-
-  #
-  # Path#join joins pathnames.
-  #
-  # <tt>path0.join(path1, ..., pathN)</tt> is the same as
-  # <tt>path0 + path1 + ... + pathN</tt>.
-  #
-  def join(*args)
-    args.unshift self
-    result = args.pop
-    result = Path.new(result) unless Path === result
-    return result if result.absolute?
-    args.reverse_each { |arg|
-      arg = Path.new(arg) unless Path === arg
-      result = arg + result
-      return result if result.absolute?
-    }
-    result
-  end
-
-  #
-  # #relative_path_from returns a relative path from the argument to the
-  # receiver.  If +self+ is absolute, the argument must be absolute too.  If
-  # +self+ is relative, the argument must be relative too.
-  #
-  # #relative_path_from doesn't access the filesystem.  It assumes no symlinks.
-  #
-  # ArgumentError is raised when it cannot find a relative path.
-  #
-  def relative_path_from(base_directory)
-    dest_directory = cleanpath.to_s
-    base_directory = base_directory.cleanpath.to_s
-    dest_prefix = dest_directory
-    dest_names = []
-    while r = chop_basename(dest_prefix)
-      dest_prefix, basename = r
-      dest_names.unshift basename if basename != '.'
-    end
-    base_prefix = base_directory
-    base_names = []
-    while r = chop_basename(base_prefix)
-      base_prefix, basename = r
-      base_names.unshift basename if basename != '.'
-    end
-    unless SAME_PATHS[dest_prefix, base_prefix]
-      raise ArgumentError, "different prefix: #{dest_prefix.inspect} and #{base_directory.inspect}"
-    end
-    while !dest_names.empty? &&
-          !base_names.empty? &&
-          SAME_PATHS[dest_names.first, base_names.first]
-      dest_names.shift
-      base_names.shift
-    end
-    if base_names.include? '..'
-      raise ArgumentError, "base_directory has ..: #{base_directory.inspect}"
-    end
-    base_names.fill('..')
-    relpath_names = base_names + dest_names
-    if relpath_names.empty?
-      Path.new('.')
-    else
-      Path.new(File.join(*relpath_names))
     end
   end
 end
