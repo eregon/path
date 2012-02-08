@@ -65,12 +65,6 @@ describe Path do
     Path.home.should == Path('~').expand # fails on JRuby 1.9 as Dir.home gives backslashes (only / on MRI)
   end
 
-  it 'ancestors' do
-    r = Path.new(File.dirname('C:') != '.' ? 'C:/' : '/')
-    (r/'usr/bin/ls').ancestors.to_a.should == [
-      r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
-  end
-
   context 'inside?' do
     it 'works when paths are related' do
       this.inside?(this).should be_true

@@ -50,4 +50,31 @@ describe 'Path : parts' do
     # should add a '.' if missing (consistent with #ext)
     Path('hello/world').replace_extension('ext').should == Path('hello/world.ext')
   end
+
+  it 'each_filename' do
+    result = []
+    Path('/usr/bin/ruby').each_filename { |f| result << f }
+    result.should == %w[usr bin ruby]
+    Path('/usr/bin/ruby').each_filename.to_a.should == %w[usr bin ruby]
+  end
+
+  it 'descend' do
+    Path('/a/b/c').descend.map(&:to_s).should == %w[/ /a /a/b /a/b/c]
+    Path('a/b/c').descend.map(&:to_s).should == %w[a a/b a/b/c]
+    Path('./a/b/c').descend.map(&:to_s).should == %w[. ./a ./a/b ./a/b/c]
+    Path('a/').descend.map(&:to_s).should == %w[a/]
+  end
+
+  it 'ascend' do
+    Path('/a/b/c').ascend.map(&:to_s).should == %w[/a/b/c /a/b /a /]
+    Path('a/b/c').ascend.map(&:to_s).should == %w[a/b/c a/b a]
+    Path('./a/b/c').ascend.map(&:to_s).should ==  %w[./a/b/c ./a/b ./a .]
+    Path('a/').ascend.map(&:to_s).should == %w[a/]
+  end
+
+  it 'ancestors' do
+    r = Path.new(File.dirname('C:') != '.' ? 'C:/' : '/')
+    (r/'usr/bin/ls').ancestors.to_a.should == [
+      r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
+  end
 end

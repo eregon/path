@@ -49,4 +49,79 @@ class Path
     Path.new(@path[0..-extname.size-1] << ext)
   end
   alias_method :sub_ext, :replace_extension
+
+  # Iterates over each component of the path.
+  #
+  #   Path.new("/usr/bin/ruby").each_filename { |filename| ... }
+  #     # yields "usr", "bin", and "ruby".
+  def each_filename # :yield: filename
+    return to_enum(__method__) unless block_given?
+    _, names = split_names(@path)
+    names.each { |filename| yield filename }
+    nil
+  end
+
+  # Iterates over and yields a new Path object
+  # for each element in the given path in descending order.
+  #
+  #  Path.new('/path/to/some/file.rb').descend { |v| p v }
+  #     #<Path:/>
+  #     #<Path:/path>
+  #     #<Path:/path/to>
+  #     #<Path:/path/to/some>
+  #     #<Path:/path/to/some/file.rb>
+  #
+  #  Path.new('path/to/some/file.rb').descend { |v| p v }
+  #     #<Path:path>
+  #     #<Path:path/to>
+  #     #<Path:path/to/some>
+  #     #<Path:path/to/some/file.rb>
+  #
+  # It doesn't access actual filesystem.
+  def descend
+    return to_enum(:descend) unless block_given?
+    vs = []
+    ascend { |v| vs << v }
+    vs.reverse_each { |v| yield v }
+    nil
+  end
+
+  # Iterates over and yields a new Path object
+  # for each element in the given path in ascending order.
+  #
+  #  Path.new('/path/to/some/file.rb').ascend { |v| p v }
+  #     #<Path:/path/to/some/file.rb>
+  #     #<Path:/path/to/some>
+  #     #<Path:/path/to>
+  #     #<Path:/path>
+  #     #<Path:/>
+  #
+  #  Path.new('path/to/some/file.rb').ascend { |v| p v }
+  #     #<Path:path/to/some/file.rb>
+  #     #<Path:path/to/some>
+  #     #<Path:path/to>
+  #     #<Path:path>
+  #
+  # It doesn't access actual filesystem.
+  def ascend
+    return to_enum(:ascend) unless block_given?
+    path = @path
+    yield self
+    while r = chop_basename(path)
+      path, = r
+      break if path.empty?
+      yield Path.new(del_trailing_separator(path))
+    end
+  end
+
+  def ancestors
+    ancestors = lambda do |y|
+      y << path = expand
+      until (path = path.parent).root?
+        y << path
+      end
+      y << path
+    end
+    RUBY_VERSION > '1.9' ? Enumerator.new(&ancestors) : ancestors.call([])
+  end
 end

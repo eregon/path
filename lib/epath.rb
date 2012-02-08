@@ -106,17 +106,6 @@ class Path
   end
   alias_method :%, :relative_to
 
-  def ancestors
-    ancestors = lambda do |y|
-      y << path = expand
-      until (path = path.parent).root?
-        y << path
-      end
-      y << path
-    end
-    RUBY_VERSION > '1.9' ? Enumerator.new(&ancestors) : ancestors.call([])
-  end
-
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)
   end

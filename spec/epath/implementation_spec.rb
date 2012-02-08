@@ -369,20 +369,6 @@ describe 'Path implementation' do
     end
   end
 
-  it 'descend' do
-    Path('/a/b/c').descend.map(&:to_s).should == %w[/ /a /a/b /a/b/c]
-    Path('a/b/c').descend.map(&:to_s).should == %w[a a/b a/b/c]
-    Path('./a/b/c').descend.map(&:to_s).should == %w[. ./a ./a/b ./a/b/c]
-    Path('a/').descend.map(&:to_s).should == %w[a/]
-  end
-
-  it 'ascend' do
-    Path('/a/b/c').ascend.map(&:to_s).should == %w[/a/b/c /a/b /a /]
-    Path('a/b/c').ascend.map(&:to_s).should == %w[a/b/c a/b a]
-    Path('./a/b/c').ascend.map(&:to_s).should ==  %w[./a/b/c ./a/b ./a .]
-    Path('a/').ascend.map(&:to_s).should == %w[a/]
-  end
-
   it 'initialize' do
     p1 = Path.new('a')
     p1.to_s.should == 'a'
@@ -542,13 +528,6 @@ describe 'Path implementation' do
       2
     }.should == 2
     count.should == 1
-  end
-
-  it 'each_filename' do
-    result = []
-    Path('/usr/bin/ruby').each_filename { |f| result << f }
-    result.should == %w[usr bin ruby]
-    Path('/usr/bin/ruby').each_filename.to_a.should == %w[usr bin ruby]
   end
 
   it 'Path()' do
