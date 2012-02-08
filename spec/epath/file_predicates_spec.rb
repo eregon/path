@@ -38,6 +38,7 @@ describe 'Path : File predicates' do
     f.write 'abc'
     f.should_not be_a_directory
     Path('d').mkdir.should be_a_directory
+    Path('d').should be_a_dir
   end
 
   it 'file?', :tmpchdir do

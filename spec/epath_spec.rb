@@ -33,14 +33,6 @@ describe Path do
     %w[foo bar].map(&Path).should == [Path('foo'), Path('bar')]
   end
 
-  it 'file?, dir?', :tmpchdir do
-    dir, file = Path('dir').mkdir, Path('file').touch
-    dir.should be_a_dir
-    dir.should_not be_a_file
-    file.should be_a_file
-    file.should_not be_a_dir
-  end
-
   it 'base, basename' do
     Path('file.ext').basename.should == Path('file.ext')
     Path('file.ext').basename('xt').should == Path('file.e')

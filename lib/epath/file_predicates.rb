@@ -22,6 +22,7 @@ class Path
 
   # See <tt>File.directory?</tt>.
   def directory?() File.directory?(@path) end
+  alias_method :dir?, :directory?
 
   # See <tt>File.file?</tt>.
   def file?() File.file?(@path) end
