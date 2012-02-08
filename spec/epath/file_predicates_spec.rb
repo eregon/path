@@ -121,9 +121,9 @@ describe 'Path : File predicates' do
     f = Path('f')
     f.write 'abc'
     f.chmod 0600
-    f.world_readable?.should be_nil
+    f.world_writable?.should be_nil
     f.chmod 0666
-    f.world_readable?.should == 0666
+    f.world_writable?.should == 0666
   end
 
   it 'writable_real?', :tmpchdir do
