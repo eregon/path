@@ -577,17 +577,6 @@ describe 'Path implementation' do
     Path('a').rmtree.exist?.should be_false
   end
 
-  it 'unlink', :tmpchdir do
-    f = Path('f')
-    f.write 'abc'
-    f.unlink
-    f.exist?.should be_false
-
-    d = Path('d').mkdir
-    d.unlink
-    d.exist?.should be_false
-  end
-
   it 'can be used with File class-methods' do
     path = Path('foo/bar')
     File.basename(path).should == 'bar'
