@@ -462,6 +462,10 @@ describe 'Path implementation' do
     path.taint
   end
 
+  it 'inspect' do
+    Path('dir/file').inspect.should == '#<Path dir/file>'
+  end
+
   it 'to_s' do
     str = 'a'
     path = Path(str)
