@@ -1,3 +1,8 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require File.expand_path('../../lib/epath', __FILE__)
 
 dosish = File::ALT_SEPARATOR != nil
