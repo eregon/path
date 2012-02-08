@@ -172,13 +172,13 @@ describe 'Path : File' do
     Path('basename.ext').extname.should == '.ext'
   end
 
-  it 'expand_path' do
+  it 'expand, expand_path' do
     r = dosish_drive_letter ? Dir.pwd.sub(/\/.*/, '') : ''
     Path('/a').expand_path.to_s.should == r+'/a'
-    Path('a').expand_path('/').to_s.should == r+'/a'
-    Path('a').expand_path(Path('/')).to_s.should == r+'/a'
-    Path('/b').expand_path(Path('/a')).to_s.should == r+'/b'
-    Path('b').expand_path(Path('/a')).to_s.should == r+'/a/b'
+    Path('a').expand('/').to_s.should == r+'/a'
+    Path('a').expand(Path('/')).to_s.should == r+'/a'
+    Path('/b').expand(Path('/a')).to_s.should == r+'/b'
+    Path('b').expand(Path('/a')).to_s.should == r+'/a/b'
   end
 
   it 'split' do

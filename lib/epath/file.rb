@@ -79,6 +79,7 @@ class Path
 
   # See <tt>File.expand_path</tt>.
   def expand_path(*args) Path.new(File.expand_path(@path, *args)) end
+  alias_method :expand, :expand_path
 
   # See <tt>File.split</tt>.  Returns the #dirname and the #basename in an
   # Array.

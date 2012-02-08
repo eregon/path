@@ -161,7 +161,6 @@ class Path
     result/path if result
   end
 
-  alias_method :expand, :expand_path
   alias_method :dir, :dirname
 end
 
