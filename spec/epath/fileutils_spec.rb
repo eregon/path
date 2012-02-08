@@ -24,10 +24,14 @@ describe 'Path : FileUtils' do
     file.should_not exist
     file.touch
     file.should exist
-    file.size.should == 0
+    file.should be_empty
   end
 
   it 'touch!', :tmpchdir do
     Path('foo/bar/baz.rb').touch!.should exist
+    Path('foo').should be_a_directory
+    Path('foo/bar').should be_a_directory
+    Path('foo/bar/baz.rb').should be_a_file
+    Path('foo/bar/baz.rb').should be_empty
   end
 end
