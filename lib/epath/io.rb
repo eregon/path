@@ -36,19 +36,23 @@ class Path
     IO.sysopen(@path, *args)
   end
 
-  def write(contents, open_args = nil)
-    if IO.respond_to? :write
-      IO.write(@path, contents, *[open_args].compact)
-    else
-      open('w', *[open_args].compact) { |f| f.write(contents) }
+  if IO.respond_to? :write
+    def write(contents, *open_args)
+      IO.write(@path, contents, *open_args)
+    end
+  else
+    def write(contents, *open_args)
+      open('w', *open_args) { |f| f.write(contents) }
     end
   end
 
-  def append(contents, open_args = {})
-    if IO.respond_to? :write
+  if IO.respond_to? :write
+    def append(contents, open_args = {})
       open_args[:mode] = 'a'
       IO.write(@path, contents, open_args)
-    else
+    end
+  else
+    def append(contents, open_args = nil)
       open('a') { |f| f.write(contents) }
     end
   end
