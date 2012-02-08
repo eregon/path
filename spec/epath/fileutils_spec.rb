@@ -6,8 +6,8 @@ describe 'Path : FileUtils' do
   end
 
   it 'rmtree', :tmpchdir do
-    Path('a/b/c/d').mkpath.exist?.should be_true
-    Path('a').rmtree.exist?.should be_false
+    Path('a/b/c/d').mkpath.should exist
+    Path('a').rmtree.should_not exist
   end
 
   it 'mkdir_p, rm_rf' do
@@ -21,13 +21,13 @@ describe 'Path : FileUtils' do
 
   it 'touch', :tmpchdir do
     file = Path('file')
-    file.exist?.should be_false
+    file.should_not exist
     file.touch
-    file.exist?.should be_true
+    file.should exist
     file.size.should == 0
   end
 
   it 'touch!', :tmpchdir do
-    Path('foo/bar/baz.rb').touch!.should be_exist
+    Path('foo/bar/baz.rb').touch!.should exist
   end
 end

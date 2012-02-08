@@ -5,10 +5,10 @@ describe 'Path : File and Dir' do
     f = Path('f')
     f.write 'abc'
     f.unlink
-    f.exist?.should be_false
+    f.should_not exist
 
     d = Path('d').mkdir
     d.unlink
-    d.exist?.should be_false
+    d.should_not exist
   end
 end

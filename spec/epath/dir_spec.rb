@@ -44,7 +44,7 @@ describe 'Path : Dir' do
     d = Path('d').mkdir
     d.should be_a_directory
     d.rmdir
-    d.exist?.should be_false
+    d.should_not exist
   end
 
   it 'opendir', :tmpchdir do

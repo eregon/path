@@ -111,23 +111,23 @@ describe Path do
     tmpfile = nil
     Path.tmpfile do |file|
       tmpfile = file
-      tmpfile.exist?.should be_true
+      tmpfile.should exist
       tmpfile.write 'foo'
       tmpfile.read.should == 'foo'
     end
-    tmpfile.exist?.should be_false
+    tmpfile.should_not exist
   end
 
   it 'tmpdir' do
     tmpdir = nil
     Path.tmpdir do |dir|
       tmpdir = dir
-      tmpdir.exist?.should be_true
+      tmpdir.should exist
       (dir/:file).write 'foo'
       (dir/:file).read.should == 'foo'
     end
-    # This may be delayed a bit, notably on JRuby
-    # tmpdir.exist?.should be_false
+    # TODO: This may be delayed a bit, notably on JRuby
+    # tmpdir.should_not exist
   end
 
   it 'tmpchdir', :fails_on => [:rbx] do

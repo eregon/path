@@ -23,7 +23,7 @@ describe 'Path : File predicates' do
   it 'exist?', :tmpchdir do
     a = Path('a')
     a.write 'abc'
-    a.exist?.should be_true
+    a.should exist
   end
 
   it 'grpowned?', :tmpchdir, :unix do
