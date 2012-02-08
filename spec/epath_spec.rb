@@ -40,14 +40,6 @@ describe Path do
     (Path('/a/b/Array/sort.rb') % Path('/a/b/')).should == Path('Array/sort.rb')
   end
 
-  it 'empty?' do
-    Path.tmpfile do |file|
-      file.should be_empty
-      file.write 'Hello World!'
-      file.should_not be_empty
-    end
-  end
-
   it 'parent' do
     Path('a/b/c').parent.should == Path('a/b')
     Path('a').parent.should == Path('.')

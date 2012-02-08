@@ -86,7 +86,7 @@ class Path
   # See <tt>File.zero?</tt>.
   # empty? is not defined in File/FileTest, but is is clearer
   def zero?() File.zero?(@path) end
-  alias empty? zero?
+  alias_method :empty?, :zero?
 
   # See <tt>File.identical?</tt>.
   def identical?(path)

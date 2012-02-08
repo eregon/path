@@ -132,12 +132,18 @@ describe 'Path : File predicates' do
     f.should be_writable_real
   end
 
-  it 'zero?', :tmpchdir do
+  it 'zero?, empty?', :tmpchdir do
     f = Path('f')
     f.write 'abc'
     f.should_not be_zero
     Path('z').touch.should be_zero
     Path('not-exist').should_not be_zero
+
+    Path.tmpfile do |file|
+      file.should be_empty
+      file.write 'Hello World!'
+      file.should_not be_empty
+    end
   end
 
   it 'identical?', :tmpchdir, :fails_on => [:rbx] do
