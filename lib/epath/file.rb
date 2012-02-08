@@ -50,6 +50,9 @@ class Path
   # See <tt>File.lstat</tt>.
   def lstat() File.lstat(@path) end
 
+  # See <tt>File.size</tt>.
+  def size() File.size(@path) end
+
   # Creates a symbolic link to +target+ and returns self.
   #
   # Raises Errno::EEXIST if self already exist.

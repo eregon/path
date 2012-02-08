@@ -88,15 +88,6 @@ describe 'Path : File predicates' do
     f.should_not be_setgid
   end
 
-  it 'size', :tmpchdir do
-    f = Path('f')
-    f.write 'abc'
-    f.size.should == 3
-
-    Path('z').touch.size.should == 0
-    lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
-  end
-
   it 'size?', :tmpchdir do
     f = Path('f')
     f.write 'abc'

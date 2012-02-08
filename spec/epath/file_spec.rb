@@ -128,6 +128,15 @@ describe 'Path : File' do
     a.lstat.size.should == 3
   end
 
+  it 'size', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.size.should == 3
+
+    Path('z').touch.size.should == 0
+    lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
+  end
+
   it 'make_symlink', :tmpchdir, :symlink do
     Path('a').write 'abc'
     Path('l').make_symlink('a').lstat.should be_a_symlink

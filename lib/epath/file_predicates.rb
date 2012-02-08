@@ -57,9 +57,6 @@ class Path
   # See <tt>File.setgid?</tt>.
   def setgid?() File.setgid?(@path) end
 
-  # See <tt>File.size</tt>.
-  def size() File.size(@path) end
-
   # See <tt>File.size?</tt>.
   def size?() File.size?(@path) end
 
