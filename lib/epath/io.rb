@@ -1,11 +1,9 @@
 class Path
-  #
-  # #each_line iterates over the line in the file.  It yields a String object
-  # for each line.
-  #
+  # Iterates over the lines in the file. See <tt>IO.foreach</tt>.
   def each_line(*args, &block) # :yield: line
     IO.foreach(@path, *args, &block)
   end
+  alias lines each_line
 
   # See <tt>IO.read</tt>.  Returns all data from the file, or the first +N+ bytes
   # if specified.
