@@ -97,6 +97,16 @@ describe 'Path : File predicates' do
     lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
   end
 
+  it 'size?', :tmpchdir do
+    f = Path('f')
+    f.write 'abc'
+    f.size?.should == 3
+
+    Path('z').touch.size?.should be_nil
+
+    Path('not-exist').size?.should be_nil
+  end
+
   it 'sticky?', :tmpchdir, :unix do
     f = Path('f')
     f.write 'abc'
