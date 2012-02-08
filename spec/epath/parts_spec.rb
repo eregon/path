@@ -65,16 +65,13 @@ describe 'Path : parts' do
     Path('a/').descend.map(&:to_s).should == %w[a/]
   end
 
-  it 'ascend' do
+  it 'ascend, ancestors' do
     Path('/a/b/c').ascend.map(&:to_s).should == %w[/a/b/c /a/b /a /]
     Path('a/b/c').ascend.map(&:to_s).should == %w[a/b/c a/b a]
     Path('./a/b/c').ascend.map(&:to_s).should ==  %w[./a/b/c ./a/b ./a .]
     Path('a/').ascend.map(&:to_s).should == %w[a/]
-  end
 
-  it 'ancestors' do
     r = Path.new(File.dirname('C:') != '.' ? 'C:/' : '/')
-    (r/'usr/bin/ls').ancestors.to_a.should == [
-      r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
+    (r/'usr/bin/ls').ancestors.to_a.should == [r/'usr/bin/ls', r/'usr/bin', r/'usr', r]
   end
 end

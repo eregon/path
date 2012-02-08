@@ -113,15 +113,5 @@ class Path
       yield Path.new(del_trailing_separator(path))
     end
   end
-
-  def ancestors
-    ancestors = lambda do |y|
-      y << path = expand
-      until (path = path.parent).root?
-        y << path
-      end
-      y << path
-    end
-    RUBY_VERSION > '1.9' ? Enumerator.new(&ancestors) : ancestors.call([])
-  end
+  alias_method :ancestors, :ascend
 end
