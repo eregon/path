@@ -470,6 +470,11 @@ describe 'Path implementation' do
     path.to_s.should_not be path.to_s
   end
 
+  it 'to_sym' do
+    Path('path').to_sym.should == :path
+    Path('dir/file').to_sym.should == :"dir/file"
+  end
+
   it 'Kernel#open', :fails_on => [:rbx, :rbx19, :jruby19] do
     count = 0
     Kernel.open(Path(__FILE__)) { |f|
