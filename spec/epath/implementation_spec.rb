@@ -952,56 +952,6 @@ describe 'Path implementation' do
     Path('not-exist').should_not be_zero
   end
 
-  it 'glob', :tmpchdir do
-    f = Path('f')
-    f.write 'abc'
-    d = Path('d').mkdir
-    Path.glob('*').sort.should == [d,f]
-
-    r = []
-    Path.glob('*') { |path| r << path }
-    r.sort.should == [d,f]
-  end
-
-  it 'getwd, pwd' do
-    Path.getwd.should be_kind_of Path
-    Path.pwd.should be_kind_of Path
-  end
-
-  it 'entries', :tmpchdir do
-    a, b = Path('a').touch, Path('b').touch
-    Path('.').entries.sort.should == [Path('.'), Path('..'), a, b]
-  end
-
-  it 'each_entry', :tmpchdir do
-    a, b = Path('a').touch, Path('b').touch
-    r = []
-    Path('.').each_entry { |entry| r << entry }
-    r.sort.should == [Path('.'), Path('..'), a, b]
-  end
-
-  it 'mkdir', :tmpchdir do
-    Path('d').mkdir.should be_a_directory
-    Path('e').mkdir(0770).should be_a_directory
-  end
-
-  it 'rmdir', :tmpchdir do
-    d = Path('d').mkdir
-    d.should be_a_directory
-    d.rmdir
-    d.exist?.should be_false
-  end
-
-  it 'opendir', :tmpchdir do
-    Path('a').touch
-    Path('b').touch
-    r = []
-    Path('.').opendir { |d|
-      d.each { |e| r << e }
-    }
-    r.sort.should == ['.', '..', 'a', 'b']
-  end
-
   it 'find', :tmpchdir do
     a, b = Path('a').touch, Path('b').touch
     d = Path('d').mkdir

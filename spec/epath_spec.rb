@@ -203,26 +203,6 @@ describe Path do
     end
   end
 
-  it 'chdir' do
-    called = false
-    spec.chdir do
-      called = true
-      Path.getwd.should == spec
-    end
-    called.should be_true
-  end
-
-  it 'entries' do
-    spec.entries.sort.should == [Path('.'), Path('..'), Path('epath'), Path('epath_spec.rb'), Path('fixtures'), Path('spec_helper.rb')]
-  end
-
-  it 'glob' do
-    spec.glob('*.rb').sort.should == [this, spec_helper]
-    spec.chdir do
-      Path.glob('*.rb').map(&:expand).sort.should == [this, spec_helper]
-    end
-  end
-
   it 'tmpfile' do
     tmpfile = nil
     Path.tmpfile do |file|
