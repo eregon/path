@@ -19,6 +19,16 @@ describe 'Path : FileUtils' do
     end
   end
 
+  it 'rm, rm_f', :tmpchdir do
+    f = Path('f')
+    f.rm_f
+
+    f.touch.should exist
+    f.rm.should_not exist
+
+    f.touch.rm_f.should_not exist
+  end
+
   it 'touch', :tmpchdir do
     file = Path('file')
     file.should_not exist
