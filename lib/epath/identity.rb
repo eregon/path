@@ -18,7 +18,7 @@ class Path
     path = parts.size > 1 ? parts.join(File::SEPARATOR) : parts.first
     if Tempfile === path
       @_tmpfile = path # We would not want it to be GC'd
-      @path = path.path
+      @path = path.path.dup
     elsif String === path
       @path = path.dup
     else
