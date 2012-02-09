@@ -7,19 +7,6 @@ require 'tempfile'
 
 class Path
   class << self
-    def new(*args)
-      if args.size == 1 and Path === args[0]
-        args[0]
-      else
-        super(*args)
-      end
-    end
-    alias_method :[], :new
-
-    def to_proc
-      lambda { |path| new(path) }
-    end
-
     def here(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       new(from.first.split(/:\d+(?:$|:in)/).first).expand
@@ -80,25 +67,8 @@ class Path
     end
   end
 
-  def initialize(*parts)
-    path = parts.size > 1 ? parts.join(File::SEPARATOR) : parts.first
-    if Tempfile === path
-      @_tmpfile = path # We would not want it to be GC'd
-      @path = path.path
-    elsif String === path
-      @path = path.dup
-    else
-      @path = path.to_s
-    end
-    taint if @path.tainted?
-  end
-
   def / part
     join part.to_s
-  end
-
-  def to_sym
-    to_s.to_sym
   end
 
   def relative_to other
@@ -124,9 +94,3 @@ class Path
 end
 
 EPath = Path # to meet everyone's expectations
-
-unless defined? NO_EPATH_GLOBAL_FUNCTION
-  def Path(*args)
-    Path.new(*args)
-  end
-end

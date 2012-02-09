@@ -8,31 +8,6 @@ spec = Path(File.expand_path('..',__FILE__))
 spec_helper = Path(File.expand_path('../spec_helper.rb',__FILE__))
 
 describe Path do
-  it 'behaves like a path' do
-    path = Path.new('/')
-    [:to_s, :to_sym, :to_path].each do |meth|
-      path.should respond_to meth
-    end
-
-    if RUBY_VERSION > '1.9'
-      path.should_not respond_to :to_str
-    else
-      path.should respond_to :to_str
-    end
-  end
-
-  it 'Path(), new, &Path' do
-    Path.new('/').to_s.should == '/'
-    Path('/usr', 'bin', 'ls').should == Path('/usr/bin/ls')
-    (Path('/usr')/:bin/:ls).should == Path('/usr/bin/ls')
-    Path(:path).to_s.should == 'path'
-
-    path = Path.new('.')
-    Path.new(path).should be path
-
-    %w[foo bar].map(&Path).should == [Path('foo'), Path('bar')]
-  end
-
   it '%, relative_to' do
     Path('/a/b/Array/sort.rb').relative_to(Path('/')).should == Path('a/b/Array/sort.rb')
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b')).should == Path('Array/sort.rb')

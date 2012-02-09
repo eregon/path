@@ -9,58 +9,6 @@ class Path
   end
   # :startdoc:
 
-  def freeze
-    super
-    @path.freeze
-    self
-  end
-
-  def taint
-    super
-    @path.taint
-    self
-  end
-
-  def untaint
-    super
-    @path.untaint
-    self
-  end
-
-  # Compare this pathname with +other+.  The comparison is string-based.
-  # Be aware that two different paths (<tt>foo.txt</tt> and <tt>./foo.txt</tt>)
-  # can refer to the same file.
-  def == other
-    Path === other and @path == other.to_path
-  end
-  alias eql? ==
-
-  # Provides for comparing pathnames, case-sensitively.
-  def <=>(other)
-    return nil unless Path === other
-    @path.tr('/', "\0") <=> other.to_s.tr('/', "\0")
-  end
-
-  def hash # :nodoc:
-    @path.hash
-  end
-
-  # Return the path as a String.
-  def to_s
-    @path.dup
-  end
-
-  # to_path is implemented so Path objects are usable with File.open, etc.
-  def to_path
-    @path
-  end
-
-  alias to_str to_path if RUBY_VERSION < '1.9'
-
-  def inspect
-    "#<Path #{@path}>"
-  end
-
   if File::ALT_SEPARATOR
     SEPARATOR_LIST = "#{Regexp.quote File::ALT_SEPARATOR}#{Regexp.quote File::SEPARATOR}"
     SEPARATOR_PAT = /[#{SEPARATOR_LIST}]/
