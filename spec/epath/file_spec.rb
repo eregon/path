@@ -96,7 +96,7 @@ describe 'Path : File', :tmpchdir do
     path.size.should == 3
 
     Path('z').touch.size.should == 0
-    lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
+    expect { Path('not-exist').size }.to raise_error(Errno::ENOENT)
   end
 
   it 'make_symlink', :symlink do

@@ -8,13 +8,13 @@ describe 'Path#load' do
     (fixtures/'data.yaml').load.should == {'kind' => 'yaml'}
     (fixtures/'data.json').load.should == {'kind' => 'json'}
 
-    lambda {
+    expect {
       (fixtures/'no-such-one.yml').load
-    }.should raise_error(Errno::ENOENT)
+    }.to raise_error(Errno::ENOENT)
 
-    lambda {
+    expect {
       Path(__FILE__).load
-    }.should raise_error(RuntimeError, /Unable to load .*unrecognized extension/)
+    }.to raise_error(RuntimeError, /Unable to load .*unrecognized extension/)
   end
 
   it 'loads new extensions with Path.register_loader' do
