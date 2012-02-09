@@ -1,8 +1,11 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'Path#require_tree', :tmpchdir do
-  before(:each) do
-    %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path).each(&:touch!)
+describe 'Path#require_tree' do
+  around(:each) do |example|
+    Path.tmpchdir('path-test') do
+      %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path).each(&:touch!)
+      example.run
+    end
   end
 
   let(:features) { $LOADED_FEATURES }

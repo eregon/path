@@ -23,13 +23,20 @@ ruby = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
 ruby = :"#{ruby}19" if RUBY_VERSION > '1.9'
 ruby = nil if $DEBUG
 
+tmpdir = Path.tmpdir('path-test')
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
   config.around(:each, :tmpchdir) { |example|
-    Path.tmpchdir('path-test') do |dir|
+    tmpdir.chdir do
       example.run
+      tmpdir.each_child(&:rm_r)
     end
+  }
+
+  config.after(:suite) {
+    FileUtils.remove_entry_secure tmpdir
   }
 
   config.filter_run_excluding :ruby => lambda { |version|
