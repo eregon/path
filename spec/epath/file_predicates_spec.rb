@@ -1,6 +1,6 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'Path : File predicates' do
+describe 'Path : File predicates', :tmpchdir do
   let(:f) {
     f = Path('f')
     f.write 'abc'
@@ -9,70 +9,70 @@ describe 'Path : File predicates' do
 
   let(:d) { Path('d').mkdir }
 
-  it 'blockdev?, chardev?', :tmpchdir do
+  it 'blockdev?, chardev?' do
     f.should_not be_a_blockdev
     f.should_not be_a_chardev
   end
 
-  it 'executable?', :tmpchdir do
+  it 'executable?' do
     f.should_not be_executable
   end
 
-  it 'executable_real?', :tmpchdir do
+  it 'executable_real?' do
     f.should_not be_executable_real
   end
 
-  it 'exist?', :tmpchdir do
+  it 'exist?' do
     f.should exist
     Path('not-exist').should_not exist
   end
 
-  it 'grpowned?', :tmpchdir, :unix do
+  it 'grpowned?', :unix do
     f.chown(-1, Process.gid)
     f.should be_grpowned
   end
 
-  it 'dir?, directory?', :tmpchdir do
+  it 'dir?, directory?' do
     f.should_not be_a_directory
     d.should be_a_directory
     d.should be_a_dir
   end
 
-  it 'file?', :tmpchdir do
+  it 'file?' do
     f.should be_a_file
     d.should_not be_a_file
   end
 
-  it 'pipe?, socket?', :tmpchdir do
+  it 'pipe?, socket?' do
     f.should_not be_a_pipe
     f.should_not be_a_socket
   end
 
-  it 'owned?', :tmpchdir do
+  it 'owned?' do
     f.should be_owned
   end
 
-  it 'readable?', :tmpchdir do
+  it 'readable?' do
     f.should be_readable
   end
 
-  it 'world_readable?', :tmpchdir, :unix do
+  it 'world_readable?', :unix do
     f.chmod 0400
     f.world_readable?.should be_nil
     f.chmod 0444
     f.world_readable?.should == 0444
   end
 
-  it 'readable_real?', :tmpchdir do
+  it 'readable_real?' do
     f.should be_readable_real
   end
 
-  it 'setuid?, setgid?', :tmpchdir do
+  it 'setuid?, setgid?' do
     f.should_not be_setuid
     f.should_not be_setgid
   end
 
-  it 'size?', :tmpchdir do
+  it 'size?' do
     f.size?.should == 3
 
     Path('z').touch.size?.should be_nil
@@ -80,30 +80,30 @@ describe 'Path : File predicates' do
     Path('not-exist').size?.should be_nil
   end
 
-  it 'sticky?', :tmpchdir, :unix do
+  it 'sticky?', :unix do
     f.should_not be_sticky
   end
 
-  it 'symlink?', :tmpchdir, :unix do
+  it 'symlink?', :unix do
     f.should_not be_a_symlink
   end
 
-  it 'writable?', :tmpchdir do
+  it 'writable?' do
     f.should be_writable
   end
 
-  it 'world_writable?', :tmpchdir, :unix do
+  it 'world_writable?', :unix do
     f.chmod 0600
     f.world_writable?.should be_nil
     f.chmod 0666
     f.world_writable?.should == 0666
   end
 
-  it 'writable_real?', :tmpchdir do
+  it 'writable_real?' do
     f.should be_writable_real
   end
 
-  it 'zero?, empty?', :tmpchdir do
+  it 'zero?, empty?' do
     f.should_not be_zero
     Path('z').touch.should be_zero
     Path('not-exist').should_not be_zero
@@ -115,7 +115,7 @@ describe 'Path : File predicates' do
     end
   end
 
-  it 'identical?', :tmpchdir, :fails_on => [:rbx] do
+  it 'identical?', :fails_on => [:rbx] do
     a = Path('a').touch
     a.should be_identical(Path('a'))
     Path.getwd.should be_identical(Path('.'))

@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'Path : IO' do
-  it 'open', :tmpchdir do
+describe 'Path : IO', :tmpchdir do
+  it 'open' do
     path = Path('a')
     path.write 'abc'
 
@@ -18,14 +18,14 @@ describe 'Path : IO' do
     g.close
   end
 
-  it 'open 1.9', :tmpchdir, :ruby => 1.9, :fails_on => [:rbx19, :jruby19] do
+  it 'open 1.9', :ruby => 1.9, :fails_on => [:rbx19, :jruby19] do
     c = Path('c')
     c.open('w', 0444, {}) { |f| f.write "ghi" }
     (c.stat.mode & 0777).should == 0444
     c.read.should == 'ghi'
   end
 
-  it 'each_line', :tmpchdir do
+  it 'each_line' do
     a = Path('a')
 
     a.open('w') { |f| f.puts 1, 2 }
@@ -38,29 +38,29 @@ describe 'Path : IO' do
     a.each_line.to_a.should == ["1\n", "2\n"]
   end
 
-  it 'each_line 1.9', :tmpchdir, :ruby => 19, :fails_on => [:rbx19] do
+  it 'each_line 1.9', :ruby => 19, :fails_on => [:rbx19] do
     a = Path('a')
     a.open('w') { |f| f.puts 1, 2 }
     a.each_line(1).to_a.should == ['1', "\n", '2', "\n"]
     a.each_line('2', 1).to_a.should == ['1', "\n", '2', "\n"]
   end
 
-  it 'readlines', :tmpchdir do
+  it 'readlines' do
     Path('a').open('w') { |f| f.puts 1, 2 }
     Path('a').readlines.should == ["1\n", "2\n"]
   end
 
-  it 'read', :tmpchdir do
+  it 'read' do
     Path('a').open('w') { |f| f.puts 1, 2 }
     Path('a').read.should == "1\n2\n"
   end
 
-  it 'binread', :tmpchdir do
+  it 'binread' do
     Path('a').write 'abc'
     Path('a').binread.should == 'abc'
   end
 
-  it 'sysopen', :tmpchdir do
+  it 'sysopen' do
     Path('a').write 'abc'
     fd = Path('a').sysopen
     io = IO.new(fd)
@@ -71,12 +71,12 @@ describe 'Path : IO' do
     end
   end
 
-  it 'write', :tmpchdir do
+  it 'write' do
     Path('a').write "abc\ndef"
     Path('a').read.should == "abc\ndef"
   end
 
-  it 'append', :tmpchdir do
+  it 'append' do
     f = Path('f')
     f.write "hello\n"
     f.append "world\n"

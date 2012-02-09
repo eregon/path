@@ -1,6 +1,6 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe 'Path : File' do
+describe 'Path : File', :tmpchdir do
   dosish_drive_letter = File.dirname('A:') == 'A:.'
 
   let(:path) {
@@ -15,14 +15,14 @@ describe 'Path : File' do
     Path(__FILE__).mtime.should be_kind_of Time
   end
 
-  it 'chmod', :tmpchdir do
+  it 'chmod' do
     old = path.stat.mode
     path.chmod(0444)
     (path.stat.mode & 0777).should == 0444
     path.chmod(old)
   end
 
-  it 'lchmod', :tmpchdir, :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
+  it 'lchmod', :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
     link = Path('l').make_symlink(path)
     old = link.lstat.mode
     begin
@@ -34,7 +34,7 @@ describe 'Path : File' do
     link.chmod(old)
   end
 
-  it 'chown', :tmpchdir, :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
+  it 'chown', :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
     old_uid = path.stat.uid
     old_gid = path.stat.gid
     begin
@@ -47,7 +47,7 @@ describe 'Path : File' do
     path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :tmpchdir, :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
+  it 'lchown', :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
     link = Path('l').make_symlink(path)
     old_uid = link.stat.uid
     old_gid = link.stat.gid
@@ -61,29 +61,29 @@ describe 'Path : File' do
     link.lchown(old_uid, old_gid)
   end
 
-  it 'ftype', :tmpchdir do
+  it 'ftype' do
     path.ftype.should == 'file'
     Path('d').mkdir.ftype.should == 'directory'
   end
 
-  it 'make_link', :tmpchdir, :fails_on => [:jruby, :jruby19] do
+  it 'make_link', :fails_on => [:jruby, :jruby19] do
     Path('l').make_link(path).read.should == 'abc'
   end
 
-  it 'readlink', :tmpchdir, :symlink, :fails_on => [:jruby] do
+  it 'readlink', :symlink, :fails_on => [:jruby] do
     Path('l').make_symlink(path).readlink.should == path
   end
 
-  it 'rename', :tmpchdir do
+  it 'rename' do
     path.rename('b')
     Path('b').read.should == 'abc'
   end
 
-  it 'stat', :tmpchdir do
+  it 'stat' do
     path.stat.size.should == 3
   end
 
-  it 'lstat', :tmpchdir, :symlink do
+  it 'lstat', :symlink do
     link = Path('l').make_symlink(path)
     link.lstat.should be_a_symlink
     link.stat.should_not be_a_symlink
@@ -92,24 +92,24 @@ describe 'Path : File' do
     path.lstat.size.should == 3
   end
 
-  it 'size', :tmpchdir do
+  it 'size' do
     path.size.should == 3
 
     Path('z').touch.size.should == 0
     lambda { Path('not-exist').size }.should raise_error(Errno::ENOENT)
   end
 
-  it 'make_symlink', :tmpchdir, :symlink do
+  it 'make_symlink', :symlink do
     Path('l').make_symlink(path).lstat.should be_a_symlink
   end
 
-  it 'truncate', :tmpchdir do
+  it 'truncate' do
     path.truncate 2
     path.size.should == 2
     path.read.should == 'ab'
   end
 
-  it 'utime', :tmpchdir do
+  it 'utime' do
     atime, mtime = Time.utc(2000), Time.utc(1999)
     path.utime(atime, mtime)
     path.stat.atime.should == atime
