@@ -1,5 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
+frozen_error = RUBY_VERSION > '1.9' ? RuntimeError : TypeError
+
 describe 'Path : identity' do
   it 'initialize' do
     p1 = Path.new('a')
@@ -79,25 +81,25 @@ describe 'Path : identity' do
     ('a' <=> Path('a')).should be_nil
   end
 
-  it 'destructive update of #to_s should not affect the path' do
+  it 'destructive update of #to_s are not allowed' do
     path = Path('a')
-    path.to_s.replace 'b'
+    expect {
+      path.to_s.replace 'b'
+    }.to raise_error(frozen_error, /can't modify frozen/)
     path.to_s.should == 'a'
     path.should == Path('a')
   end
 
   it 'taint' do
     path = Path('a')
-    path.taint.should be path
+    expect {
+      path.taint
+    }.to raise_error(frozen_error, /can't modify frozen/)
 
     Path('a'      )           .should_not be_tainted
     Path('a'      )      .to_s.should_not be_tainted
-    Path('a'      ).taint     .should be_tainted
-    Path('a'      ).taint.to_s.should be_tainted
     Path('a'.taint)           .should be_tainted
     Path('a'.taint)      .to_s.should be_tainted
-    Path('a'.taint).taint     .should be_tainted
-    Path('a'.taint).taint.to_s.should be_tainted
 
     str = 'a'
     path = Path(str)
@@ -107,16 +109,10 @@ describe 'Path : identity' do
   end
 
   it 'untaint' do
-    path = Path('a')
-    path.taint
-    path.untaint.should be path
-
-    Path('a').taint.untaint     .should_not be_tainted
-    Path('a').taint.untaint.to_s.should_not be_tainted
-
-    str = 'a'.taint
-    path = Path(str)
-    str.untaint
+    path = Path('a'.taint)
+    expect {
+      path.untaint
+    }.to raise_error(frozen_error, /can't modify frozen/)
     path     .should be_tainted
     path.to_s.should be_tainted
   end
@@ -125,28 +121,22 @@ describe 'Path : identity' do
     path = Path('a')
     path.freeze.should be path
 
-    Path('a'       )            .should_not be_frozen
-    Path('a'.freeze)            .should_not be_frozen
+    Path('a'       )            .should be_frozen
+    Path('a'.freeze)            .should be_frozen
     Path('a'       ).freeze     .should be_frozen
     Path('a'.freeze).freeze     .should be_frozen
-    Path('a'       )       .to_s.should_not be_frozen
-    Path('a'.freeze)       .to_s.should_not be_frozen
-    Path('a'       ).freeze.to_s.should_not be_frozen
-    Path('a'.freeze).freeze.to_s.should_not be_frozen
+    Path('a'       )       .to_s.should be_frozen
+    Path('a'.freeze)       .to_s.should be_frozen
+    Path('a'       ).freeze.to_s.should be_frozen
+    Path('a'.freeze).freeze.to_s.should be_frozen
   end
 
   it 'freeze and taint', :fails_on => [:rbx, :rbx19] do
     path = Path('a').freeze
     path.should_not be_tainted
-    error = RUBY_VERSION > '1.9' ? RuntimeError : TypeError
-    lambda { path.taint }.should raise_error(error)
-
-    path = Path('a')
-    path.taint
-    path.should be_tainted
-    path.freeze
-    path.should be_tainted
-    path.taint
+    expect {
+      path.taint
+    }.to raise_error(frozen_error, /can't modify frozen/)
   end
 
   it 'inspect' do
@@ -158,7 +148,17 @@ describe 'Path : identity' do
     path = Path(str)
     path.to_s.should == str
     path.to_s.should_not be str
-    path.to_s.should_not be path.to_s
+    path.to_s.should be path.to_s
+  end
+
+  it 'to_s.dup can be modified' do
+    str = 'a'
+    path = Path(str)
+    dup = path.to_s.dup
+    dup.should_not be_frozen
+    dup.gsub!('a', 'b')
+    dup.should == 'b'
+    path.to_s.should == str
   end
 
   it 'to_sym' do

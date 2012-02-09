@@ -25,24 +25,8 @@ class Path
       @path = path.to_s
     end
     taint if @path.tainted?
-  end
-
-  def freeze
-    super
     @path.freeze
-    self
-  end
-
-  def taint
-    super
-    @path.taint
-    self
-  end
-
-  def untaint
-    super
-    @path.untaint
-    self
+    freeze
   end
 
   # Compare this pathname with +other+.  The comparison is string-based.
@@ -65,18 +49,16 @@ class Path
 
   # Return the path as a String.
   def to_s
-    @path.dup
-  end
-
-  # to_path is implemented so Path objects are usable with File.open, etc.
-  def to_path
     @path
   end
 
-  alias_method :to_str, :to_path if RUBY_VERSION < '1.9'
+  # to_path is implemented so Path objects are usable with File.open, etc.
+  alias_method :to_path, :to_s
+
+  alias_method :to_str, :to_s if RUBY_VERSION < '1.9'
 
   def to_sym
-    to_s.to_sym
+    @path.to_sym
   end
 
   def inspect
