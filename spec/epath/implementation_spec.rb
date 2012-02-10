@@ -310,7 +310,7 @@ describe 'Path implementation' do
     g = dir / (f/'g').mkdir
     h = Path('h').make_symlink(g)
     f.chmod(0000)
-    expect { h.realpath }.to raise_error(Errno::EACCES)
+    expect { h.realpath }.to raise_error(Errno::EACCES) unless Process.uid == 0
     f.chmod(0755)
     h.realpath.should == g
   end
