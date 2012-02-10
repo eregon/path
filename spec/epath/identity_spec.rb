@@ -1,6 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 frozen_error = RUBY_VERSION > '1.9' ? RuntimeError : TypeError
+frozen_error = [frozen_error, /(?:can't|unable to) modify frozen/]
 
 describe 'Path : identity' do
   it 'initialize' do
@@ -85,7 +86,7 @@ describe 'Path : identity' do
     path = Path('a')
     expect {
       path.to_s.replace 'b'
-    }.to raise_error(frozen_error, /can't modify frozen/)
+    }.to raise_error(*frozen_error)
     path.to_s.should == 'a'
     path.should == Path('a')
   end
@@ -94,7 +95,7 @@ describe 'Path : identity' do
     path = Path('a')
     expect {
       path.taint
-    }.to raise_error(frozen_error, /can't modify frozen/)
+    }.to raise_error(*frozen_error)
 
     Path('a'      )           .should_not be_tainted
     Path('a'      )      .to_s.should_not be_tainted
@@ -112,7 +113,7 @@ describe 'Path : identity' do
     path = Path('a'.taint)
     expect {
       path.untaint
-    }.to raise_error(frozen_error, /can't modify frozen/)
+    }.to raise_error(*frozen_error)
     path     .should be_tainted
     path.to_s.should be_tainted
   end
@@ -136,7 +137,7 @@ describe 'Path : identity' do
     path.should_not be_tainted
     expect {
       path.taint
-    }.to raise_error(frozen_error, /can't modify frozen/)
+    }.to raise_error(*frozen_error)
   end
 
   it 'inspect' do
