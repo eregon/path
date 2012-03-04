@@ -41,8 +41,8 @@ Path.tmpdir
 
 ### aliases
 
-* expand => expand_path
-* relative_to => relative_path_from
+* expand => expand\_path
+* relative\_to => relative\_path\_from
 
 ### parts
 
@@ -55,9 +55,9 @@ Path.tmpdir
 Path('/usr')/'bin'
 ```
 
-* add_ext / add_extension
-* rm_ext / without_extension
-* sub_ext(new_ext) / replace_extension(new_ext)
+* add\_ext / add\_extension
+* rm\_ext / without\_extension
+* sub\_ext(new\_ext) / replace\_extension(new\_ext)
 
 ### glob
 
@@ -87,12 +87,12 @@ Path.backfind('.[.git]') # => the root of this repository
 ### management
 
 * mkdir
-* mkdir_p
-* rm_rf
+* mkdir\_p
+* rm\_rf
 
 ### require
 
-* Path.require_tree: require all .rb files recursively (in alphabetic order)
+* Path.require\_tree: require all .rb files recursively (in alphabetic order)
 
 ## Status
 
