@@ -26,7 +26,7 @@ Path.new('/usr', 'bin')
 ```
 
 ``` ruby
-Path.here # == Path(__FILE__).expand
+Path.file # == Path(__FILE__).expand
 Path.dir # == Path(File.dirname(__FILE__)).expand
 Path.relative(path) # == Path(File.expand_path("../#{path}", __FILE__))
 Path.home # == Path(File.expand_path('~'))
