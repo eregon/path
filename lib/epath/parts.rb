@@ -65,17 +65,17 @@ class Path
   # for each element in the given path in descending order.
   #
   #  Path.new('/path/to/some/file.rb').descend { |v| p v }
-  #     #<Path:/>
-  #     #<Path:/path>
-  #     #<Path:/path/to>
-  #     #<Path:/path/to/some>
-  #     #<Path:/path/to/some/file.rb>
+  #     #<Path />
+  #     #<Path /path>
+  #     #<Path /path/to>
+  #     #<Path /path/to/some>
+  #     #<Path /path/to/some/file.rb>
   #
   #  Path.new('path/to/some/file.rb').descend { |v| p v }
-  #     #<Path:path>
-  #     #<Path:path/to>
-  #     #<Path:path/to/some>
-  #     #<Path:path/to/some/file.rb>
+  #     #<Path path>
+  #     #<Path path/to>
+  #     #<Path path/to/some>
+  #     #<Path path/to/some/file.rb>
   #
   # It doesn't access actual filesystem.
   def descend
@@ -90,17 +90,17 @@ class Path
   # for each element in the given path in ascending order.
   #
   #  Path.new('/path/to/some/file.rb').ascend { |v| p v }
-  #     #<Path:/path/to/some/file.rb>
-  #     #<Path:/path/to/some>
-  #     #<Path:/path/to>
-  #     #<Path:/path>
-  #     #<Path:/>
+  #     #<Path /path/to/some/file.rb>
+  #     #<Path /path/to/some>
+  #     #<Path /path/to>
+  #     #<Path /path>
+  #     #<Path />
   #
   #  Path.new('path/to/some/file.rb').ascend { |v| p v }
-  #     #<Path:path/to/some/file.rb>
-  #     #<Path:path/to/some>
-  #     #<Path:path/to>
-  #     #<Path:path>
+  #     #<Path path/to/some/file.rb>
+  #     #<Path path/to/some>
+  #     #<Path path/to>
+  #     #<Path path>
   #
   # It doesn't access actual filesystem.
   def ascend

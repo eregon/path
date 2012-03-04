@@ -42,9 +42,9 @@ class Path
   # Path#+ appends a pathname fragment to this one to produce a new Path
   # object.
   #
-  #   p1 = Path.new("/usr")   # Path:/usr
-  #   p2 = p1 + "bin/ruby"    # Path:/usr/bin/ruby
-  #   p3 = p1 + "/etc/passwd" # Path:/etc/passwd
+  #   p1 = Path.new("/usr")   # => #<Path /usr>
+  #   p2 = p1 + "bin/ruby"    # => #<Path /usr/bin/ruby>
+  #   p3 = p1 + "/etc/passwd" # => #<Path /etc/passwd>
   #
   # This method doesn't access the file system; it is pure string manipulation.
   def +(other)
