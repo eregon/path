@@ -1,5 +1,4 @@
-# Enchanced Pathname
-# Use the composite pattern with a Pathname
+# Path - a Path manipulation library
 
 Dir.glob(File.expand_path('../epath/*.rb',__FILE__)) { |file| require file }
 
