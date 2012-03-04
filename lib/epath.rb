@@ -68,6 +68,9 @@ class Path
 
   alias_method :/, :+
 
+  alias_method :relative_to, :relative_path_from
+  alias_method :%, :relative_path_from
+
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)
   end

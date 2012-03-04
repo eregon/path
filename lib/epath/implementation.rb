@@ -110,8 +110,6 @@ class Path
       Path.new(File.join(*relpath_names))
     end
   end
-  alias_method :relative_to, :relative_path_from
-  alias_method :%, :relative_path_from
 
   private
 
