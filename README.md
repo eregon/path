@@ -26,10 +26,10 @@ Path.new('/usr', 'bin')
 ```
 
 ``` ruby
-Path.file # == Path(__FILE__).expand
-Path.dir # == Path(File.dirname(__FILE__)).expand
+Path.file           # == Path(__FILE__).expand
+Path.dir            # == Path(File.dirname(__FILE__)).expand
 Path.relative(path) # == Path(File.expand_path("../#{path}", __FILE__))
-Path.home # == Path(File.expand_path('~'))
+Path.home           # == Path(File.expand_path('~'))
 ```
 
 ### temporary
@@ -73,7 +73,8 @@ Path('/usr')/'bin'
 ``` ruby
 # Path.backfind is Path.here.backfind
 Path.backfind('lib') # => Path's lib folder
-# it accepts XPath-like context
+
+# It accepts XPath-like context
 Path.backfind('.[.git]') # => the root of this repository
 ```
 
@@ -103,5 +104,5 @@ Benoit Daloze - eregon
 
 ## Contributors
 
-Bernard Lambeau - blambeau
+Bernard Lambeau - blambeau  
 Ravil Bayramgalin - brainopia
