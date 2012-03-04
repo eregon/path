@@ -66,9 +66,7 @@ class Path
     end
   end
 
-  def / part
-    join part.to_s
-  end
+  alias_method :/, :+
 
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)

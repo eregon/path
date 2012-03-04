@@ -48,7 +48,6 @@ class Path
   #
   # This method doesn't access the file system; it is pure string manipulation.
   def +(other)
-    other = Path.new(other) unless Path === other
     Path.new(plus(@path, other.to_s))
   end
 
