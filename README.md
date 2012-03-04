@@ -89,6 +89,10 @@ Path.backfind('.[.git]') # => the root of this repository
 * mkdir_p
 * rm_rf
 
+### require
+
+* Path.require_tree: require all .rb files recursively (in alphabetic order)
+
 ## Status
 
 This is still in the early development stage, you should expect many additions and some changes.
@@ -100,3 +104,4 @@ Benoit Daloze - eregon
 ## Contributors
 
 Bernard Lambeau - blambeau
+Ravil Bayramgalin - brainopia
