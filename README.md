@@ -66,7 +66,8 @@ Path('/usr')/'bin'
 
 ### structure
 
-* ancestors: self and all the parent directories
+* ascend, ancestors: self and all the parent directories
+* descend: in the reverse order
 * backfind: ascends the parents until it finds the given path
 
 ``` ruby
