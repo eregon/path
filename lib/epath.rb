@@ -70,11 +70,6 @@ class Path
     join part.to_s
   end
 
-  def relative_to other
-    relative_path_from Path.new other
-  end
-  alias_method :%, :relative_to
-
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)
   end

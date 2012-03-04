@@ -78,7 +78,7 @@ class Path
   # ArgumentError is raised when it cannot find a relative path.
   def relative_path_from(base_directory)
     dest_directory = cleanpath.to_s
-    base_directory = base_directory.cleanpath.to_s
+    base_directory = Path.new(base_directory).cleanpath.to_s
     dest_prefix = dest_directory
     dest_names = []
     while r = chop_basename(dest_prefix)
@@ -111,6 +111,8 @@ class Path
       Path.new(File.join(*relpath_names))
     end
   end
+  alias_method :relative_to, :relative_path_from
+  alias_method :%, :relative_path_from
 
   private
 
