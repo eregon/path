@@ -80,7 +80,7 @@ describe 'Path : parts' do
   it 'ascend, ancestors' do
     Path('/a/b/c').ascend.map(&:to_s).should == %w[/a/b/c /a/b /a /]
     Path('a/b/c').ascend.map(&:to_s).should == %w[a/b/c a/b a]
-    Path('./a/b/c').ascend.map(&:to_s).should ==  %w[./a/b/c ./a/b ./a .]
+    Path('./a/b/c').ascend.map(&:to_s).should == %w[./a/b/c ./a/b ./a .]
     Path('a/').ascend.map(&:to_s).should == %w[a/]
 
     r = Path.new(File.dirname('C:') != '.' ? 'C:/' : '/')

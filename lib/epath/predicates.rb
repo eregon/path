@@ -15,10 +15,10 @@ class Path
   end
 
   #
-  # #root? is a predicate for root directories.  I.e. it returns +true+ if the
+  # #root? is a predicate for root directories. I.e. it returns +true+ if the
   # pathname consists of consecutive slashes.
   #
-  # It doesn't access actual filesystem.  So it may return +false+ for some
+  # It doesn't access actual filesystem. So it may return +false+ for some
   # pathnames which points to roots such as <tt>/usr/..</tt>.
   #
   def root?

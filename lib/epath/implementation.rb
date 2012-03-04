@@ -18,12 +18,12 @@ class Path
   end
 
   # Returns clean pathname of +self+ with consecutive slashes and useless dots
-  # removed.  The filesystem is not accessed.
+  # removed. The filesystem is not accessed.
   #
   # If +consider_symlink+ is +true+, then a more conservative algorithm is used
-  # to avoid breaking symbolic linkages.  This may retain more <tt>..</tt>
+  # to avoid breaking symbolic linkages. This may retain more <tt>..</tt>
   # entries than absolutely necessary, but without accessing the filesystem,
-  # this can't be avoided.  See #realpath.
+  # this can't be avoided. See #realpath.
   def cleanpath(consider_symlink=false)
     if consider_symlink
       cleanpath_conservative
@@ -42,9 +42,9 @@ class Path
   # Path#+ appends a pathname fragment to this one to produce a new Path
   # object.
   #
-  #   p1 = Path.new("/usr")      # Path:/usr
-  #   p2 = p1 + "bin/ruby"           # Path:/usr/bin/ruby
-  #   p3 = p1 + "/etc/passwd"        # Path:/etc/passwd
+  #   p1 = Path.new("/usr")   # Path:/usr
+  #   p2 = p1 + "bin/ruby"    # Path:/usr/bin/ruby
+  #   p3 = p1 + "/etc/passwd" # Path:/etc/passwd
   #
   # This method doesn't access the file system; it is pure string manipulation.
   def +(other)
@@ -70,10 +70,10 @@ class Path
   end
 
   # #relative_path_from returns a relative path from the argument to the
-  # receiver.  If +self+ is absolute, the argument must be absolute too.  If
-  # +self+ is relative, the argument must be relative too.
+  # receiver. If +self+ is absolute, the argument must be absolute too.
+  # If +self+ is relative, the argument must be relative too.
   #
-  # #relative_path_from doesn't access the filesystem.  It assumes no symlinks.
+  # #relative_path_from doesn't access the filesystem. It assumes no symlinks.
   #
   # ArgumentError is raised when it cannot find a relative path.
   def relative_path_from(base_directory)

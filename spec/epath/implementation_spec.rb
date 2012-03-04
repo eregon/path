@@ -205,7 +205,7 @@ describe 'Path implementation' do
   end
 
   it 'join' do
-    Path('a').join(Path('b'), Path('c')).should ==  Path('a/b/c')
+    Path('a').join(Path('b'), Path('c')).should == Path('a/b/c')
   end
 
   it 'relative_path_from' do

@@ -30,7 +30,7 @@ class Path
     File.lchown(owner, group, @path)
   end
 
-  # See <tt>File.ftype</tt>.  Returns "type" of file ("file", "directory", etc).
+  # See <tt>File.ftype</tt>. Returns "type" of file ("file", "directory", etc).
   def ftype
     File.ftype(@path)
   end
@@ -44,15 +44,15 @@ class Path
     self
   end
 
-  # See <tt>File.readlink</tt>.  Read symbolic link.
+  # See <tt>File.readlink</tt>. Read symbolic link.
   def readlink
     Path.new(File.readlink(@path))
   end
 
-  # See <tt>File.rename</tt>.  Rename the file.
+  # See <tt>File.rename</tt>. Rename the file.
   def rename(to) File.rename(@path, to) end
 
-  # See <tt>File.stat</tt>.  Returns a <tt>File::Stat</tt> object.
+  # See <tt>File.stat</tt>. Returns a <tt>File::Stat</tt> object.
   def stat
     File.stat(@path)
   end
@@ -76,10 +76,10 @@ class Path
     self
   end
 
-  # See <tt>File.truncate</tt>.  Truncate the file to +length+ bytes.
+  # See <tt>File.truncate</tt>. Truncate the file to +length+ bytes.
   def truncate(length) File.truncate(@path, length) end
 
-  # See <tt>File.utime</tt>.  Update the access and modification times.
+  # See <tt>File.utime</tt>. Update the access and modification times.
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 
   # See <tt>File.expand_path</tt>.

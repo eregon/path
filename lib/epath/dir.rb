@@ -1,6 +1,6 @@
 class Path
   class << self
-    # See <tt>Dir.glob</tt>.  Returns or yields Path objects.
+    # See <tt>Dir.glob</tt>. Returns or yields Path objects.
     def glob(*args) # :yield: pathname
       if block_given?
         Dir.glob(*args) { |f| yield new(f) }
@@ -9,7 +9,7 @@ class Path
       end
     end
 
-    # See <tt>Dir.getwd</tt>.  Returns the current working directory as a Path.
+    # See <tt>Dir.getwd</tt>. Returns the current working directory as a Path.
     def Path.getwd
       new Dir.getwd
     end
@@ -62,8 +62,8 @@ class Path
   end
 
   # Returns the children of the directory (files and subdirectories, not
-  # recursive) as an array of Path objects.  By default, the returned
-  # pathnames will have enough information to access the files.  If you set
+  # recursive) as an array of Path objects. By default, the returned
+  # pathnames will have enough information to access the files. If you set
   # +with_directory+ to +false+, then the returned pathnames will contain the
   # filename only.
   #

@@ -29,7 +29,7 @@ class Path
     freeze
   end
 
-  # Compare this pathname with +other+.  The comparison is string-based.
+  # Compare this pathname with +other+. The comparison is string-based.
   # Be aware that two different paths (<tt>foo.txt</tt> and <tt>./foo.txt</tt>)
   # can refer to the same file.
   def == other

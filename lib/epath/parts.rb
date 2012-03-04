@@ -15,7 +15,7 @@ class Path
   end
   alias_method :dir, :dirname
 
-  # See <tt>File.extname</tt>.  Returns the file's extension.
+  # See <tt>File.extname</tt>. Returns the file's extension.
   def extname
     File.extname(@path)
   end
