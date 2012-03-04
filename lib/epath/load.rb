@@ -22,6 +22,10 @@ class Path
     JSON.load(path.read)
   end
 
+  register_loader 'gemspec' do |path|
+    eval path.read
+  end
+
   # Path#load helps loading data from various files.
   # JSON and YAML loaders are provided by default.
   # See Path.register_loader.
