@@ -7,7 +7,7 @@ class Path
         super(*args)
       end
     end
-    alias_method :[], :new
+    alias :[] :new
 
     def to_proc
       lambda { |path| new(path) }
@@ -35,7 +35,7 @@ class Path
   def == other
     Path === other and @path == other.to_path
   end
-  alias_method :eql?, :==
+  alias :eql? :==
 
   # Provides for comparing pathnames, case-sensitively.
   def <=>(other)
@@ -53,9 +53,9 @@ class Path
   end
 
   # to_path is implemented so Path objects are usable with File.open, etc.
-  alias_method :to_path, :to_s
+  alias :to_path :to_s
 
-  alias_method :to_str, :to_s if RUBY_VERSION < '1.9'
+  alias :to_str :to_s if RUBY_VERSION < '1.9'
 
   def to_sym
     @path.to_sym

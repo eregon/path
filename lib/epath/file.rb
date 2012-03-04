@@ -86,7 +86,7 @@ class Path
   def expand_path(*args)
     Path.new(File.expand_path(@path, *args))
   end
-  alias_method :expand, :expand_path
+  alias :expand :expand_path
 
   #
   # Returns the real (absolute) pathname of +self+ in the actual

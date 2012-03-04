@@ -8,5 +8,5 @@ class Path
       File.unlink @path
     end
   end
-  alias delete unlink
+  alias :delete :unlink
 end

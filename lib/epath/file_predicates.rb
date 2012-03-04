@@ -25,7 +25,7 @@ class Path
   def exist?
     File.exist?(@path)
   end
-  alias exists? exist?
+  alias :exists? :exist?
 
   # See <tt>File.grpowned?</tt>.
   def grpowned?
@@ -36,7 +36,7 @@ class Path
   def directory?
     File.directory?(@path)
   end
-  alias_method :dir?, :directory?
+  alias :dir? :directory?
 
   # See <tt>File.file?</tt>.
   def file?
@@ -132,7 +132,7 @@ class Path
   def zero?
     File.zero?(@path)
   end
-  alias_method :empty?, :zero?
+  alias :empty? :zero?
 
   # See <tt>File.identical?</tt>.
   def identical?(path)

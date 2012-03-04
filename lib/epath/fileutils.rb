@@ -7,7 +7,7 @@ class Path
     FileUtils.mkpath(@path)
     self
   end
-  alias mkdir_p mkpath
+  alias :mkdir_p :mkpath
 
   # See <tt>FileUtils.rm_r</tt>. Deletes a directory and all beneath it.
   def rmtree
@@ -16,7 +16,7 @@ class Path
     FileUtils.rm_r(@path)
     self
   end
-  alias rm_r rmtree
+  alias :rm_r :rmtree
 
   def rm
     FileUtils.rm(@path)

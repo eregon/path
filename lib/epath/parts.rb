@@ -13,7 +13,7 @@ class Path
   def dirname
     Path.new(File.dirname(@path))
   end
-  alias_method :dir, :dirname
+  alias :dir :dirname
 
   # See <tt>File.extname</tt>. Returns the file's extension.
   def extname
@@ -36,19 +36,19 @@ class Path
     ext = ".#{ext}" unless ext.start_with? '.'
     Path.new @path+ext
   end
-  alias_method :add_ext, :add_extension
+  alias :add_ext :add_extension
 
   def without_extension
     Path.new @path[0..-extname.size-1]
   end
-  alias_method :rm_ext, :without_extension
+  alias :rm_ext :without_extension
 
   def replace_extension(ext)
     return without_extension if ext.empty?
     ext = ".#{ext}" unless ext.start_with? '.'
     Path.new(@path[0..-extname.size-1] << ext)
   end
-  alias_method :sub_ext, :replace_extension
+  alias :sub_ext :replace_extension
 
   # Iterates over each component of the path.
   #
@@ -113,5 +113,5 @@ class Path
       yield Path.new(del_trailing_separator(path))
     end
   end
-  alias_method :ancestors, :ascend
+  alias :ancestors :ascend
 end

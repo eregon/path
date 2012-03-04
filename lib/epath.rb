@@ -10,7 +10,7 @@ class Path
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       new(from.first.split(/:\d+(?:$|:in)/).first).expand
     end
-    alias_method :here, :file
+    alias :here :file
 
     def dir(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
@@ -42,7 +42,7 @@ class Path
       end
       file
     end
-    alias_method :tempfile, :tmpfile
+    alias :tempfile :tmpfile
 
     def tmpdir(prefix_suffix = nil, *rest)
       require 'tmpdir'
@@ -66,10 +66,10 @@ class Path
     end
   end
 
-  alias_method :/, :+
+  alias :/ :+
 
-  alias_method :relative_to, :relative_path_from
-  alias_method :%, :relative_path_from
+  alias :relative_to :relative_path_from
+  alias :% :relative_path_from
 
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)

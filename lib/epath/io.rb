@@ -8,7 +8,7 @@ class Path
   def each_line(*args, &block) # :yield: line
     IO.foreach(@path, *args, &block)
   end
-  alias lines each_line
+  alias :lines :each_line
 
   # Returns all data from the file, or the first +N+ bytes if specified.
   # See <tt>IO.read</tt>.
@@ -23,7 +23,7 @@ class Path
       IO.binread(@path, *args)
     end
   else
-    alias binread read
+    alias :binread :read
   end
 
   # See <tt>IO.readlines</tt>. Returns all the lines from the file.

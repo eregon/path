@@ -13,7 +13,7 @@ class Path
     def Path.getwd
       new Dir.getwd
     end
-    alias pwd getwd
+    alias :pwd :getwd
   end
 
   # Iterates over the entries (files and subdirectories) in the directory.
