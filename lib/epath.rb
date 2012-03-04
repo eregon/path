@@ -7,11 +7,11 @@ require 'tempfile'
 
 class Path
   class << self
-    def here(from = nil)
+    def file(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       new(from.first.split(/:\d+(?:$|:in)/).first).expand
     end
-    alias_method :file, :here
+    alias_method :here, :file
 
     def dir(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
@@ -27,7 +27,7 @@ class Path
     end
 
     def backfind(path)
-      here(caller).backfind(path)
+      file(caller).backfind(path)
     end
 
     def tmpfile(basename = '', tmpdir = nil, options = nil)
