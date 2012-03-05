@@ -26,7 +26,7 @@ class Path
     alias :binread :read
   end
 
-  # See <tt>IO.readlines</tt>. Returns all the lines from the file.
+  # Returns all the lines from the file. See <tt>IO.readlines</tt>.
   def readlines(*args)
     IO.readlines(@path, *args)
   end

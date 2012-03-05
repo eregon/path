@@ -15,7 +15,7 @@ class Path
   end
   alias :dir :dirname
 
-  # See <tt>File.extname</tt>. Returns the file's extension.
+  # Returns the file's extension. See <tt>File.extname</tt>.
   def extname
     File.extname(@path)
   end

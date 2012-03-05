@@ -1,6 +1,6 @@
 class Path
   class << self
-    # See <tt>Dir.glob</tt>. Returns or yields Path objects.
+    # Returns or yields Path objects. See <tt>Dir.glob</tt>.
     def glob(*args) # :yield: pathname
       if block_given?
         Dir.glob(*args) { |f| yield new(f) }
@@ -9,7 +9,7 @@ class Path
       end
     end
 
-    # See <tt>Dir.getwd</tt>. Returns the current working directory as a Path.
+    # Returns the current working directory as a Path. See <tt>Dir.getwd</tt>.
     def Path.getwd
       new Dir.getwd
     end
