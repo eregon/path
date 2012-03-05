@@ -57,11 +57,10 @@ class Path
   # <tt>path0 + path1 + ... + pathN</tt>.
   def join(*args)
     args.unshift self
-    result = args.pop
-    result = Path.new(result) unless Path === result
+    result = Path.new(args.pop)
     return result if result.absolute?
     args.reverse_each { |arg|
-      arg = Path.new(arg) unless Path === arg
+      arg = Path.new(arg)
       result = arg + result
       return result if result.absolute?
     }
