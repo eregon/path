@@ -5,11 +5,11 @@ class Path
   #
   # Returns an enumerator if no block is given.
   #
-  # Since it is implemented by <tt>find.rb</tt>, <tt>Find.prune</tt> can be used
+  # Since it is implemented by +find.rb+, +Find.prune+ can be used
   # to control the traversal.
   #
-  # If +self+ is <tt>.</tt>, yielded pathnames begin with a filename in the
-  # current directory, not <tt>./</tt>.
+  # If +self+ is +.+, yielded pathnames begin with a filename in the
+  # current directory, not +./+.
   #
   def find # :yield: pathname
     return to_enum(__method__) unless block_given?

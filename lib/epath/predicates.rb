@@ -19,13 +19,13 @@ class Path
   # pathname consists of consecutive slashes.
   #
   # It doesn't access actual filesystem. So it may return +false+ for some
-  # pathnames which points to roots such as <tt>/usr/..</tt>.
+  # pathnames which points to roots such as +/usr/..+.
   #
   def root?
     !!(chop_basename(@path) == nil && /#{SEPARATOR_PAT}/o =~ @path)
   end
 
-  # #mountpoint? returns +true+ if <tt>self</tt> points to a mountpoint.
+  # #mountpoint? returns +true+ if +self+ points to a mountpoint.
   def mountpoint?
     begin
       stat1 = lstat

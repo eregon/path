@@ -30,7 +30,7 @@ class Path
   end
 
   # Compare this pathname with +other+. The comparison is string-based.
-  # Be aware that two different paths (<tt>foo.txt</tt> and <tt>./foo.txt</tt>)
+  # Be aware that two different paths (+foo.txt+ and +./foo.txt+)
   # can refer to the same file.
   def == other
     Path === other and @path == other.to_path

@@ -1,6 +1,6 @@
 class Path
   class << self
-    # Returns or yields Path objects. See <tt>Dir.glob</tt>.
+    # Returns or yields Path objects. See +Dir.glob+.
     def glob(*args) # :yield: pathname
       if block_given?
         Dir.glob(*args) { |f| yield new(f) }
@@ -9,7 +9,7 @@ class Path
       end
     end
 
-    # Returns the current working directory as a Path. See <tt>Dir.getwd</tt>.
+    # Returns the current working directory as a Path. See +Dir.getwd+.
     def Path.getwd
       new Dir.getwd
     end
@@ -22,18 +22,18 @@ class Path
     Dir.foreach(@path) { |f| yield Path.new(f) }
   end
 
-  # Create the referenced directory and returns self. See <tt>Dir.mkdir</tt>.
+  # Create the referenced directory and returns self. See +Dir.mkdir+.
   def mkdir(*args)
     Dir.mkdir(@path, *args)
     self
   end
 
-  # Remove the referenced directory. See <tt>Dir.rmdir</tt>.
+  # Remove the referenced directory. See +Dir.rmdir+.
   def rmdir
     Dir.rmdir(@path)
   end
 
-  # See <tt>Dir.open</tt>.
+  # See +Dir.open+.
   def opendir(&block) # :yield: dir
     Dir.open(@path, &block)
   end
@@ -76,7 +76,7 @@ class Path
   #   pn.children(false)
   #       # -> [ #<Path English.rb>, #<Path Env.rb>, #<Path abbrev.rb>, ... ]
   #
-  # Note that the results never contain the entries <tt>.</tt> and <tt>..</tt> in
+  # Note that the results never contain the entries +.+ and +..+ in
   # the directory because they are not children.
   def children(with_directory=true)
     with_directory = false if @path == '.'

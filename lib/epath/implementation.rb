@@ -21,7 +21,7 @@ class Path
   # removed. The filesystem is not accessed.
   #
   # If +consider_symlink+ is +true+, then a more conservative algorithm is used
-  # to avoid breaking symbolic linkages. This may retain more <tt>..</tt>
+  # to avoid breaking symbolic linkages. This may retain more +..+
   # entries than absolutely necessary, but without accessing the filesystem,
   # this can't be avoided. See #realpath.
   def cleanpath(consider_symlink=false)

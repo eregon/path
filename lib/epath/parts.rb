@@ -1,5 +1,5 @@
 class Path
-  # Returns the last component of the path. See <tt>File.basename</tt>.
+  # Returns the last component of the path. See +File.basename+.
   def basename(*args)
     Path.new(File.basename(@path, *args))
   end
@@ -9,13 +9,13 @@ class Path
     basename(extname)
   end
 
-  # Returns all but the last component of the path. See <tt>File.dirname</tt>.
+  # Returns all but the last component of the path. See +File.dirname+.
   def dirname
     Path.new(File.dirname(@path))
   end
   alias :dir :dirname
 
-  # Returns the file's extension. See <tt>File.extname</tt>.
+  # Returns the file's extension. See +File.extname+.
   def extname
     File.extname(@path)
   end
@@ -26,7 +26,7 @@ class Path
     ext.empty? ? ext : ext[1..-1]
   end
 
-  # Returns the #dirname and the #basename in an Array. See <tt>File.split</tt>.
+  # Returns the #dirname and the #basename in an Array. See +File.split+.
   def split
     File.split(@path).map(&Path)
   end
