@@ -92,9 +92,7 @@ class Path
     unless SAME_PATHS[dest_prefix, base_prefix]
       raise ArgumentError, "different prefix: #{dest_prefix.inspect} and #{base_directory.inspect}"
     end
-    while !dest_names.empty? &&
-          !base_names.empty? &&
-          SAME_PATHS[dest_names.first, base_names.first]
+    until dest_names.empty? or base_names.empty? or !SAME_PATHS[dest_names.first, base_names.first]
       dest_names.shift
       base_names.shift
     end
