@@ -110,6 +110,23 @@ class Path
     end
   end
 
+  module Helpers
+    private
+
+    # remove the leading . of +ext+ if present.
+    def pure_ext(ext)
+      ext.start_with?('.') ? ext[1..-1] : ext
+    end
+
+    # add a leading . to +ext+ if missing. Returns '' if +ext+ is empty.
+    def dotted_ext(ext)
+      (ext.empty? or ext.start_with?('.')) ? ext : ".#{ext}"
+    end
+  end
+
+  include Helpers
+  extend Helpers
+
   private
 
   # chop_basename(path) -> [pre-basename, basename] or nil

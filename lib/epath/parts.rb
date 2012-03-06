@@ -33,8 +33,7 @@ class Path
 
   def add_extension(ext)
     return self if ext.empty?
-    ext = ".#{ext}" unless ext.start_with? '.'
-    Path.new @path+ext
+    Path.new @path+dotted_ext(ext)
   end
   alias :add_ext :add_extension
 
@@ -45,8 +44,7 @@ class Path
 
   def replace_extension(ext)
     return without_extension if ext.empty?
-    ext = ".#{ext}" unless ext.start_with? '.'
-    Path.new(@path[0..-extname.size-1] << ext)
+    Path.new(@path[0..-extname.size-1] << dotted_ext(ext))
   end
   alias :sub_ext :replace_extension
 

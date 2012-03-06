@@ -7,8 +7,7 @@ class Path
   #     Path.register_loader('.marshal') { |file| Marshal.load file.read }
   def self.register_loader(*extensions, &loader)
     extensions.each { |ext|
-      ext = ext[1..-1] if ext.start_with? '.'
-      LOADERS[ext] = loader
+      LOADERS[pure_ext(ext)] = loader
     }
   end
 
