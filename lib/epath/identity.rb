@@ -16,13 +16,14 @@ class Path
 
   def initialize(*parts)
     path = parts.size > 1 ? parts.join(File::SEPARATOR) : parts.first
-    if Tempfile === path
+    @path = case path
+    when Tempfile
       @_tmpfile = path # We would not want it to be GC'd
-      @path = path.path.dup
-    elsif String === path
-      @path = path.dup
+      path.path.dup
+    when String
+      path.dup
     else
-      @path = path.to_s
+      path.to_s
     end
     taint if @path.tainted?
     @path.freeze
