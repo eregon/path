@@ -170,7 +170,7 @@ class Path
     if File.basename(path + 'a') == 'a'
       path
     else
-      File.join(path, "") # xxx: Is File.join is appropriate to add separator?
+      path + '/'
     end
   end
 
