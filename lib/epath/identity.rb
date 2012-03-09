@@ -15,7 +15,7 @@ class Path
   end
 
   def initialize(*parts)
-    path = parts.size > 1 ? parts.join(File::SEPARATOR) : parts.first
+    path = parts.size > 1 ? File.join(parts) : parts.first
     @path = case path
     when Tempfile
       @_tmpfile = path # We would not want it to be GC'd

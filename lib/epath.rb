@@ -72,7 +72,7 @@ class Path
   alias :% :relative_path_from
 
   def inside? ancestor
-    @path == ancestor.to_s or @path.start_with?(ancestor.to_s + File::SEPARATOR)
+    @path == ancestor.to_s or @path.start_with?("#{ancestor}/")
   end
 
   def outside? ancestor

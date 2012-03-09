@@ -9,12 +9,10 @@ class Path
   end
   # :startdoc:
 
-  if File::ALT_SEPARATOR
-    SEPARATOR_LIST = "#{Regexp.quote File::ALT_SEPARATOR}#{Regexp.quote File::SEPARATOR}"
-    SEPARATOR_PAT = /[#{SEPARATOR_LIST}]/
+  SEPARATOR_PAT = if File::ALT_SEPARATOR
+    /[#{Regexp.quote File::ALT_SEPARATOR}\/]/
   else
-    SEPARATOR_LIST = "#{Regexp.quote File::SEPARATOR}"
-    SEPARATOR_PAT = /#{Regexp.quote File::SEPARATOR}/
+    /\//
   end
 
   # Returns clean pathname of +self+ with consecutive slashes and useless dots
