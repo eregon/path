@@ -102,7 +102,7 @@ class Path
     if relpath_names.empty?
       Path.new('.')
     else
-      Path.new(File.join(*relpath_names))
+      Path.new(*relpath_names)
     end
   end
 

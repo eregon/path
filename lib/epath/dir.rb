@@ -84,7 +84,7 @@ class Path
     Dir.foreach(@path) { |e|
       next if e == '.' || e == '..'
       if with_directory
-        result << Path.new(File.join(@path, e))
+        result << Path.new(@path, e)
       else
         result << Path.new(e)
       end
