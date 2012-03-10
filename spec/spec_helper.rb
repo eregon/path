@@ -35,7 +35,7 @@ RSpec.configure do |config|
     end
   }
 
-  unless ENV['TRAVIS'] and RUBY_DESCRIPTION =~ /^jruby/ # bugged on TravisCI
+  unless ENV['TRAVIS'] and RUBY_DESCRIPTION.start_with?('jruby') # bugged on TravisCI
     config.after(:suite) {
       FileUtils.remove_entry_secure tmpdir
     }
