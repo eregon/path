@@ -46,7 +46,7 @@ class Path
     end
   end
 
-  if IO.respond_to? :write
+  if IO.respond_to? :write and !RUBY_DESCRIPTION.start_with?('jruby')
     def append(contents, open_args = {})
       open_args[:mode] = 'a'
       IO.write(@path, contents, open_args)
