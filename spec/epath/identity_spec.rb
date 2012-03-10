@@ -92,11 +92,6 @@ describe 'Path : identity' do
   end
 
   it 'taint' do
-    path = Path('a')
-    expect {
-      path.taint
-    }.to raise_error(*frozen_error)
-
     Path('a'      )           .should_not be_tainted
     Path('a'      )      .to_s.should_not be_tainted
     Path('a'.taint)           .should be_tainted
@@ -107,15 +102,6 @@ describe 'Path : identity' do
     str.taint
     path.should_not be_tainted
     path.to_s.should_not be_tainted
-  end
-
-  it 'untaint' do
-    path = Path('a'.taint)
-    expect {
-      path.untaint
-    }.to raise_error(*frozen_error)
-    path     .should be_tainted
-    path.to_s.should be_tainted
   end
 
   it 'freeze' do
@@ -132,12 +118,21 @@ describe 'Path : identity' do
     Path('a'.freeze).freeze.to_s.should be_frozen
   end
 
-  it 'freeze and taint', :fails_on => [:rbx, :rbx19] do
-    path = Path('a').freeze
+  it 'freeze, taint and untaint', :fails_on => [:rbx, :rbx19] do
+    path = Path('a')
     path.should_not be_tainted
     expect {
       path.taint
     }.to raise_error(*frozen_error)
+    path.     should_not be_tainted
+    path.to_s.should_not be_tainted
+
+    path = Path('a'.taint)
+    expect {
+      path.untaint
+    }.to raise_error(*frozen_error)
+    path     .should be_tainted
+    path.to_s.should be_tainted
   end
 
   it 'inspect' do
