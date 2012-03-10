@@ -11,20 +11,6 @@ class Path
     }
   end
 
-  register_loader 'yml', 'yaml' do |path|
-    require 'yaml'
-    YAML.load_file(path)
-  end
-
-  register_loader 'json' do |path|
-    require 'json'
-    JSON.load(path.read)
-  end
-
-  register_loader 'gemspec' do |path|
-    eval path.read
-  end
-
   # Path#load helps loading data from various files.
   # JSON and YAML loaders are provided by default.
   # See Path.register_loader.

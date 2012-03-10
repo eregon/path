@@ -86,6 +86,21 @@ class Path
     result = ancestors.find { |ancestor| (ancestor/path/condition).exist? }
     result/path if result
   end
+
+  # Setup
+  register_loader 'yml', 'yaml' do |path|
+    require 'yaml'
+    YAML.load_file(path)
+  end
+
+  register_loader 'json' do |path|
+    require 'json'
+    JSON.load(path.read)
+  end
+
+  register_loader 'gemspec' do |path|
+    eval path.read
+  end
 end
 
 EPath = Path # to meet everyone's expectations
