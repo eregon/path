@@ -22,7 +22,7 @@ describe 'Path : File', :tmpchdir do
     path.chmod(old)
   end
 
-  it 'lchmod', :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
+  it 'lchmod', :symlink, :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
     link = Path('l').make_symlink(path)
     old = link.lstat.mode
     begin
@@ -47,7 +47,7 @@ describe 'Path : File', :tmpchdir do
     path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :symlink, :fails_on => [:rbx, :rbx19, :jruby] do
+  it 'lchown', :symlink, :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
     link = Path('l').make_symlink(path)
     old_uid = link.stat.uid
     old_gid = link.stat.gid
@@ -70,7 +70,7 @@ describe 'Path : File', :tmpchdir do
     Path('l').make_link(path).read.should == 'abc'
   end
 
-  it 'readlink', :symlink, :fails_on => [:jruby] do
+  it 'readlink', :symlink, :fails_on => [:jruby, :jruby19] do
     Path('l').make_symlink(path).readlink.should == path
   end
 

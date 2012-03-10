@@ -258,7 +258,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'realpath', :tmpchdir, :symlink, :fails_on => [:jruby] do
+  it 'realpath', :tmpchdir, :symlink, :fails_on => [:jruby, :jruby19] do
     dir = Path.getwd
     not_exist = dir/'not-exist'
     expect { not_exist.realpath }.to raise_error(Errno::ENOENT)
@@ -315,7 +315,7 @@ describe 'Path implementation' do
     h.realpath.should == g
   end
 
-  it 'realdirpath', :symlink, :fails_on => [:jruby] do
+  it 'realdirpath', :symlink, :fails_on => [:jruby, :jruby19] do
     Dir.mktmpdir('realdirpath') do |dir|
       dir = Path(dir)
       rdir = dir.realpath
