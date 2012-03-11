@@ -40,9 +40,14 @@ describe Path do
     Path.file(["dir/file.rb:7:in `(root)'"]).should == file
     Path.file(["dir/file.rb:2:in `meth'", "dir/file.rb:8:in `(root)'"]).should == file
 
-    file = Path('dir/a:32').expand # evil file name
+    # evil file names
+    file = Path('dir/a:32').expand
     Path.file(["dir/a:32:7:in `<main>'"]).should == file
     Path.file(["dir/a:32:2:in `meth'", "dir/a:32:8:in `<main>'"]).should == file
+
+    file = Path('dir/a:32:in').expand
+    Path.file(["dir/a:32:in:7:in `<main>'"]).should == file
+    Path.file(["dir/a:32:in:2:in `meth'", "dir/a:32:in:8:in `<main>'"]).should == file
 
     Path.file.should == Path(__FILE__).expand
     Path.dir.should == Path(File.dirname(__FILE__)).expand
