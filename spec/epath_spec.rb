@@ -24,8 +24,8 @@ describe Path do
     Path('../a').parent.should == Path('..')
   end
 
-  it 'here, dir' do
-    Path.here.should == Path(__FILE__).expand
+  it 'file, dir' do
+    Path.file.should == Path(__FILE__).expand
     Path.dir.should == Path(File.dirname(__FILE__)).expand
   end
 
