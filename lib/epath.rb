@@ -9,7 +9,7 @@ class Path
     def file(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
                                      # v This : is there to define a group without capturing
-      new(from.first.rpartition(/:\d+(?:$|:in)/).first).expand
+      new(from.first.rpartition(/:\d+(?:$|:in )/).first).expand
     end
     alias :here :file
 

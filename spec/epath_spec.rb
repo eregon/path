@@ -49,6 +49,10 @@ describe Path do
     Path.file(["dir/a:32:in:7:in `<main>'"]).should == file
     Path.file(["dir/a:32:in:2:in `meth'", "dir/a:32:in:8:in `<main>'"]).should == file
 
+    file = Path('dir/a:32:in ').expand
+    Path.file(["dir/a:32:in :7:in `<main>'"]).should == file
+    Path.file(["dir/a:32:in :2:in `meth'", "dir/a:32:in :8:in `<main>'"]).should == file
+
     Path.file.should == Path(__FILE__).expand
     Path.dir.should == Path(File.dirname(__FILE__)).expand
   end
