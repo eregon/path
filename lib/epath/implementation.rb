@@ -26,6 +26,9 @@ class Path
     else
       path.to_s.dup
     end
+
+    validate(@path)
+
     taint if @path.tainted?
     @path.freeze
     freeze
@@ -140,6 +143,10 @@ class Path
   extend Helpers
 
   private
+
+  def validate(path)
+    raise ArgumentError, "path contains a null byte: #{path.inspect}" if path.include? "\0"
+  end
 
   # chop_basename(path) -> [pre-basename, basename] or nil
   def chop_basename(path)

@@ -9,6 +9,8 @@ describe 'Path : identity' do
     p1.to_s.should == 'a'
     p2 = Path.new(p1)
     p2.should == p1
+
+    expect { Path.new("invalid path\0") }.to raise_error(ArgumentError, /null byte/)
   end
 
   it 'new' do
