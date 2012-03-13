@@ -1,14 +1,14 @@
 # Path's low-level implementation based on Pathname
 
 class Path
-  # :stopdoc:
+  # @private
   SAME_PATHS = if File::FNM_SYSCASE.nonzero?
     lambda { |a,b| a.casecmp(b).zero? }
   else
     lambda { |a,b| a == b }
   end
-  # :startdoc:
 
+  # @private
   SEPARATOR_PAT = if File::ALT_SEPARATOR
     /[#{Regexp.quote File::ALT_SEPARATOR}\/]/
   else
@@ -106,6 +106,7 @@ class Path
     end
   end
 
+  # @private
   module Helpers
     private
 
