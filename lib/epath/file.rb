@@ -49,8 +49,11 @@ class Path
     Path.new(File.readlink(@path))
   end
 
-  # Rename the file. See +File.rename+.
-  def rename(to) File.rename(@path, to) end
+  # Rename the file and returns the new Path. See +File.rename+.
+  def rename(to)
+    File.rename(@path, to)
+    Path(to)
+  end
 
   # Returns a +File::Stat+ object. See +File.stat+.
   def stat

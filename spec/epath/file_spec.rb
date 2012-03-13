@@ -75,7 +75,7 @@ describe 'Path : File', :tmpchdir do
   end
 
   it 'rename' do
-    path.rename('b')
+    path.rename('b').should == Path('b')
     Path('b').read.should == 'abc'
   end
 
