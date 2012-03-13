@@ -24,7 +24,7 @@ class Path
     when String
       path.dup
     else
-      path.to_s
+      path.to_s.dup
     end
     taint if @path.tainted?
     @path.freeze
