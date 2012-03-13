@@ -14,22 +14,6 @@ class Path
     end
   end
 
-  def initialize(*parts)
-    path = parts.size > 1 ? File.join(parts) : parts.first
-    @path = case path
-    when Tempfile
-      @_tmpfile = path # We would not want it to be GC'd
-      path.path.dup
-    when String
-      path.dup
-    else
-      path.to_s
-    end
-    taint if @path.tainted?
-    @path.freeze
-    freeze
-  end
-
   # Compare this path with +other+. The comparison is string-based.
   # Be aware that two different paths (+foo.txt+ and +./foo.txt+)
   # can refer to the same file.

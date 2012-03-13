@@ -15,6 +15,22 @@ class Path
     /\//
   end
 
+  def initialize(*parts)
+    path = parts.size > 1 ? File.join(parts) : parts.first
+    @path = case path
+    when Tempfile
+      @_tmpfile = path # We would not want it to be GC'd
+      path.path.dup
+    when String
+      path.dup
+    else
+      path.to_s
+    end
+    taint if @path.tainted?
+    @path.freeze
+    freeze
+  end
+
   # Returns clean path of +self+ with consecutive slashes and useless dots removed.
   # The filesystem is not accessed.
   #
