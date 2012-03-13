@@ -1,4 +1,6 @@
 class Path
+
+  # The list of loaders. See {Path.register_loader}.
   LOADERS = {}
 
   # Registers a new loader (a block which will be called with the Path to load)
