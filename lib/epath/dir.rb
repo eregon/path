@@ -1,7 +1,7 @@
 class Path
   class << self
     # Returns or yields Path objects. See +Dir.glob+.
-    def glob(*args) # :yield: pathname
+    def glob(*args) # :yield: path
       if block_given?
         Dir.glob(*args) { |f| yield new(f) }
       else
@@ -18,7 +18,7 @@ class Path
 
   # Iterates over the entries (files and subdirectories) in the directory.
   # It yields a Path object for each entry.
-  def each_entry(&block) # :yield: pathname
+  def each_entry(&block) # :yield: path
     Dir.foreach(@path) { |f| yield Path.new(f) }
   end
 
@@ -63,8 +63,8 @@ class Path
 
   # Returns the children of the directory (files and subdirectories, not
   # recursive) as an array of Path objects. By default, the returned
-  # pathnames will have enough information to access the files. If you set
-  # +with_directory+ to +false+, then the returned pathnames will contain the
+  # paths will have enough information to access the files. If you set
+  # +with_directory+ to +false+, then the returned paths will contain the
   # filename only.
   #
   # For example:
@@ -95,8 +95,8 @@ class Path
   # Iterates over the children of the directory
   # (files and subdirectories, not recursive).
   # It yields Path object for each child.
-  # By default, the yielded pathnames will have enough information to access the files.
-  # If you set +with_directory+ to +false+, then the returned pathnames will contain the filename only.
+  # By default, the yielded paths will have enough information to access the files.
+  # If you set +with_directory+ to +false+, then the returned paths will contain the filename only.
   #
   #   Path("/usr/local").each_child { |f| p f } # =>
   #       #<Path /usr/local/share>

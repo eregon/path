@@ -15,8 +15,8 @@ class Path
     /\//
   end
 
-  # Returns clean pathname of +self+ with consecutive slashes and useless dots
-  # removed. The filesystem is not accessed.
+  # Returns clean path of +self+ with consecutive slashes and useless dots removed.
+  # The filesystem is not accessed.
   #
   # If +consider_symlink+ is +true+, then a more conservative algorithm is used
   # to avoid breaking symbolic linkages. This may retain more +..+
@@ -37,19 +37,18 @@ class Path
     self + '..'
   end
 
-  # Path#+ appends a pathname fragment to this one to produce a new Path
-  # object.
+  # Path#+ appends a path fragment to this one to produce a new Path.
   #
   #   p1 = Path.new("/usr")   # => #<Path /usr>
   #   p2 = p1 + "bin/ruby"    # => #<Path /usr/bin/ruby>
   #   p3 = p1 + "/etc/passwd" # => #<Path /etc/passwd>
   #
-  # This method doesn't access the file system; it is pure string manipulation.
+  # This method doesn't access the file system, it is pure string manipulation.
   def +(other)
     Path.new(plus(@path, other.to_s))
   end
 
-  # Path#join joins pathnames.
+  # Path#join joins paths.
   #
   # <tt>path0.join(path1, ..., pathN)</tt> is the same as
   # <tt>path0 + path1 + ... + pathN</tt>.

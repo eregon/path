@@ -30,7 +30,7 @@ class Path
     freeze
   end
 
-  # Compare this pathname with +other+. The comparison is string-based.
+  # Compare this path with +other+. The comparison is string-based.
   # Be aware that two different paths (+foo.txt+ and +./foo.txt+)
   # can refer to the same file.
   def == other
@@ -38,7 +38,7 @@ class Path
   end
   alias :eql? :==
 
-  # Provides for comparing pathnames, case-sensitively.
+  # Provides for comparing paths, case-sensitively.
   def <=>(other)
     return nil unless Path === other
     @path.tr('/', "\0") <=> other.to_s.tr('/', "\0")

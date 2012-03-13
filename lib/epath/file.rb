@@ -88,23 +88,18 @@ class Path
   end
   alias :expand :expand_path
 
-  #
-  # Returns the real (absolute) pathname of +self+ in the actual
+  # Returns the real (absolute) path of +self+ in the actual
   # filesystem not containing symlinks or useless dots.
   #
-  # All components of the pathname must exist when this method is
-  # called.
-  #
+  # All components of the path must exist when this method is called.
   def realpath(basedir=nil)
     Path.new(real_path_internal(true, basedir))
   end
 
+  # Returns the real (absolute) path of +self+ in the actual filesystem.
+  # The real path doesn't contain symlinks or useless dots.
   #
-  # Returns the real (absolute) pathname of +self+ in the actual filesystem.
-  # The real pathname doesn't contain symlinks or useless dots.
-  #
-  # The last component of the real pathname can be nonexistent.
-  #
+  # The last component of the real path can be nonexistent.
   def realdirpath(basedir=nil)
     Path.new(real_path_internal(false, basedir))
   end

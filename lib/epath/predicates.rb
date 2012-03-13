@@ -1,11 +1,10 @@
 class Path
-  # Predicate method for testing whether a path is absolute.
-  # It returns +true+ if the pathname begins with a slash.
+  # Whether a path is absolute.
   def absolute?
     !relative?
   end
 
-  # The opposite of #absolute?
+  # Whether a path is relative.
   def relative?
     path = @path
     while r = chop_basename(path)
@@ -14,13 +13,11 @@ class Path
     path == ''
   end
 
-  #
   # #root? is a predicate for root directories. I.e. it returns +true+ if the
-  # pathname consists of consecutive slashes.
+  # path consists of consecutive slashes.
   #
   # It doesn't access actual filesystem. So it may return +false+ for some
-  # pathnames which points to roots such as +/usr/..+.
-  #
+  # paths which points to roots such as +/usr/..+.
   def root?
     !!(chop_basename(@path) == nil && /#{SEPARATOR_PAT}/o =~ @path)
   end
