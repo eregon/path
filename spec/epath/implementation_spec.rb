@@ -156,7 +156,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'del_trailing_separator win32', :if => dosish, :fails_on => [:jruby, :jruby19] do
+  it 'del_trailing_separator win32', :dosish, :fails_on => [:jruby, :jruby19] do
     require 'Win32API'
     if Win32API.new('kernel32', 'GetACP', nil, 'L').call == 932
       Path.allocate.send(:del_trailing_separator, "\225\\\\").should == "\225\\" # SJIS

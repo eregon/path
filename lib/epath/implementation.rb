@@ -8,13 +8,6 @@ class Path
     lambda { |a,b| a == b }
   end
 
-  # @private
-  SEPARATOR_PAT = if File::ALT_SEPARATOR
-    /[#{Regexp.quote File::ALT_SEPARATOR}\/]/
-  else
-    /\//
-  end
-
   def initialize(*parts)
     path = parts.size > 1 ? File.join(parts) : parts.first
     @path = case path
@@ -146,12 +139,13 @@ class Path
 
   def validate(path)
     raise ArgumentError, "path contains a null byte: #{path.inspect}" if path.include? "\0"
+    path.gsub!(File::ALT_SEPARATOR, '/') if File::ALT_SEPARATOR
   end
 
   # chop_basename(path) -> [pre-basename, basename] or nil
   def chop_basename(path)
     base = File.basename(path)
-    if /\A#{SEPARATOR_PAT}?\z/o =~ base
+    if base.empty? or base == '/'
       return nil
     else
       return path[0, path.rindex(base)], base
@@ -171,7 +165,7 @@ class Path
   def prepend_prefix(prefix, relpath)
     if relpath.empty?
       File.dirname(prefix)
-    elsif /#{SEPARATOR_PAT}/o =~ prefix
+    elsif prefix.include? '/'
       add_trailing_separator(File.dirname(prefix)) + relpath
     else
       prefix + relpath
@@ -199,8 +193,8 @@ class Path
     if r = chop_basename(path)
       pre, basename = r
       pre + basename
-    elsif /#{SEPARATOR_PAT}+\z/o =~ path
-      $` + File.dirname(path)[/#{SEPARATOR_PAT}*\z/o]
+    elsif /\/+\z/o =~ path
+      $` + File.dirname(path)[/\/*\z/o]
     else
       path
     end
@@ -226,7 +220,7 @@ class Path
         end
       end
     end
-    if /#{SEPARATOR_PAT}/o =~ File.basename(pre)
+    if File.basename(pre).include? '/'
       names.shift while names[0] == '..'
     end
     Path.new(prepend_prefix(pre, File.join(*names)))
@@ -240,7 +234,7 @@ class Path
       pre, base = r
       names.unshift base if base != '.'
     end
-    if /#{SEPARATOR_PAT}/o =~ File.basename(pre)
+    if File.basename(pre).include? '/'
       names.shift while names[0] == '..'
     end
     if names.empty?
@@ -345,7 +339,7 @@ class Path
       basename_list2.shift
     end
     r1 = chop_basename(prefix1)
-    if !r1 && /#{SEPARATOR_PAT}/o =~ File.basename(prefix1)
+    if !r1 && File.basename(prefix1).include?('/')
       while !basename_list2.empty? && basename_list2.first == '..'
         index_list2.shift
         basename_list2.shift

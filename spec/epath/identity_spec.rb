@@ -13,6 +13,13 @@ describe 'Path : identity' do
     expect { Path.new("invalid path\0") }.to raise_error(ArgumentError, /null byte/)
   end
 
+  it 'initialize win32', :dosish do
+    str = 'C:\Users'
+    Path.new(str).should == Path.new('C:/Users')
+    Path.new(str).to_s.should == 'C:/Users'
+    str.should == 'C:\Users'
+  end
+
   it 'new' do
     path = Path.new('.')
     Path.new(path).should be path

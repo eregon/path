@@ -46,6 +46,7 @@ RSpec.configure do |config|
   }
   config.filter_run_excluding :symlink => !has_symlink
   config.filter_run_excluding :unix => dosish
+  config.filter_run_excluding :dosish => !dosish
   config.filter_run_excluding :fails_on => lambda { |implementations|
     implementations and implementations.include? ruby
   }
