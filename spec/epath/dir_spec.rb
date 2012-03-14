@@ -59,11 +59,14 @@ describe 'Path : Dir' do
 
   it 'chdir' do
     called = false
-    spec = Path(__FILE__).expand.dir.dir
+    spec = Path(__FILE__).expand.dir.parent
+    root = spec.parent
+    Path.getwd.should == root
     spec.chdir do
       called = true
       Path.getwd.should == spec
     end
+    Path.getwd.should == root
     called.should be_true
   end
 
