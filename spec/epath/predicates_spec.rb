@@ -1,7 +1,5 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-dosish_drive_letter = File.dirname('A:') == 'A:.'
-
 describe 'Path predicates' do
   it 'absolute?' do
     Path('/').should be_absolute
@@ -14,23 +12,23 @@ describe 'Path predicates' do
     Path('/..').should_not be_relative
     Path('a').should be_relative
     Path('a/b').should be_relative
+  end
 
-    if dosish_drive_letter
-      Path('A:').should_not be_relative
-      Path('A:/').should_not be_relative
-      Path('A:/a').should_not be_relative
-    end
+  it 'relative? (dosish_drive)', :dosish_drive do
+    Path('A:').should_not be_relative
+    Path('A:/').should_not be_relative
+    Path('A:/a').should_not be_relative
+  end
 
-    if File.dirname('//') == '//'
-      [
-        '//',
-        '//a',
-        '//a/',
-        '//a/b',
-        '//a/b/',
-        '//a/b/c',
-      ].each { |path| Path(path).should_not be_relative }
-    end
+  it 'relative? (unc)', :unc do
+    [
+      '//',
+      '//a',
+      '//a/',
+      '//a/b',
+      '//a/b/',
+      '//a/b/c',
+    ].each { |path| Path(path).should_not be_relative }
   end
 
   it 'root?' do

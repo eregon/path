@@ -9,6 +9,8 @@ end
 require File.expand_path('../../lib/epath', __FILE__)
 
 dosish = File::ALT_SEPARATOR != nil
+dosish_drive = File.dirname('A:') == 'A:.'
+unc = File.dirname('//') == '//'
 
 has_symlink = true
 Path.tmpdir do |dir|
@@ -47,6 +49,8 @@ RSpec.configure do |config|
   config.filter_run_excluding :symlink => !has_symlink
   config.filter_run_excluding :unix => dosish
   config.filter_run_excluding :dosish => !dosish
+  config.filter_run_excluding :dosish_drive => !dosish_drive
+  config.filter_run_excluding :unc => !unc
   config.filter_run_excluding :fails_on => lambda { |implementations|
     implementations and implementations.include? ruby
   }

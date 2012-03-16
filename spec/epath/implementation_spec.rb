@@ -1,14 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Path implementation' do
-
-  dosish = File::ALT_SEPARATOR != nil
-  dosish_drive_letter = File.dirname('A:') == 'A:.'
-  dosish_unc = File.dirname('//') == '//'
-
   context 'cleanpath' do
     it 'aggressive' do
-      cases = {
+      {
         '/' => '/',
         '' => '.',
         '.' => '.',
@@ -41,28 +36,29 @@ describe 'Path implementation' do
         'a/../.' => '.',
         '/../.././../a' => '/a',
         'a/b/../../../../c/../d' => '../../d',
-      }
-
-      platform = if dosish_unc
-        { '//a/b/c/' => '//a/b/c' }
-      else
-        {
-          '///' => '/',
-          '///a' => '/a',
-          '///..' => '/',
-          '///.' => '/',
-          '///a/../..' => '/',
-        }
+      }.each_pair do |path, expected|
+        Path(path).cleanpath.to_s.should == expected
       end
-      cases.merge!(platform)
+    end
 
-      cases.each_pair do |path, expected|
+    it 'aggressive (unc)', :unc do
+      Path('//a/b/c/').cleanpath.to_s.should == '//a/b/c'
+    end
+
+    it 'aggressive (non unc)', :unc => false do
+      {
+        '///' => '/',
+        '///a' => '/a',
+        '///..' => '/',
+        '///.' => '/',
+        '///a/../..' => '/',
+      }.each_pair do |path, expected|
         Path(path).cleanpath.to_s.should == expected
       end
     end
 
     it 'conservative' do
-      cases = {
+      {
         '/' => '/',
         '' => '.',
         '.' => '.',
@@ -94,12 +90,17 @@ describe 'Path implementation' do
         'a/../.' => 'a/..',
         '/../.././../a' => '/a',
         'a/b/../../../../c/../d' => 'a/b/../../../../c/../d',
-      }
-      cases['//'] = (dosish_unc ? '//' : '/')
-
-      cases.each_pair do |path, expected|
+      }.each_pair do |path, expected|
         Path(path).cleanpath(true).to_s.should == expected
       end
+    end
+
+    it 'conservative (unc)', :unc do
+      Path('//').cleanpath(true).to_s.should == '//'
+    end
+
+    it 'conservative (non unc)', :unc => false do
+      Path('//').cleanpath(true).to_s.should == '/'
     end
   end
 
@@ -110,7 +111,7 @@ describe 'Path implementation' do
   end
 
   it 'del_trailing_separator' do
-    cases = {
+    {
       '/' => '/',
       '/a' => '/a',
       '/a/' => '/a',
@@ -118,40 +119,47 @@ describe 'Path implementation' do
       '.' => '.',
       './' => '.',
       './/' => '.',
-    }
-
-    if dosish_drive_letter
-      cases.merge!({
-        'A:' => 'A:',
-        'A:/' => 'A:/',
-        'A://' => 'A:/', # fails on JRuby, File.basename('A://') = 'A:' vs 'A:/' on MRI
-        'A:.' => 'A:.',
-        'A:./' => 'A:.',
-        'A:.//' => 'A:.',
-      })
+    }.each_pair do |path, expected|
+      Path.allocate.send(:del_trailing_separator, path).should == expected
     end
+  end
 
-    cases["a\\"] = 'a' if dosish
+  it 'del_trailing_separator (dosish)', :dosish do
+    Path.allocate.send(:del_trailing_separator, "a\\").should == 'a'
+  end
 
-    platform = if dosish_unc
-      {
-        '//' => '//',
-        '//a' => '//a',
-        '//a/' => '//a',
-        '//a//' => '//a',
-        '//a/b' => '//a/b',
-        '//a/b/' => '//a/b',
-        '//a/b//' => '//a/b',
-        '//a/b/c' => '//a/b/c',
-        '//a/b/c/' => '//a/b/c',
-        '//a/b/c//' => '//a/b/c',
-      }
-    else
-      { '///' => '/', '///a/' => '///a' }
+  it 'del_trailing_separator (dosish_drive)', :dosish_drive do
+    {
+      'A:' => 'A:',
+      'A:/' => 'A:/',
+      'A://' => 'A:/', # fails on JRuby, File.basename('A://') = 'A:' vs 'A:/' on MRI
+      'A:.' => 'A:.',
+      'A:./' => 'A:.',
+      'A:.//' => 'A:.',
+    }.each_pair do |path, expected|
+      Path.allocate.send(:del_trailing_separator, path).should == expected
     end
-    cases.merge!(platform)
+  end
 
-    cases.each_pair do |path, expected|
+  it 'del_trailing_separator (unc)', :unc do
+    {
+      '//' => '//',
+      '//a' => '//a',
+      '//a/' => '//a',
+      '//a//' => '//a',
+      '//a/b' => '//a/b',
+      '//a/b/' => '//a/b',
+      '//a/b//' => '//a/b',
+      '//a/b/c' => '//a/b/c',
+      '//a/b/c/' => '//a/b/c',
+      '//a/b/c//' => '//a/b/c',
+    }.each_pair do |path, expected|
+      Path.allocate.send(:del_trailing_separator, path).should == expected
+    end
+  end
+
+  it 'del_trailing_separator (non unc)', :unc => false do
+    { '///' => '/', '///a/' => '///a' }.each_pair do |path, expected|
       Path.allocate.send(:del_trailing_separator, path).should == expected
     end
   end

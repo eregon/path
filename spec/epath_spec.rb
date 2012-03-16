@@ -5,7 +5,6 @@ root = Path(File.expand_path('../..',__FILE__))
 lib = Path(File.expand_path('../../lib',__FILE__))
 lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
-spec_helper = Path(File.expand_path('../spec_helper.rb',__FILE__))
 
 describe Path do
   it '%, relative_to' do
