@@ -9,6 +9,11 @@ Paths are naturally the subject of their methods and even if they are simple Str
 
 Also, using a path library like this avoid to remember in which class the functionality is implemented, everything is in one place (if not, please open an issue!).
 
+## Links
+
+* [GitHub](https://github.com/eregon/epath)
+* [YARD Documentation](http://rubydoc.info/github/eregon/epath/master/file/README.md)
+
 ## API
 
 All the useful methods of `File` (and so `IO`) and `Dir` should be included.  
