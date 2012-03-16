@@ -8,6 +8,8 @@ describe 'Path#load' do
     (fixtures/'data.yaml').load.should == {'kind' => 'yaml'}
     (fixtures/'data.json').load.should == {'kind' => 'json'}
 
+    Path.backfind('epath.gemspec').load.should be_a Gem::Specification
+
     expect {
       (fixtures/'no-such-one.yml').load
     }.to raise_error(Errno::ENOENT)
