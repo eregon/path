@@ -38,7 +38,7 @@ describe 'Path : IO', :tmpchdir do
     a.each_line.to_a.should == ["1\n", "2\n"]
   end
 
-  it 'each_line 1.9', :ruby => 19, :fails_on => [:rbx19] do
+  it 'each_line 1.9', :ruby => 1.9, :fails_on => [:rbx19] do
     a = Path('a')
     a.open('w') { |f| f.puts 1, 2 }
     a.each_line(1).to_a.should == ['1', "\n", '2', "\n"]
