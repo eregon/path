@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.email = 'eregontp@gmail.com'
   s.homepage = 'https://github.com/eregon/epath'
   s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE epath.gemspec]
-  s.version = '0.0.2'
+  s.version = '0.1.0'
 
   s.add_development_dependency 'rspec'
 end
