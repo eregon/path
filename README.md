@@ -46,14 +46,46 @@ Path.tmpdir
 
 ### parts
 
-* base: basename(extname)
-* dir: alias of dirname
-* ext: extname without the leading dot
-* /: join paths
+Path can split a path in two ways:
+
+The first way is the one done by File methods (dirname, basename, extname).  
+
+The second is Path's own way in which the base is given without the extension and the extension is given without the leading dot.  
+The rationale behind this is to have a true three-components path, splitting on the / and the . (See [this issue](https://github.com/eregon/epath/pull/8#issuecomment-3499030) for details)
+
+       dirname     basename
+     ____________   ______
+    /            \ /      \
+    /some/path/dir/file.ext
+    \____________/ \__/ \_/
+          dir      base ext
+
+    path = dirname / basename
+    path = dirname / basename(extname) extname
+    path = dir / base [. ext]
+
+* dirname: "/some/path/dir"
+* basename: "file.ext"
+* extname: ".ext"
+
+<!-- -->
+
+* dir: alias of dirname: "/some/paths/dir"
+* base: basename(extname), the basename without the extension: "file"
+* ext: extname without the leading dot: "ext"
+
+<!-- -->
+
+### join
+
+* join(*parts)
+* /: join paths (as Pathname#+)
 
 ```ruby
 Path('/usr')/'bin'
 ```
+
+### extensions
 
 * add\_ext / add\_extension
 * rm\_ext / without\_extension
