@@ -10,18 +10,18 @@ describe 'Path#require_tree' do
 
   let(:features) { $LOADED_FEATURES }
 
-  specify 'given directory' do
+  it 'given directory' do
     expect { Path.require_tree 'foo' }.to change { features.size }.by 2
   end
 
-  specify 'default directory' do
+  it 'default directory' do
     expect {
       Path('bar.rb').write('Path.require_tree')
       require Path('bar.rb').expand
     }.to change { features.size }.by 3
   end
 
-  specify 'epath directory' do
+  it 'epath directory' do
     expect { Path['foo'].require_tree }.to change { features.size }.by 2
   end
 end
