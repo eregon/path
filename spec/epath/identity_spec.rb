@@ -176,19 +176,24 @@ describe 'Path : identity' do
     let(:paths) { [Path('dir/file'), Path('path')] }
 
     it 'is dumped nicely' do
-      # Syck adds some space after the class name and ---
-      YAML.dump(path).gsub(/(Path) $/,'\1').should == <<-EOY
+      expected = <<-EOY
 --- !ruby/object:Path
 path: dir/file
 EOY
+      # JRuby 1.9 adds "...\n" at the end
+      expected << "...\n" if RUBY_DESCRIPTION.start_with?('jruby') and RUBY_VERSION > '1.9'
+      # Syck adds some space after the class name and ---
+      YAML.dump(path).gsub(/(Path) $/,'\1').should == expected
 
-      YAML.dump(paths).gsub(/(Path|-{3}) $/,'\1').should == <<-EOY
+      expected = <<-EOY
 ---
 - !ruby/object:Path
   path: dir/file
 - !ruby/object:Path
   path: path
 EOY
+      expected << "...\n" if RUBY_DESCRIPTION.start_with?('jruby') and RUBY_VERSION > '1.9'
+      YAML.dump(paths).gsub(/(Path|-{3}) $/,'\1').should == expected
     end
 
     it 'can be dumped and loaded back' do
