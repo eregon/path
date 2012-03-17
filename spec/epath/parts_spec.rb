@@ -27,6 +27,14 @@ describe 'Path : parts' do
     Path('dirname/basename').split.should == [Path('dirname'), Path('basename')]
   end
 
+  it '/, +' do
+    (Path('a')/'b').should == Path('a/b')
+    (Path('a')/:b).should == Path('a/b')
+    (Path('a')/nil).should == Path('a')
+    (Path('')/'a').should == Path('a')
+    (Path('')/:a).should == Path('a')
+  end
+
   it 'add_ext, add_extension' do
     path = Path('file')
     path = path.add_extension('.txt')
