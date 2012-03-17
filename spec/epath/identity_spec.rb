@@ -209,4 +209,28 @@ EOY
       YAML.load(YAML.dump(paths)).should == paths
     end
   end
+
+  context Marshal do
+    let(:path) { Path('dir/file') }
+    let(:paths) { [Path('dir/file'), Path('path')] }
+
+    it 'is dumped efficiently' do
+      # Just dump and check if no exception
+      Marshal.dump(path)
+      Marshal.dump(paths)
+    end
+
+    it 'can be dumped and loaded back' do
+      reloaded = Marshal.load(Marshal.dump(path))
+
+      path.should == reloaded
+      reloaded.should == path
+      reloaded.should_not be path
+
+      reloaded.should be_frozen
+      reloaded.to_s.should be_frozen
+
+      Marshal.load(Marshal.dump(paths)).should == paths
+    end
+  end
 end

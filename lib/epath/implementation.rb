@@ -28,6 +28,15 @@ class Path
     init
   end
 
+  def marshal_dump
+    @path
+  end
+
+  def marshal_load path
+    @path = path
+    init
+  end
+
   # Returns clean path of +self+ with consecutive slashes and useless dots removed.
   # The filesystem is not accessed.
   #
