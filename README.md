@@ -9,6 +9,10 @@ Paths are naturally the subject of their methods and even if they are simple Str
 
 Also, using a path library like this avoid to remember in which class the functionality is implemented, everything is in one place (if not, please open an issue!).
 
+## Installation
+
+    gem install epath
+
 ## Links
 
 * [GitHub](https://github.com/eregon/epath)
