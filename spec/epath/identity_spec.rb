@@ -170,4 +170,38 @@ describe 'Path : identity' do
     Path('path').to_sym.should == :path
     Path('dir/file').to_sym.should == :"dir/file"
   end
+
+  context YAML do
+    let(:path) { Path('dir/file') }
+    let(:paths) { [Path('dir/file'), Path('path')] }
+
+    it 'is dumped nicely' do
+      # Syck adds some space after the class name and ---
+      YAML.dump(path).gsub(/(Path) $/,'\1').should == <<-EOY
+--- !ruby/object:Path
+path: dir/file
+EOY
+
+      YAML.dump(paths).gsub(/(Path|-{3}) $/,'\1').should == <<-EOY
+---
+- !ruby/object:Path
+  path: dir/file
+- !ruby/object:Path
+  path: path
+EOY
+    end
+
+    it 'can be dumped and loaded back' do
+      reloaded = YAML.load(YAML.dump(path))
+
+      path.should == reloaded
+      reloaded.should == path
+      reloaded.should_not be path
+
+      reloaded.should be_frozen
+      reloaded.to_s.should be_frozen
+
+      YAML.load(YAML.dump(paths)).should == paths
+    end
+  end
 end

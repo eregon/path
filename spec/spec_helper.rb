@@ -7,6 +7,7 @@ if ENV['COVERAGE']
 end
 
 require File.expand_path('../../lib/epath', __FILE__)
+require 'yaml'
 
 dosish = File::ALT_SEPARATOR != nil
 dosish_drive = File.dirname('A:') == 'A:.'

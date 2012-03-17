@@ -20,11 +20,12 @@ class Path
       path.to_s.dup
     end
 
-    validate(@path)
+    init
+  end
 
-    taint if @path.tainted?
-    @path.freeze
-    freeze
+  def yaml_initialize(tag, ivars)
+    @path = ivars['path']
+    init
   end
 
   # Returns clean path of +self+ with consecutive slashes and useless dots removed.
@@ -136,6 +137,14 @@ class Path
   extend Helpers
 
   private
+
+  def init
+    validate(@path)
+
+    taint if @path.tainted?
+    @path.freeze
+    freeze
+  end
 
   def validate(path)
     raise ArgumentError, "path contains a null byte: #{path.inspect}" if path.include? "\0"
