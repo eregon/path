@@ -33,6 +33,11 @@ class Path
     self
   end
 
+  def cp(to)
+    FileUtils.cp(@path, to)
+  end
+  alias copy cp
+
   def cp_r(to)
     FileUtils.cp_r(@path, to)
   end

@@ -29,6 +29,14 @@ describe 'Path : FileUtils' do
     f.touch.rm_f.should_not exist
   end
 
+  it 'cp, copy', :tmpchdir do
+    f = Path('f')
+    f.write 'cp'
+
+    f.cp('g')
+    Path('g').read.should == 'cp'
+  end
+
   it 'cp_r' do
     Path.tmpdir do |dir|
       from = dir/:test
