@@ -33,6 +33,10 @@ class Path
     self
   end
 
+  def cp_r(to)
+    FileUtils.cp_r(@path, to)
+  end
+
   def touch
     FileUtils.touch(@path)
     self

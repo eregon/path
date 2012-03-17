@@ -29,6 +29,23 @@ describe 'Path : FileUtils' do
     f.touch.rm_f.should_not exist
   end
 
+  it 'cp_r' do
+    Path.tmpdir do |dir|
+      from = dir/:test
+      d = (from/:mkdir).mkdir_p
+      (d/:file).touch
+      (from/:root).touch
+
+      to = dir/'to'
+      from.cp_r to
+      to.should exist
+      to.should be_a_directory
+      (to/:root).should exist
+      (to/:mkdir).should be_a_directory
+      (to/:mkdir/:file).should be_a_file
+    end
+  end
+
   it 'touch', :tmpchdir do
     file = Path('file')
     file.should_not exist
