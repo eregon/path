@@ -45,7 +45,7 @@ RSpec.configure do |config|
   end
 
   config.filter_run_excluding :ruby => lambda { |version|
-    version and RUBY_VERSION < version.to_s
+    RUBY_VERSION < version.to_s
   }
   config.filter_run_excluding :symlink => !has_symlink
   config.filter_run_excluding :unix => dosish
@@ -53,7 +53,7 @@ RSpec.configure do |config|
   config.filter_run_excluding :dosish_drive => !dosish_drive
   config.filter_run_excluding :unc => !unc
   config.filter_run_excluding :fails_on => lambda { |implementations|
-    implementations and implementations.include? ruby
+    implementations.include? ruby
   }
 end
 
