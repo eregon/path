@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require 'spec_helper'
 
 describe 'Path : File and Dir' do
   it 'unlink', :tmpchdir do

@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', __FILE__)
+require 'spec_helper'
 
 this = Path(__FILE__).expand
 root = Path(File.expand_path('../..',__FILE__))

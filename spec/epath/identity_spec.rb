@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require 'spec_helper'
 
 frozen_error = RUBY_VERSION > '1.9' ? RuntimeError : TypeError
 frozen_error = [frozen_error, /(?:can't|unable to) modify frozen/]

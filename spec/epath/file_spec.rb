@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require 'spec_helper'
 
 describe 'Path : File', :tmpchdir do
   dosish_drive_letter = File.dirname('A:') == 'A:.'
