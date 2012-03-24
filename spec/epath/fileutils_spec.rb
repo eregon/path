@@ -56,9 +56,7 @@ describe 'Path : FileUtils' do
 
   it 'touch', :tmpchdir do
     file = Path('file')
-    file.should_not exist
-    file.touch
-    file.should exist
+    expect { file.touch }.to change { file.exist? }.from(false).to(true)
     file.should be_empty
 
     old, now = Time.utc(2000), Time.now
