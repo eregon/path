@@ -22,8 +22,9 @@ class Path
       new(Dir.respond_to?(:home) ? Dir.home : new("~").expand)
     end
 
-    def relative(path)
-      new(path).expand dir(caller)
+    def relative(path, from = nil)
+      from ||= caller # this can not be moved as a default argument, JRuby optimizes it
+      new(path).expand dir(from)
     end
 
     def backfind(path)
