@@ -199,8 +199,8 @@ EOY
     it 'can be dumped and loaded back' do
       reloaded = YAML.load(YAML.dump(path))
 
-      path.should == reloaded
       reloaded.should == path
+      path.should == reloaded
       reloaded.should_not be path
 
       reloaded.should be_frozen

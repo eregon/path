@@ -28,6 +28,11 @@ class Path
     init
   end
 
+  def init_with(coder)
+    @path = coder['path']
+    init
+  end
+
   def marshal_dump
     @path
   end
