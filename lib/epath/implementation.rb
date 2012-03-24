@@ -48,7 +48,7 @@ class Path
   # If +consider_symlink+ is +true+, then a more conservative algorithm is used
   # to avoid breaking symbolic linkages. This may retain more +..+
   # entries than absolutely necessary, but without accessing the filesystem,
-  # this can't be avoided. See #realpath.
+  # this can't be avoided. See {#realpath}.
   def cleanpath(consider_symlink=false)
     if consider_symlink
       cleanpath_conservative

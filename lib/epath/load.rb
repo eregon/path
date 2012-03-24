@@ -15,7 +15,7 @@ class Path
 
   # Path#load helps loading data from various files.
   # JSON and YAML loaders are provided by default.
-  # See Path.register_loader.
+  # See {Path.register_loader}.
   def load
     if LOADERS.key? ext
       LOADERS[ext].call(self)
