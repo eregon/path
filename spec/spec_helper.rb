@@ -56,9 +56,3 @@ RSpec.configure do |config|
     implementations.include? ruby
   }
 end
-
-RSpec::Matchers.define :exist do
-  match do |actual|
-    actual.exist?
-  end
-end
