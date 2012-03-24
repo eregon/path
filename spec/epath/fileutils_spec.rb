@@ -60,6 +60,14 @@ describe 'Path : FileUtils' do
     file.touch
     file.should exist
     file.should be_empty
+
+    old, now = Time.utc(2000), Time.now
+    file.utime(old, old)
+    file.atime.should be_within(1).of(old)
+    file.mtime.should be_within(1).of(old)
+    file.touch
+    file.atime.should be_within(1).of(now)
+    file.mtime.should be_within(1).of(now)
   end
 
   it 'touch!', :tmpchdir do
