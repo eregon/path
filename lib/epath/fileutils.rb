@@ -43,7 +43,12 @@ class Path
   end
 
   def touch
-    FileUtils.touch(@path)
+    if exist?
+      now = Time.now
+      File.utime(now, now, @path)
+    else
+      open('w') {}
+    end
     self
   end
 
