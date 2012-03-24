@@ -53,8 +53,7 @@ class Path
   end
 
   # #parent returns the parent directory.
-  #
-  # This is same as <tt>self + '..'</tt>.
+  # This can be chained.
   def parent
     self + '..'
   end

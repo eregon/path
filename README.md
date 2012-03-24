@@ -107,6 +107,7 @@ Path('/usr')/'bin'
 
 ### structure
 
+* parent: parent directory (don't use #dirname more than once, use #parent instead)
 * ascend, ancestors: self and all the parent directories
 * descend: in the reverse order
 * backfind: ascends the parents until it finds the given path

@@ -9,7 +9,12 @@ class Path
     basename(extname)
   end
 
-  # Returns all but the last component of the path. See +File.dirname+.
+  # Returns all but the last component of the path.
+  #
+  # Don't chain this when the path is relative:
+  #     Path('.').dir # => #<Path .>
+  # Use #parent instead.
+  # See +File.dirname+.
   def dirname
     Path.new(File.dirname(@path))
   end
