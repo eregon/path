@@ -223,8 +223,8 @@ EOY
     it 'can be dumped and loaded back' do
       reloaded = Marshal.load(Marshal.dump(path))
 
-      path.should == reloaded
       reloaded.should == path
+      path.should == reloaded
       reloaded.should_not be path
 
       reloaded.should be_frozen
