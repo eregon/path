@@ -30,11 +30,17 @@ describe 'Path : FileUtils' do
   end
 
   it 'cp, copy', :tmpchdir do
-    f = Path('f')
+    f, g, h = Path('f'), Path('g'), Path('h')
     f.write 'cp'
 
     f.cp('g')
-    Path('g').read.should == 'cp'
+    g.read.should == 'cp'
+    g.stat.mode.should == f.stat.mode
+
+    f.chmod 0755
+    f.cp h
+    h.read.should == 'cp'
+    h.stat.mode.should == f.stat.mode
   end
 
   it 'cp_r' do
