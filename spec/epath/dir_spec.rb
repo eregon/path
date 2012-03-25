@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe 'Path : Dir' do
-  it 'glob', :tmpchdir do
+describe 'Path : Dir', :tmpchdir do
+  it 'glob' do
     f = Path('f')
     f.write 'abc'
     d = Path('d').mkdir
@@ -18,36 +18,36 @@ describe 'Path : Dir' do
     Path.glob('*.rb').sort.should == [a,b]
   end
 
-  it 'getwd, pwd' do
+  it 'getwd, pwd', :tmpchdir => false do
     Path.getwd.should be_kind_of Path
     Path.pwd.should be_kind_of Path
   end
 
-  it 'entries', :tmpchdir do
+  it 'entries' do
     a, b = Path('a').touch, Path('b').touch
     Path('.').entries.sort.should == [Path('.'), Path('..'), a, b]
   end
 
-  it 'each_entry', :tmpchdir do
+  it 'each_entry' do
     a, b = Path('a').touch, Path('b').touch
     r = []
     Path('.').each_entry { |entry| r << entry }
     r.sort.should == [Path('.'), Path('..'), a, b]
   end
 
-  it 'mkdir', :tmpchdir do
+  it 'mkdir' do
     Path('d').mkdir.should be_a_directory
     Path('e').mkdir(0770).should be_a_directory
   end
 
-  it 'rmdir', :tmpchdir do
+  it 'rmdir' do
     d = Path('d').mkdir
     d.should be_a_directory
     d.rmdir
     d.should_not exist
   end
 
-  it 'opendir', :tmpchdir do
+  it 'opendir' do
     Path('a').touch
     Path('b').touch
     r = []
@@ -57,7 +57,7 @@ describe 'Path : Dir' do
     r.sort.should == ['.', '..', 'a', 'b']
   end
 
-  it 'chdir' do
+  it 'chdir', :tmpchdir => false do
     called = false
     spec = Path(__FILE__).expand.dir.parent
     root = spec.parent
@@ -70,7 +70,7 @@ describe 'Path : Dir' do
     called.should be_true
   end
 
-  it 'children', :tmpchdir do
+  it 'children' do
     a = Path('a').touch
     b = Path('b').touch
     d = Path('d').mkdir
@@ -82,7 +82,7 @@ describe 'Path : Dir' do
     d.children(false).sort.should == [Path('x'), Path('y')]
   end
 
-  it 'each_child', :tmpchdir do
+  it 'each_child' do
     a = Path('a').touch
     b = Path('b').touch
     d = Path('d').mkdir

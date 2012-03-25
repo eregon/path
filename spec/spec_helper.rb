@@ -32,9 +32,13 @@ RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
   config.around(:each, :tmpchdir) { |example|
-    tmpdir.chdir do
+    if example.metadata[:tmpchdir]
+      tmpdir.chdir do
+        example.run
+        tmpdir.each_child(&:rm_r)
+      end
+    else
       example.run
-      tmpdir.each_child(&:rm_r)
     end
   }
 
