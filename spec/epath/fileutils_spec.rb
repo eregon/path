@@ -40,7 +40,7 @@ describe 'Path : FileUtils' do
     f.chmod 0755
     f.cp h
     h.read.should == 'cp'
-    h.stat.mode.should == f.stat.mode
+    (h.stat.mode & 0777).should == 0755
   end
 
   it 'cp_r' do

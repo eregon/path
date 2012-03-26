@@ -34,7 +34,8 @@ class Path
   end
 
   def cp(to)
-    FileUtils.cp(@path, to)
+    # TODO: remove :preserve when all implement it correctly (r31123)
+    FileUtils.cp(@path, to, :preserve => true)
   end
   alias copy cp
 
