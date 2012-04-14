@@ -9,6 +9,6 @@ class Path
   end
 
   def require_tree(source = nil)
-    glob('**/*.rb').sort.each { |file| require file.expand(dir) unless file == source }
+    glob('**/*.rb').sort.each { |file| require file.expand(dir).to_s unless file == source }
   end
 end
