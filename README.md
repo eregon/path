@@ -30,6 +30,11 @@ Path.new('/usr/bin')
 Path['/usr/bin']
 Path('/usr/bin') # unless NO_EPATH_GLOBAL_FUNCTION is defined
 
+Path.new('~myuser/path') # expanded if it begins with ~
+
+# Separators are replaced by / on systems having File::ALT_SEPARATOR
+Path.new('win\sepa\rator') # => #<Path win/sepa/rator>
+
 Path.new('/usr', 'bin')
 %w[foo bar].map(&Path) # => [Path('foo'), Path('bar')]
 ```

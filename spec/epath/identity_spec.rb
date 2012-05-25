@@ -11,6 +11,10 @@ describe 'Path : identity' do
     p2.should == p1
 
     expect { Path.new("invalid path\0") }.to raise_error(ArgumentError, /null byte/)
+
+    home = Path.new('~')
+    home.to_s.should_not == '~'
+    home.should be_absolute
   end
 
   it 'initialize win32', :dosish do

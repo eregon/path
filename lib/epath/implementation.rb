@@ -8,6 +8,10 @@ class Path
     lambda { |a,b| a == b }
   end
 
+  # Creates a new Path.
+  # If multiple arguments are given, they are joined with File.join.
+  # The path will have File::ALT_SEPARATOR replaced with '/' and
+  # if it begins with a '~', it will be expanded (using File.expand_path).
   def initialize(*parts)
     path = parts.size > 1 ? File.join(parts) : parts.first
     @path = case path
@@ -152,7 +156,7 @@ class Path
   private
 
   def init
-    validate(@path)
+    @path = validate(@path)
 
     taint if @path.tainted?
     @path.freeze
@@ -162,6 +166,8 @@ class Path
   def validate(path)
     raise ArgumentError, "path contains a null byte: #{path.inspect}" if path.include? "\0"
     path.gsub!(File::ALT_SEPARATOR, '/') if File::ALT_SEPARATOR
+    path = File.expand_path(path) if path.start_with? '~'
+    path
   end
 
   # chop_basename(path) -> [pre-basename, basename] or nil
