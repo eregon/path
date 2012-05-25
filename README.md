@@ -107,7 +107,7 @@ Path('/usr')/'bin'
 
 ### glob
 
-* entries: files under self, without . and ..
+* children: files under self, without . and ..
 * glob: relative glob to self, yield absolute paths
 
 ### structure
