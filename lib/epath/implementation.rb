@@ -13,7 +13,7 @@ class Path
   # The path will have File::ALT_SEPARATOR replaced with '/' and
   # if it begins with a '~', it will be expanded (using File.expand_path).
   def initialize(*parts)
-    path = parts.size > 1 ? File.join(parts) : parts.first
+    path = parts.size > 1 ? File.join(*parts) : parts.first
     @path = case path
     when Tempfile
       @_tmpfile = path # We would not want it to be GC'd
