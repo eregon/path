@@ -38,8 +38,7 @@ class Path
         begin
           yield file
         ensure
-          tempfile.close
-          tempfile.unlink if file.exist?
+          tempfile.close!
         end
       end
       file
