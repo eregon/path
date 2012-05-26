@@ -18,15 +18,15 @@ class Path
       file(from).dir
     end
 
-    def ~(user = '')
-      new("~#{user}")
-    end
-    alias :home :~
-
     def relative(path, from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       new(path).expand dir(from)
     end
+
+    def ~(user = '')
+      new("~#{user}")
+    end
+    alias :home :~
 
     def backfind(path)
       file(caller).backfind(path)
