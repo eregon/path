@@ -18,9 +18,10 @@ class Path
       file(from).dir
     end
 
-    def home
-      new(Dir.respond_to?(:home) ? Dir.home : new("~").expand)
+    def ~(user = '')
+      new("~#{user}")
     end
+    alias :home :~
 
     def relative(path, from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it

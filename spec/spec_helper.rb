@@ -8,6 +8,7 @@ end
 
 require File.expand_path('../../lib/epath', __FILE__)
 require 'yaml'
+require 'etc'
 
 dosish = File::ALT_SEPARATOR != nil
 dosish_drive = File.dirname('A:') == 'A:.'

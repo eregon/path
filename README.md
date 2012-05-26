@@ -43,7 +43,8 @@ Path.new('/usr', 'bin')
 Path.file           # == Path(__FILE__).expand
 Path.dir            # == Path(File.dirname(__FILE__)).expand
 Path.relative(path) # == Path(File.expand_path("../#{path}", __FILE__))
-Path.home           # == Path(File.expand_path('~'))
+Path.home or Path.~ # == Path(File.expand_path('~'))
+Path.~(user)        # == Path(File.expand_path("~#{user}"))
 ```
 
 ### temporary

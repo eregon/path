@@ -63,8 +63,10 @@ describe Path do
     Path.relative('../lib/epath.rb').should == lib_epath
   end
 
-  it 'home' do
+  it '~, home' do
     Path.home.should == Path('~').expand # fails on JRuby 1.9 as Dir.home gives backslashes (only / on MRI)
+    Path.~.should == Path('~').expand
+    Path.~(Etc.getlogin).should == Path('~').expand
   end
 
   context 'inside?' do
