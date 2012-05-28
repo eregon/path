@@ -29,6 +29,7 @@ class Path
     FileUtils.rm_f(@path)
     self
   end
+  alias :safe_unlink :rm_f
 
   def rm_rf
     FileUtils.rm_rf(@path)
