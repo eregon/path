@@ -66,9 +66,10 @@ describe 'Path : File', :tmpchdir do
     Path('d').mkdir.ftype.should == 'directory'
   end
 
-  it 'make_link', :fails_on => [:jruby, :jruby19] do
+  it 'make_link', :fails_on => [:jruby, :jruby19, :rbx] do
     link = Path('link')
     link.make_symlink(path)
+    # rbx18: https://github.com/rubinius/rubinius/pull/1754
     link.should be_identical(path)
     link.read.should == 'abc'
   end
