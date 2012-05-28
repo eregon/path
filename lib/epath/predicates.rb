@@ -1,4 +1,6 @@
 class Path
+  # @!group Path predicates
+
   # Whether a path is absolute.
   def absolute?
     !relative?

@@ -1,4 +1,6 @@
 class Path
+  # @!group Path parts
+
   # Returns the last component of the path. See +File.basename+.
   def basename(*args)
     Path.new(File.basename(@path, *args))

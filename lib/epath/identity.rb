@@ -1,5 +1,7 @@
 class Path
   class << self
+    # @!group Identity
+
     def new(*args)
       if args.size == 1 and Path === args[0]
         args[0]
@@ -13,6 +15,8 @@ class Path
       lambda { |path| new(path) }
     end
   end
+
+  # @!group Identity
 
   # Compare this path with +other+. The comparison is string-based.
   # Be aware that two different paths (+foo.txt+ and +./foo.txt+)

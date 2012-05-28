@@ -1,6 +1,8 @@
 require 'fileutils'
 
 class Path
+  # @!group File utilities
+
   # Creates a full path, including any intermediate directories that don't yet exist.
   # See +FileUtils.mkpath+.
   def mkpath

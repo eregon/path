@@ -1,6 +1,8 @@
 # All methods from FileTest and all predicates from File are included
 
 class Path
+  # @!group File predicates
+
   # See +File.blockdev?+.
   def blockdev?
     File.blockdev?(@path)

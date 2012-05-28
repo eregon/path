@@ -1,4 +1,6 @@
 class Path
+  # @!group Requiring
+
   def self.require_tree(directory = nil)
     if directory
       new(directory).require_tree

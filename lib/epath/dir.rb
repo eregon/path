@@ -1,5 +1,7 @@
 class Path
   class << self
+    # @!group Directory
+
     # Returns or yields Path objects. See +Dir.glob+.
     def glob(*args) # :yield: path
       if block_given?
@@ -15,6 +17,8 @@ class Path
     end
     alias :pwd :getwd
   end
+
+  # @!group Directory
 
   # Iterates over the entries (files and subdirectories) in the directory.
   # It yields a Path object for each entry.

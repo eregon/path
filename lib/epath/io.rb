@@ -1,4 +1,6 @@
 class Path
+  # @!group IO
+
   # Opens the file for reading or writing. See +File.open+.
   def open(*args, &block) # :yield: file
     File.open(@path, *args, &block)

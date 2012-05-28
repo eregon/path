@@ -1,4 +1,6 @@
 class Path
+  # @!group File
+
   # Returns last access time. See +File.atime+.
   def atime
     File.atime(@path)

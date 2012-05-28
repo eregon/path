@@ -1,4 +1,5 @@
 class Path
+  # @!group Loading
 
   # The list of loaders. See {Path.register_loader}.
   LOADERS = {}
