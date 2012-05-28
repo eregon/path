@@ -40,7 +40,7 @@ class Path
     # TODO: remove :preserve when all implement it correctly (r31123)
     FileUtils.cp(@path, to, :preserve => true)
   end
-  alias copy cp
+  alias :copy :cp
 
   def cp_r(to)
     FileUtils.cp_r(@path, to)
@@ -57,7 +57,35 @@ class Path
   end
 
   def touch!
-    dirname.mkpath
+    dir.mkpath
     touch
+  end
+
+  def mv(to)
+    FileUtils.mv(@path, to)
+    to
+  end
+  alias :move :mv
+
+  # reversed args!
+  def install(file, options = {})
+    FileUtils.install(file, @path, options)
+  end
+
+  def chmod_r(mode)
+    FileUtils.chmod_R(mode, @path)
+  end
+
+  def chown_r(owner, group)
+    FileUtils.chown_R(owner, group, @path)
+  end
+
+  # See +FileUtils.compare_file+
+  def has_same_contents?(file)
+    FileUtils.compare_file(@path, file)
+  end
+
+  def uptodate?(*others)
+    FileUtils.uptodate?(@path, others)
   end
 end

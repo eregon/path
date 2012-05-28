@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe 'Path : FileUtils' do
-  it 'mkpath', :tmpchdir do
+describe 'Path : FileUtils', :tmpchdir do
+  it 'mkpath' do
     Path('a/b/c/d').mkpath.should be_a_directory
   end
 
-  it 'rmtree', :tmpchdir do
+  it 'rmtree' do
     Path('a/b/c/d').mkpath.should exist
     Path('a').rmtree.should_not exist
   end
 
-  it 'mkdir_p, rm_rf' do
+  it 'mkdir_p, rm_rf', :tmpchdir => false do
     Path.tmpdir do |dir|
       d = (dir/:test/:mkdir)
       d.mkdir_p.should equal d
@@ -19,7 +19,7 @@ describe 'Path : FileUtils' do
     end
   end
 
-  it 'rm, rm_f', :tmpchdir do
+  it 'rm, rm_f' do
     f = Path('f')
     f.rm_f
 
@@ -29,7 +29,7 @@ describe 'Path : FileUtils' do
     f.touch.rm_f.should_not exist
   end
 
-  it 'cp, copy', :tmpchdir do
+  it 'cp, copy' do
     f, g, h = Path('f'), Path('g'), Path('h')
     f.write 'cp'
 
@@ -43,7 +43,7 @@ describe 'Path : FileUtils' do
     (h.stat.mode & 0777).should == 0755
   end
 
-  it 'cp_r' do
+  it 'cp_r', :tmpchdir => false do
     Path.tmpdir do |dir|
       from = dir/:test
       d = (from/:mkdir).mkdir_p
@@ -60,7 +60,7 @@ describe 'Path : FileUtils' do
     end
   end
 
-  it 'touch', :tmpchdir do
+  it 'touch' do
     file = Path('file')
     expect { file.touch }.to change { file.exist? }.from(false).to(true)
     file.should be_empty
@@ -74,11 +74,55 @@ describe 'Path : FileUtils' do
     file.mtime.should be_within(1).of(now)
   end
 
-  it 'touch!', :tmpchdir do
+  it 'touch!' do
     Path('foo/bar/baz.rb').touch!.should exist
     Path('foo').should be_a_directory
     Path('foo/bar').should be_a_directory
     Path('foo/bar/baz.rb').should be_a_file
     Path('foo/bar/baz.rb').should be_empty
+  end
+
+  it 'mv, move' do
+    f, g = Path('f'), Path('g')
+    f.write 'mv'
+    f.mv g
+    f.should_not exist
+    g.should exist
+    g.read.should == 'mv'
+
+    d = Path('d').mkdir
+    file = (d/:file).touch
+    d.mv('e')
+    (Path('e')/:file).should exist
+  end
+
+  it 'install' do
+    f = Path('f').touch
+    prefix = Path('prefix').mkdir
+    prefix.install f
+    installed = prefix/:f
+    installed.should exist
+    f.write 'ab'
+    installed.should be_empty
+    prefix.install f
+    installed.read.should == 'ab'
+  end
+
+  it 'same_contents?' do
+    f, g = Path('f'), Path('g')
+    f.write 'f'
+    f.cp g
+    f.should have_same_contents('g')
+  end
+
+  it 'uptodate?' do
+    f = Path('f').touch
+    g = Path('g').touch
+    older = f.mtime-1
+    g.utime(older, older)
+    f.should be_uptodate(g)
+    newer = f.mtime+1
+    g.utime(newer, newer)
+    f.should_not be_uptodate(g)
   end
 end

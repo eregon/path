@@ -67,7 +67,10 @@ describe 'Path : File', :tmpchdir do
   end
 
   it 'make_link', :fails_on => [:jruby, :jruby19] do
-    Path('l').make_link(path).read.should == 'abc'
+    link = Path('link')
+    link.make_symlink(path)
+    link.should be_identical(path)
+    link.read.should == 'abc'
   end
 
   it 'readlink', :symlink, :fails_on => [:jruby, :jruby19] do
