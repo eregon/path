@@ -68,7 +68,7 @@ describe 'Path : File', :tmpchdir do
 
   it 'make_link', :fails_on => [:jruby, :jruby19, :rbx] do
     link = Path('link')
-    link.make_symlink(path)
+    link.make_link(path)
     # rbx18: https://github.com/rubinius/rubinius/pull/1754
     link.should be_identical(path)
     link.read.should == 'abc'
