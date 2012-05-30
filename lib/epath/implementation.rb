@@ -64,32 +64,32 @@ class Path
   # #parent returns the parent directory.
   # This can be chained.
   def parent
-    self + '..'
+    self / '..'
   end
 
-  # Path#+ appends a path fragment to this one to produce a new Path.
+  # Path#/ appends a path fragment to this one to produce a new Path.
   #
-  #   p1 = Path.new("/usr")   # => #<Path /usr>
-  #   p2 = p1 + "bin/ruby"    # => #<Path /usr/bin/ruby>
-  #   p3 = p1 + "/etc/passwd" # => #<Path /etc/passwd>
+  #   p = Path.new("/usr")  # => #<Path /usr>
+  #   p / "bin/ruby"        # => #<Path /usr/bin/ruby>
+  #   p / "/etc/passwd"     # => #<Path /etc/passwd>
   #
   # This method doesn't access the file system, it is pure string manipulation.
-  def +(other)
+  def /(other)
     Path.new(plus(@path, other.to_s))
   end
-  alias :/ :+
+  alias :+ :/
 
   # Path#join joins paths.
   #
   # <tt>path0.join(path1, ..., pathN)</tt> is the same as
-  # <tt>path0 + path1 + ... + pathN</tt>.
+  # <tt>path0 / path1 / ... / pathN</tt>.
   def join(*args)
     args.unshift self
     result = Path.new(args.pop)
     return result if result.absolute?
     args.reverse_each { |arg|
       arg = Path.new(arg)
-      result = arg + result
+      result = arg / result
       return result if result.absolute?
     }
     result
