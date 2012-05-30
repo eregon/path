@@ -130,7 +130,7 @@ class Path
   end
 
   # See +File.zero?+.
-  # empty? is not defined in File/FileTest, but is is clearer
+  # empty? is not defined in File/FileTest, but is is clearer.
   def zero?
     File.zero?(@path)
   end
