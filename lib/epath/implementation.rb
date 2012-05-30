@@ -224,8 +224,8 @@ class Path
     if r = chop_basename(path)
       pre, basename = r
       pre + basename
-    elsif /\/+\z/o =~ path
-      $` + File.dirname(path)[/\/*\z/o]
+    elsif %r{/+\z} =~ path
+      $` + File.dirname(path)[%r{/*\z}]
     else
       path
     end
