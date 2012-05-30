@@ -22,6 +22,17 @@ class Path
   # @!group Directory
 
   # Iterates over the entries (files and subdirectories) in the directory.
+  #
+  #   Path("/usr/local").each_entry { |entry| p entry } # =>
+  #   #<Path .>
+  #   #<Path ..>
+  #   #<Path lib>
+  #   #<Path share>
+  #   # ...
+  #
+  # @deprecated Use {#each_child} instead.
+  #   This method is deprecated since it is too low level and likely useless in Ruby.
+  #   But it is there for the sake of compatibility with Dir.foreach and Pathname#each_entry.
   # @yieldparam [Path] entry
   def each_entry(&block)
     Dir.foreach(@path) { |f| yield Path.new(f) }
@@ -59,7 +70,7 @@ class Path
   #
   # @deprecated Use {#children} instead.
   #   This method is deprecated since it is too low level and likely useless in Ruby.
-  #   But it is there for the sake of compatibility with Dir.entries (and Pathname#entries)
+  #   But it is there for the sake of compatibility with Dir.entries (and Pathname#entries).
   def entries
     Dir.entries(@path).map(&Path)
   end
