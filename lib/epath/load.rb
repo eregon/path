@@ -8,6 +8,8 @@ class Path
   # for the given extensions (either with the leading dot or not)
   #
   #     Path.register_loader('.marshal') { |file| Marshal.load file.read }
+  #
+  # @yieldparam [Path] path
   def self.register_loader(*extensions, &loader)
     extensions.each { |ext|
       LOADERS[pure_ext(ext)] = loader

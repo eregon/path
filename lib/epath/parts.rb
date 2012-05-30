@@ -59,15 +59,16 @@ class Path
   #
   #   Path.new("/usr/bin/ruby").each_filename { |filename| ... }
   #     # yields "usr", "bin", and "ruby".
-  def each_filename # :yield: filename
+  #
+  # @yieldparam [String] filename
+  def each_filename
     return to_enum(__method__) unless block_given?
     _, names = split_names(@path)
     names.each { |filename| yield filename }
     nil
   end
 
-  # Iterates over and yields a new Path object
-  # for each element in the given path in descending order.
+  # Iterates over each element in the given path in descending order.
   #
   #  Path.new('/path/to/some/file.rb').descend { |v| p v }
   #     #<Path />
@@ -83,6 +84,7 @@ class Path
   #     #<Path path/to/some/file.rb>
   #
   # It doesn't access actual filesystem.
+  # @yieldparam [Path] path
   def descend
     return to_enum(:descend) unless block_given?
     vs = []
@@ -91,8 +93,7 @@ class Path
     nil
   end
 
-  # Iterates over and yields a new Path object
-  # for each element in the given path in ascending order.
+  # Iterates over each element in the given path in ascending order.
   #
   #  Path.new('/path/to/some/file.rb').ascend { |v| p v }
   #     #<Path /path/to/some/file.rb>
@@ -108,6 +109,7 @@ class Path
   #     #<Path path>
   #
   # It doesn't access actual filesystem.
+  # @yieldparam [Path] path
   def ascend
     return to_enum(:ascend) unless block_given?
     path = @path

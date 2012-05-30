@@ -32,6 +32,7 @@ class Path
       file(caller).backfind(path)
     end
 
+    # @yieldparam [Path] tmpfile
     def tmpfile(basename = '', tmpdir = nil, options = nil)
       tempfile = Tempfile.new(basename, *[tmpdir, options].compact)
       file = new tempfile
@@ -46,6 +47,7 @@ class Path
     end
     alias :tempfile :tmpfile
 
+    # @yieldparam [Path] tmpdir
     def tmpdir(prefix_suffix = nil, *rest)
       require 'tmpdir'
       dir = new Dir.mktmpdir(prefix_suffix, *rest)
@@ -59,6 +61,7 @@ class Path
       dir
     end
 
+    # @yieldparam [Path] tmpdir
     def tmpchdir(prefix_suffix = nil, *rest)
       tmpdir do |dir|
         dir.chdir do

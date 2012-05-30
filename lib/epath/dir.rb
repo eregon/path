@@ -3,7 +3,8 @@ class Path
     # @!group Directory
 
     # Returns or yields Path objects. See +Dir.glob+.
-    def glob(*args) # :yield: path
+    # @yieldparam [Path] path
+    def glob(*args)
       if block_given?
         Dir.glob(*args) { |f| yield new(f) }
       else
@@ -21,8 +22,8 @@ class Path
   # @!group Directory
 
   # Iterates over the entries (files and subdirectories) in the directory.
-  # It yields a Path object for each entry.
-  def each_entry(&block) # :yield: path
+  # @yieldparam [Path] entry
+  def each_entry(&block)
     Dir.foreach(@path) { |f| yield Path.new(f) }
   end
 
@@ -38,10 +39,13 @@ class Path
   end
 
   # See +Dir.open+.
-  def opendir(&block) # :yield: dir
+  # @yieldparam [Dir] dir
+  def opendir(&block)
     Dir.open(@path, &block)
   end
 
+  # Returns or yields Path objects. See +Dir.glob+.
+  # @yieldparam [Path] path
   def glob(pattern, flags = 0)
     Dir.glob(join(pattern), flags).map(&Path)
   end
@@ -50,8 +54,8 @@ class Path
   # Each Path only contains the filename.
   # The result may contain the current directory #<Path .> and the parent directory #<Path ..>.
   #
-  # Path('/usr/local').entries
-  # # => [#<Path share>, #<Path lib>, #<Path .>, #<Path ..>, <Path bin>, ...]
+  #   Path('/usr/local').entries
+  #   # => [#<Path share>, #<Path lib>, #<Path .>, #<Path ..>, <Path bin>, ...]
   #
   # This method is deprecated, since it is too low level and likely useless in Ruby.
   # But it is there for the sake of compatibility with Dir.entries (and Pathname#entries)
@@ -96,9 +100,7 @@ class Path
     result
   end
 
-  # Iterates over the children of the directory
-  # (files and subdirectories, not recursive).
-  # It yields Path object for each child.
+  # Iterates over the children of the directory (files and subdirectories, not recursive).
   # By default, the yielded paths will have enough information to access the files.
   # If you set +with_directory+ to +false+, then the returned paths will contain the filename only.
   #
@@ -121,6 +123,8 @@ class Path
   #       #<Path sbin>
   #       #<Path src>
   #       #<Path man>
+  #
+  # @yieldparam [Path] child
   def each_child(with_directory=true, &b)
     children(with_directory).each(&b)
   end

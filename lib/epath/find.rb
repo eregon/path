@@ -9,7 +9,9 @@ class Path
   #
   # If +self+ is +.+, yielded paths begin with a filename in the
   # current directory, not +./+.
-  def find # :yield: path
+  #
+  # @yieldparam [Path] path
+  def find
     return to_enum(__method__) unless block_given?
     require 'find'
     if @path == '.'

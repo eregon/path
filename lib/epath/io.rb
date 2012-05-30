@@ -2,12 +2,14 @@ class Path
   # @!group IO
 
   # Opens the file for reading or writing. See +File.open+.
-  def open(*args, &block) # :yield: file
+  # @yieldparam [File] file
+  def open(*args, &block)
     File.open(@path, *args, &block)
   end
 
   # Iterates over the lines in the file. See +IO.foreach+.
-  def each_line(*args, &block) # :yield: line
+  # @yieldparam [String] line
+  def each_line(*args, &block)
     IO.foreach(@path, *args, &block)
   end
   alias :lines :each_line
