@@ -50,17 +50,16 @@ class Path
     Dir.glob(join(pattern), flags).map(&Path)
   end
 
-  # [DEPRECATED] Return the entries (files and subdirectories) in the directory.
+  # Return the entries (files and subdirectories) in the directory.
   # Each Path only contains the filename.
   # The result may contain the current directory #<Path .> and the parent directory #<Path ..>.
   #
   #   Path('/usr/local').entries
   #   # => [#<Path share>, #<Path lib>, #<Path .>, #<Path ..>, <Path bin>, ...]
   #
-  # This method is deprecated, since it is too low level and likely useless in Ruby.
-  # But it is there for the sake of compatibility with Dir.entries (and Pathname#entries)
-  #
-  # Use #children instead.
+  # @deprecated Use {#children} instead.
+  #   This method is deprecated since it is too low level and likely useless in Ruby.
+  #   But it is there for the sake of compatibility with Dir.entries (and Pathname#entries)
   def entries
     Dir.entries(@path).map(&Path)
   end
