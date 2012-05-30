@@ -68,11 +68,6 @@ class Path
     end
   end
 
-  alias :/ :+
-
-  alias :relative_to :relative_path_from
-  alias :% :relative_path_from
-
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?("#{ancestor}/")
   end

@@ -77,6 +77,7 @@ class Path
   def +(other)
     Path.new(plus(@path, other.to_s))
   end
+  alias :/ :+
 
   # Path#join joins paths.
   #
@@ -134,6 +135,8 @@ class Path
       Path.new(*relpath_names)
     end
   end
+  alias :relative_to :relative_path_from
+  alias :% :relative_path_from
 
   # @private
   module Helpers
