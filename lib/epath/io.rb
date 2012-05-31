@@ -56,8 +56,8 @@ class Path
       IO.write(@path, contents, open_args)
     end
   else
-    def append(contents, open_args = nil)
-      open('a') { |f| f.write(contents) }
+    def append(contents, *open_args)
+      open('a', *open_args) { |f| f.write(contents) }
     end
   end
 end
