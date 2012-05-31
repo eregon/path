@@ -1,7 +1,7 @@
 source :rubygems
 
 gem 'rake'
-gem 'json'
+gem 'json', :platforms => :ruby_18
 
 group :test do
   gem 'rspec', '~> 2.9.0'
