@@ -27,20 +27,24 @@ class Path
     init
   end
 
+  # YAML loading.
   def yaml_initialize(tag, ivars)
     @path = ivars['path']
     init
   end
 
+  # Psych loading.
   def init_with(coder)
     @path = coder['path']
     init
   end
 
+  # Marshal dumping.
   def marshal_dump
     @path
   end
 
+  # Marshal loading.
   def marshal_load path
     @path = path
     init

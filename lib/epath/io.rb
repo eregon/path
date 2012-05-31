@@ -41,6 +41,7 @@ class Path
   end
 
   if IO.respond_to? :write
+    # Writes +contents+ to +self+. See +IO.write+ or +IO#write+.
     def write(contents, *open_args)
       IO.write(@path, contents, *open_args)
     end
@@ -51,6 +52,7 @@ class Path
   end
 
   if IO.respond_to? :write and !RUBY_DESCRIPTION.start_with?('jruby')
+    # Appends +contents+ to +self+. See +IO.write+ or +IO#write+.
     def append(contents, open_args = {})
       open_args[:mode] = 'a'
       IO.write(@path, contents, open_args)

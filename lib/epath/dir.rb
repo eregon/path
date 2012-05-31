@@ -75,6 +75,8 @@ class Path
     Dir.entries(@path).map(&Path)
   end
 
+  # Changes the current working directory of the process to self. See Dir.chdir.
+  # The recommended way to use it is to use the block form, or not use it all!
   def chdir(&block)
     Dir.chdir(@path, &block)
   end

@@ -6,7 +6,8 @@ class Path
     File.atime(@path)
   end
 
-  # Returns last (directory entry, not file) change time. See +File.ctime+.
+  # Returns last change time (of the directory entry, not the file itself).
+  # See +File.ctime+.
   def ctime
     File.ctime(@path)
   end
@@ -16,17 +17,18 @@ class Path
     File.mtime(@path)
   end
 
-  # Changes permissions. See +File.chmod+.
+  # Changes permissions of +path+. See +File.chmod+.
   def chmod(mode) File.chmod(mode, @path) end
 
-  # See +File.lchmod+.
+  # Changes permissions of +path+, not following symlink. See +File.lchmod+.
   def lchmod(mode) File.lchmod(mode, @path) end
 
-  # Change owner and group of file. See +File.chown+.
+  # Changes the owner and group of the file. See +File.chown+.
   def chown(owner, group)
     File.chown(owner, group, @path)
   end
 
+  # Changes the owner and group of +path+, not following symlink.
   # See +File.lchown+.
   def lchown(owner, group)
     File.lchown(owner, group, @path)
@@ -46,28 +48,28 @@ class Path
     self
   end
 
-  # Read symbolic link. See +File.readlink+.
+  # Reads the symbolic link. See +File.readlink+.
   def readlink
     Path.new(File.readlink(@path))
   end
 
-  # Rename the file and returns the new Path. See +File.rename+.
+  # Renames the file and returns the new Path. See +File.rename+.
   def rename(to)
     File.rename(@path, to)
     Path(to)
   end
 
-  # Returns a +File::Stat+ object. See +File.stat+.
+  # Returns the stat of +path+ as a +File::Stat+ object. See +File.stat+.
   def stat
     File.stat(@path)
   end
 
-  # See +File.lstat+.
+  # Returns the stat of +path+ as a +File::Stat+ object, not following symlink. See +File.lstat+.
   def lstat
     File.lstat(@path)
   end
 
-  # See +File.size+.
+  # Returns the file size in bytes. See +File.size+.
   def size
     File.size(@path)
   end
@@ -81,13 +83,15 @@ class Path
     self
   end
 
-  # Truncate the file to +length+ bytes. See +File.truncate+.
+  # Truncates the file to +length+ bytes. See +File.truncate+.
   def truncate(length) File.truncate(@path, length) end
 
-  # Update the access and modification times. See +File.utime+.
+  # Updates the access and modification times. See +File.utime+.
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 
-  # See +File.expand_path+.
+  # Expands +path+, making it absolute.
+  # If the path is relative, it is expanded with the current working directory,
+  # unless +dir+ is given as an argument. See +File.expand_path+.
   def expand(*args)
     Path.new(File.expand_path(@path, *args))
   end

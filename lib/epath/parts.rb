@@ -22,12 +22,12 @@ class Path
   end
   alias :dir :dirname
 
-  # Returns the file's extension. See +File.extname+.
+  # Returns the extension, with a leading dot. See +File.extname+.
   def extname
     File.extname(@path)
   end
 
-  # extname without leading .
+  # {#extname} without leading dot.
   def ext
     ext = extname
     ext.empty? ? ext : ext[1..-1]
@@ -38,17 +38,31 @@ class Path
     File.split(@path).map(&Path)
   end
 
+  # Adds +ext+ as an extension to +path+.
+  # Handle both extensions with or without leading dot.
+  # No-op if +ext+ is +empty?+.
+  #
+  #   Path('file').add_extension('txt') # => #<Path file.txt>
   def add_extension(ext)
     return self if ext.empty?
     Path.new @path+dotted_ext(ext)
   end
   alias :add_ext :add_extension
 
+  # Removes the last extension of +path+.
+  #
+  #   Path('script.rb').without_extension # => #<Path script>
+  #   Path('archive.tar.gz').without_extension # => #<Path archive.tar>
   def without_extension
     Path.new @path[0..-extname.size-1]
   end
   alias :rm_ext :without_extension
 
+  # Replaces the last extension of +path+ with +ext+.
+  # Handle both extensions with or without leading dot.
+  # Removes last extension if +ext+ is +empty?+.
+  #
+  #   Path('main.c++').replace_extension('cc') # => #<Path main.cc>
   def replace_extension(ext)
     return without_extension if ext.empty?
     Path.new(@path[0..-extname.size-1] << dotted_ext(ext))

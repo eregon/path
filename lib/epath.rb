@@ -6,6 +6,7 @@ require 'tempfile'
 
 class Path
   class << self
+    # {Path} to the current file +Path(__FILE__)+.
     def file(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
                                      # v This : is there to define a group without capturing
@@ -13,21 +14,25 @@ class Path
     end
     alias :here :file
 
+    # {Path} to the directory of this file: +Path(__FILE__).dir+.
     def dir(from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       file(from).dir
     end
 
+    # {Path} relative to the directory of this file.
     def relative(path, from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
       new(path).expand dir(from)
     end
 
+    # A {Path} to the home directory of +user+ (defaults to the current user).
     def ~(user = '')
       new("~#{user}")
     end
     alias :home :~
 
+    # Same as +Path.file.backfind(path)+. See {#backfind}.
     def backfind(path)
       file(caller).backfind(path)
     end
@@ -71,14 +76,24 @@ class Path
     end
   end
 
+  # Whether +self+ is inside +ancestor+, such that +ancestor+ is an ancestor of +self+.
+  # This is pure String manipulation. Paths should be absolute.
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?("#{ancestor}/")
   end
 
+  # The opposite of {#inside?}.
   def outside? ancestor
     !inside?(ancestor)
   end
 
+  # Ascends the parents until it finds the given +path+.
+  #
+  #   Path.backfind('lib') # => the lib folder
+  #
+  # It accepts an XPath-like context:
+  #
+  #   Path.backfind('.[.git]') # => the root of the repository
   def backfind(path)
     condition = path[/\[(.*)\]$/, 1] || ''
     path = $` unless condition.empty?
