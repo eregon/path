@@ -4,7 +4,7 @@ gem 'rake'
 gem 'json', :platforms => :ruby_18
 
 group :test do
-  gem 'rspec', '~> 2.9.0'
+  gem 'rspec', '~> 2.9'
 end
 
 group :development do
