@@ -10,11 +10,12 @@ describe 'Path : FileUtils', :tmpchdir do
     Path('a').rmtree.should_not exist
   end
 
-  it 'mkdir_p, rm_rf', :tmpchdir => false do
+  it 'mkdir_p, rm_r, rm_rf', :tmpchdir => false do
     Path.tmpdir do |dir|
       d = (dir/:test/:mkdir)
       d.mkdir_p.should equal d
       test = d.parent
+      test.rm_r.should equal test
       test.rm_rf.should equal test
     end
   end
