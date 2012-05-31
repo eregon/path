@@ -88,10 +88,10 @@ class Path
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 
   # See +File.expand_path+.
-  def expand_path(*args)
+  def expand(*args)
     Path.new(File.expand_path(@path, *args))
   end
-  alias :expand :expand_path
+  alias :expand_path :expand
 
   # Returns the real (absolute) path of +self+ in the actual
   # filesystem not containing symlinks or useless dots.
