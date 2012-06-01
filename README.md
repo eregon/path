@@ -1,6 +1,6 @@
 # Path - a Path manipulation library
 
-Path is a library to manage paths.  
+[Path](http://rubydoc.info/github/eregon/epath/master/Path) is a library to manage paths.  
 It is similar to Pathname, but has some extra goodness.  
 The method names are intended to be short and explicit, and avoid too much duplication like having 'name' or 'path' in the method name.
 
@@ -19,6 +19,8 @@ Also, using a path library like this avoid to remember in which class the functi
 * [YARD Documentation](http://rubydoc.info/github/eregon/epath/master/file/README.md)
 
 ## API
+
+See the [Path](http://rubydoc.info/github/eregon/epath/master/Path) class documentation for details.
 
 All the useful methods of `File` (and so `IO`) and `Dir` should be included.  
 Most methods of `FileUtils` should be there too.
