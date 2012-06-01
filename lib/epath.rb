@@ -27,6 +27,7 @@ class Path
     end
 
     # A {Path} to the home directory of +user+ (defaults to the current user).
+    # The form with an argument (+user+) is not supported on Windows.
     def ~(user = '')
       new("~#{user}")
     end

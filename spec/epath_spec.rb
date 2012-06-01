@@ -66,6 +66,9 @@ describe Path do
   it '~, home' do
     Path.home.should == Path('~').expand # fails on JRuby 1.9 as Dir.home gives backslashes (only / on MRI)
     Path.~.should == Path('~').expand
+  end
+
+  it '~(user), home(user) (unix)', :unix do
     Path.~(Etc.getlogin).should == Path('~').expand
   end
 
