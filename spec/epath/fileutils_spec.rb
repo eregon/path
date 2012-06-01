@@ -38,10 +38,11 @@ describe 'Path : FileUtils', :tmpchdir do
     g.read.should == 'cp'
     g.stat.mode.should == f.stat.mode
 
-    f.chmod 0755
+    f.chmod 0444
+    (f.stat.mode & 0777).should == 0444
     f.cp h
     h.read.should == 'cp'
-    (h.stat.mode & 0777).should == 0755
+    (h.stat.mode & 0777).should == 0444
   end
 
   it 'cp_r', :tmpchdir => false do
