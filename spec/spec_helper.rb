@@ -31,6 +31,12 @@ tmpdir = Path.tmpdir('path-test')
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.include Module.new {
+    def time_delta
+      # Time zone seems to be lost on windows for file times
+      (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1
+    end
+  }
 
   config.around(:each, :tmpchdir) { |example|
     if example.metadata[:tmpchdir]

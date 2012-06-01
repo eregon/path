@@ -116,8 +116,8 @@ describe 'Path : File', :tmpchdir do
   it 'utime' do
     atime, mtime = Time.utc(2000), Time.utc(1999)
     path.utime(atime, mtime)
-    path.stat.atime.should == atime
-    path.stat.mtime.should == mtime
+    path.stat.atime.should be_within(time_delta).of(atime)
+    path.stat.mtime.should be_within(time_delta).of(mtime)
   end
 
   it 'expand, expand_path' do

@@ -69,11 +69,11 @@ describe 'Path : FileUtils', :tmpchdir do
 
     old, now = Time.utc(2000), Time.now
     file.utime(old, old)
-    file.atime.should be_within(1).of(old)
-    file.mtime.should be_within(1).of(old)
+    file.atime.should be_within(time_delta).of(old)
+    file.mtime.should be_within(time_delta).of(old)
     file.touch
-    file.atime.should be_within(1).of(now)
-    file.mtime.should be_within(1).of(now)
+    file.atime.should be_within(time_delta).of(now)
+    file.mtime.should be_within(time_delta).of(now)
   end
 
   it 'touch!' do
