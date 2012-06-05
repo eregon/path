@@ -39,7 +39,7 @@ describe 'Path : parts' do
     path = Path('file')
     path = path.add_extension('.txt')
     path.ext.should == 'txt'
-    path = path.add_extension('.mkv')
+    path = path.add_extension(:mkv)
     path.ext.should == 'mkv'
     path = path.add_ext('tar.gz')
     path.ext.should == 'gz'
@@ -53,6 +53,7 @@ describe 'Path : parts' do
 
   it 'sub_ext, replace_extension' do
     Path('hello/world.rb').replace_extension('.ext').should == Path('hello/world.ext')
+    Path('hello/world.rb').replace_extension( :ext ).should == Path('hello/world.ext')
     Path('hello/world').replace_extension('.ext').should == Path('hello/world.ext')
 
     # should add a '.' if missing (consistent with #ext)

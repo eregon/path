@@ -44,7 +44,7 @@ class Path
   #
   #   Path('file').add_extension('txt') # => #<Path file.txt>
   def add_extension(ext)
-    return self if ext.empty?
+    return self if ext.to_s.empty?
     Path.new @path+dotted_ext(ext)
   end
   alias :add_ext :add_extension
@@ -64,7 +64,7 @@ class Path
   #
   #   Path('main.c++').replace_extension('cc') # => #<Path main.cc>
   def replace_extension(ext)
-    return without_extension if ext.empty?
+    return without_extension if ext.to_s.empty?
     Path.new(@path[0..-extname.size-1] << dotted_ext(ext))
   end
   alias :sub_ext :replace_extension

@@ -148,12 +148,12 @@ class Path
 
     # remove the leading . of +ext+ if present.
     def pure_ext(ext)
-      ext.start_with?('.') ? ext[1..-1] : ext
+      ext = ext.to_s and ext.start_with?('.') ? ext[1..-1] : ext
     end
 
     # add a leading . to +ext+ if missing. Returns '' if +ext+ is empty.
     def dotted_ext(ext)
-      (ext.empty? or ext.start_with?('.')) ? ext : ".#{ext}"
+      ext = ext.to_s and (ext.empty? or ext.start_with?('.')) ? ext : ".#{ext}"
     end
   end
 
