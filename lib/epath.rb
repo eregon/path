@@ -126,12 +126,12 @@ class Path
   #   earth = from / 'nature/earth.jpg'
   #
   #   earth.relocate(from, to)
-  #   # => Path('output/public/thumbnails/earth.jpg')
+  #   # => Path('output/public/thumbnails/nature/earth.jpg')
   #
   #   earth.relocate(from, to, '.png'){|rel|
   #     "#{rel}-200"
   #   }
-  #   # => Path('output/public/thumbnails/earth-200.png')
+  #   # => Path('output/public/thumbnails/nature/earth-200.png')
   #
   def relocate(from, to, new_ext=nil, &updater)
     mod = lambda{|rel|
