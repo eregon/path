@@ -67,3 +67,9 @@ RSpec.configure do |config|
     implementations.include? ruby
   }
 end
+
+RSpec::Matchers.define :be_an_alias_of do |expected|
+  match do |actual|
+    actual != expected and Path.instance_method(actual) == Path.instance_method(expected)
+  end
+end

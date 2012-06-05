@@ -38,6 +38,7 @@ describe 'Path : identity' do
 
   it 'behaves like a path' do
     path = Path.new('/')
+
     [:to_s, :to_sym, :to_path].each do |meth|
       path.should respond_to meth
     end

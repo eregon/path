@@ -8,10 +8,10 @@ spec = Path(File.expand_path('..',__FILE__))
 
 describe Path do
   it '%, relative_to' do
+    :%.should be_an_alias_of :relative_to
     Path('/a/b/Array/sort.rb').relative_to(Path('/')).should == Path('a/b/Array/sort.rb')
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b')).should == Path('Array/sort.rb')
     Path('/a/b/Array/sort.rb').relative_to(Path('/a/b/')).should == Path('Array/sort.rb')
-    (Path('/a/b/Array/sort.rb') % Path('/a/b/')).should == Path('Array/sort.rb')
   end
 
   it 'parent' do
@@ -23,7 +23,8 @@ describe Path do
     Path('../a').parent.should == Path('..')
   end
 
-  it 'file, dir' do
+  it 'here, file, dir' do
+    Path.method(:here).should == Path.method(:file)
     # Test caller parsing
     file = Path('dir/file.rb').expand
     # MRI 1.8
@@ -64,8 +65,8 @@ describe Path do
   end
 
   it '~, home' do
+    Path.method(:~).should == Path.method(:home)
     Path.home.should == Path('~').expand # fails on JRuby 1.9 as Dir.home gives backslashes (only / on MRI)
-    Path.~.should == Path('~').expand
   end
 
   it '~(user), home(user) (unix)', :unix do

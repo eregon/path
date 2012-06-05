@@ -33,9 +33,9 @@ describe 'Path : File predicates', :tmpchdir do
   end
 
   it 'dir?, directory?' do
+    :dir?.should be_an_alias_of :directory?
     f.should_not be_a_directory
     d.should be_a_directory
-    d.should be_a_dir
   end
 
   it 'file?' do
@@ -104,9 +104,10 @@ describe 'Path : File predicates', :tmpchdir do
   end
 
   it 'zero?, empty?' do
-    f.should_not be_zero
-    Path('z').touch.should be_zero
-    Path('not-exist').should_not be_zero
+    :empty?.should be_an_alias_of :zero?
+    f.should_not be_empty
+    Path('z').touch.should be_empty
+    Path('not-exist').should_not be_empty
 
     Path.tmpfile do |file|
       file.should be_empty

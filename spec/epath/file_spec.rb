@@ -121,6 +121,7 @@ describe 'Path : File', :tmpchdir do
   end
 
   it 'expand, expand_path' do
+    :expand.should be_an_alias_of :expand_path
     r = dosish_drive_letter ? Dir.pwd.sub(/\/.*/, '') : ''
     Path('/a').expand_path.to_s.should == r+'/a'
     Path('a').expand('/').to_s.should == r+'/a'

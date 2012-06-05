@@ -12,7 +12,7 @@ describe 'Path : parts' do
   end
 
   it 'dir, dirname' do
-    Path('dirname/basename').dirname.should == Path('dirname')
+    :dir.should be_an_alias_of :dirname
     Path('dirname/basename').dir.should == Path('dirname')
   end
 
@@ -36,6 +36,7 @@ describe 'Path : parts' do
   end
 
   it 'add_ext, add_extension' do
+    :add_ext.should be_an_alias_of :add_extension
     path = Path('file')
     path = path.add_extension('.txt')
     path.ext.should == 'txt'
@@ -47,11 +48,13 @@ describe 'Path : parts' do
   end
 
   it 'rm_ext, without_extension' do
+    :rm_ext.should be_an_alias_of :without_extension
     Path('/usr/bin/ls').without_extension.should == Path('/usr/bin/ls')
     Path('/usr/bin/ls.rb').rm_ext.should == Path('/usr/bin/ls')
   end
 
   it 'sub_ext, replace_extension' do
+    :sub_ext.should be_an_alias_of :replace_extension
     Path('hello/world.rb').replace_extension('.ext').should == Path('hello/world.ext')
     Path('hello/world.rb').replace_extension( :ext ).should == Path('hello/world.ext')
     Path('hello/world').replace_extension('.ext').should == Path('hello/world.ext')
@@ -87,6 +90,7 @@ describe 'Path : parts' do
   end
 
   it 'ascend, ancestors' do
+    :ascend.should be_an_alias_of :ancestors
     Path('/a/b/c').ascend.map(&:to_s).should == %w[/a/b/c /a/b /a /]
     Path('a/b/c').ascend.map(&:to_s).should == %w[a/b/c a/b a]
     Path('./a/b/c').ascend.map(&:to_s).should == %w[./a/b/c ./a/b ./a .]

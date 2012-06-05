@@ -19,8 +19,8 @@ describe 'Path : Dir', :tmpchdir do
   end
 
   it 'getwd, pwd', :tmpchdir => false do
+    Path.method(:getwd).should == Path.method(:pwd)
     Path.getwd.should be_kind_of Path
-    Path.pwd.should be_kind_of Path
   end
 
   it 'entries' do

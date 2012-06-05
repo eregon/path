@@ -5,12 +5,14 @@ describe 'Path : FileUtils', :tmpchdir do
     Path('a/b/c/d').mkpath.should be_a_directory
   end
 
-  it 'rmtree' do
+  it 'rmtree, rm_r' do
+    :rm_r.should be_an_alias_of :rmtree
     Path('a/b/c/d').mkpath.should exist
     Path('a').rmtree.should_not exist
   end
 
-  it 'mkdir_p, rm_r, rm_rf', :tmpchdir => false do
+  it 'mkdir_p, rm_rf', :tmpchdir => false do
+    :mkdir_p.should be_an_alias_of :mkpath
     Path.tmpdir do |dir|
       d = (dir/:test/:mkdir)
       d.mkdir_p.should equal d
@@ -31,6 +33,7 @@ describe 'Path : FileUtils', :tmpchdir do
   end
 
   it 'cp, copy' do
+    :cp.should be_an_alias_of :copy
     f, g, h = Path('f'), Path('g'), Path('h')
     f.write 'cp'
 
@@ -85,6 +88,7 @@ describe 'Path : FileUtils', :tmpchdir do
   end
 
   it 'mv, move' do
+    :mv.should be_an_alias_of :move
     f, g = Path('f'), Path('g')
     f.write 'mv'
     f.mv g
