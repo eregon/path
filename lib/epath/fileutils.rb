@@ -33,12 +33,6 @@ class Path
   end
   alias :safe_unlink :rm_f
 
-  # Removes the file or directory recursively, using +FileUtils.rm_r+.
-  def rm_r
-    FileUtils.rm_r(@path)
-    self
-  end
-
   # Removes the file or directory recursively, ignoring errors,
   # using +FileUtils.rm_f+.
   def rm_rf

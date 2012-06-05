@@ -17,7 +17,6 @@ describe 'Path : FileUtils', :tmpchdir do
       d = (dir/:test/:mkdir)
       d.mkdir_p.should equal d
       test = d.parent
-      test.rm_r.should equal test
       test.rm_rf.should equal test
     end
   end
