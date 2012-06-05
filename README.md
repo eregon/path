@@ -17,6 +17,7 @@ Also, using a path library like this avoid to remember in which class the functi
 
 * [GitHub](https://github.com/eregon/epath)
 * [YARD Documentation](http://rubydoc.info/github/eregon/epath/master/file/README.md)
+* [Changelog](https://github.com/eregon/epath/blob/master/Changelog.md)
 
 ## API
 
