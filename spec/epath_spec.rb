@@ -159,9 +159,9 @@ describe Path do
 
     it 'supports a block' do
       source.relocate(from, to) { |rel|
-        rel.should == source % from
+        rel.should == (source % from).rm_ext
         rel.to_s.upcase
-      }.should == to/'NATURE/EARTH.JPG'
+      }.should == to/'NATURE/EARTH.jpg'
     end
 
     it 'supports a block and new extension' do

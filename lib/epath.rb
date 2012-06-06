@@ -133,11 +133,11 @@ class Path
   #   }
   #   # => Path('output/public/thumbnails/nature/earth-200.png')
   #
-  def relocate(from, to, new_ext = nil, &updater)
+  def relocate(from, to, new_ext = ext, &updater)
     renamer = lambda { |rel|
-      rel = rel.rm_ext              if new_ext
+      rel = rel.rm_ext
       rel = Path(updater.call(rel)) if updater
-      rel = rel.add_ext(new_ext)    if new_ext
+      rel = rel.add_ext(new_ext)
       rel
     }
     to / renamer.call(self % from)
