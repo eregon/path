@@ -137,7 +137,7 @@ class Path
     mod = lambda{|rel|
       rel = rel.rm_ext                 if new_ext
       rel = updater.call(rel)          if updater
-      rel = Path(rel).sub_ext(new_ext) if new_ext
+      rel = Path(rel).add_ext(new_ext) if new_ext
       Path(rel)
     }
     to / mod.call(self % from)

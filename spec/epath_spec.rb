@@ -166,5 +166,8 @@ describe Path do
         rel.to_s.upcase
       }.should eq(to/'NATURE/EARTH.png')
     end
+    it 'supports multiple extensions' do
+      source.add_ext('gz').relocate(from, to, 'zip').should eq(to/'nature/earth.jpg.zip')
+    end
   end
 end
