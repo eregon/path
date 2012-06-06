@@ -110,29 +110,26 @@ class Path
   #
   #   to / (self.sub_ext(new_ext) % from)
   #
-  # That is, it relocates the original path to a target folder `to`
-  # appended with the relative part from a source folder `from`. An
+  # That is, it relocates the original path to a target folder +to+
+  # appended with the relative path from a source folder +from+. An
   # optional new extension can also be specified, as it is a common
   # use case.
   #
-  # With a block, the relative part is passed to the block for user
-  # update. If `new_ext` is also provided, the extension is first
-  # trimmed, the result yield, and the new extension set afterwards.
-  #
-  # Example:
+  # With a block, the relative path is passed to the block for user
+  # update, without the last extension. +new_ext+ is added after (or
+  # the original extension if not provided).
   #
   #   from = Path('pictures')
   #   to   = Path('output/public/thumbnails')
   #   earth = from / 'nature/earth.jpg'
   #
   #   earth.relocate(from, to)
-  #   # => Path('output/public/thumbnails/nature/earth.jpg')
+  #   # => #<Path output/public/thumbnails/nature/earth.jpg>
   #
   #   earth.relocate(from, to, '.png') { |rel|
   #     "#{rel}-200"
   #   }
-  #   # => Path('output/public/thumbnails/nature/earth-200.png')
-  #
+  #   # => #<Path output/public/thumbnails/nature/earth-200.png>
   def relocate(from, to, new_ext = ext, &updater)
     updater ||= lambda { |path| path }
     renamer = lambda { |rel|
