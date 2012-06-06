@@ -145,29 +145,34 @@ describe Path do
   end
 
   context 'relocate' do
-    let(:from){ Path('pictures') }
-    let(:to)  { Path('output/thumbails') }
-    let(:source){ from / 'nature/earth.jpg' }
+    let(:from)   { Path('pictures') }
+    let(:to)     { Path('output/thumbails') }
+    let(:source) { from / 'nature/earth.jpg' }
+
     it 'works with from and to only' do
-      source.relocate(from, to).should eq(to/'nature/earth.jpg')
+      source.relocate(from, to).should == to/'nature/earth.jpg'
     end
+
     it 'supports a new extension' do
-      source.relocate(from, to, "png").should eq(to/'nature/earth.png')
+      source.relocate(from, to, "png").should == to/'nature/earth.png'
     end
+
     it 'supports a block' do
-      source.relocate(from, to){|rel|
+      source.relocate(from, to) { |rel|
         rel.should == source % from
         rel.to_s.upcase
-      }.should eq(to/'NATURE/EARTH.JPG')
+      }.should == to/'NATURE/EARTH.JPG'
     end
+
     it 'supports a block and new extension' do
-      source.relocate(from, to, 'png'){|rel|
+      source.relocate(from, to, 'png') { |rel|
         rel.should == (source % from).rm_ext
         rel.to_s.upcase
-      }.should eq(to/'NATURE/EARTH.png')
+      }.should == to/'NATURE/EARTH.png'
     end
+
     it 'supports multiple extensions' do
-      source.add_ext('gz').relocate(from, to, 'zip').should eq(to/'nature/earth.jpg.zip')
+      source.add_ext('gz').relocate(from, to, :zip).should == to/'nature/earth.jpg.zip'
     end
   end
 end
