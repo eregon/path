@@ -103,6 +103,46 @@ class Path
     result/path if result
   end
 
+  # Relocates this path somewhere else.
+  #
+  # Without a block, this method is a simple shorcut for a longer
+  # expression that proves difficult to remember in practice:
+  #
+  #   to / (self.sub_ext(new_ext) % from)
+  #
+  # That is, it relocates the original path to a target folder `to`
+  # appended with the relative part from a source folder `from`. An
+  # optional new extension can also be specified, as it is a common
+  # use case.
+  #
+  # With a block, the relative part is passed to the block for user
+  # update. If `new_ext` is also provided, the extension is first
+  # trimmed, the result yield, and the new extension set afterwards.
+  #
+  # Example:
+  #
+  #   from = Path('pictures')
+  #   to   = Path('output/public/thumbnails')
+  #   earth = from / 'nature/earth.jpg'
+  #
+  #   earth.relocate(from, to)
+  #   # => Path('output/public/thumbnails/nature/earth.jpg')
+  #
+  #   earth.relocate(from, to, '.png'){|rel|
+  #     "#{rel}-200"
+  #   }
+  #   # => Path('output/public/thumbnails/nature/earth-200.png')
+  #
+  def relocate(from, to, new_ext=nil, &updater)
+    renamer = lambda{|rel|
+      rel = rel.rm_ext                 if new_ext
+      rel = updater.call(rel)          if updater
+      rel = Path(rel).add_ext(new_ext) if new_ext
+      Path(rel)
+    }
+    to / renamer.call(self % from)
+  end
+
   # Setup
   register_loader 'yml', 'yaml' do |path|
     require 'yaml'

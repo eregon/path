@@ -143,4 +143,31 @@ describe Path do
       dir.should be_identical(Path.getwd)
     end
   end
+
+  context 'relocate' do
+    let(:from){ Path('pictures') }
+    let(:to)  { Path('output/thumbails') }
+    let(:source){ from / 'nature/earth.jpg' }
+    it 'works with from and to only' do
+      source.relocate(from, to).should eq(to/'nature/earth.jpg')
+    end
+    it 'supports a new extension' do
+      source.relocate(from, to, "png").should eq(to/'nature/earth.png')
+    end
+    it 'supports a block' do
+      source.relocate(from, to){|rel|
+        rel.should == source % from
+        rel.to_s.upcase
+      }.should eq(to/'NATURE/EARTH.JPG')
+    end
+    it 'supports a block and new extension' do
+      source.relocate(from, to, 'png'){|rel|
+        rel.should == (source % from).rm_ext
+        rel.to_s.upcase
+      }.should eq(to/'NATURE/EARTH.png')
+    end
+    it 'supports multiple extensions' do
+      source.add_ext('gz').relocate(from, to, 'zip').should eq(to/'nature/earth.jpg.zip')
+    end
+  end
 end
