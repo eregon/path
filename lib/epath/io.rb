@@ -27,7 +27,9 @@ class Path
       IO.binread(@path, *args)
     end
   else
-    alias :binread :read
+    def binread(*args)
+      open('rb', &:read)
+    end
   end
 
   # Returns all the lines from the file. See +IO.readlines+.
