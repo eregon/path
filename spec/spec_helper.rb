@@ -3,6 +3,8 @@ if ENV['COVERAGE']
   SimpleCov.start do
     add_group 'lib', 'lib'
     add_group 'spec', 'spec'
+    command_name "RSpec with #{RUBY_DESCRIPTION} from user #{Process.euid}"
+    merge_timeout 24*60*60 # 1 day timeout, so coverage can be run on Windows at ease
   end
 end
 
