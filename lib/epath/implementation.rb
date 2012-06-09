@@ -124,10 +124,11 @@ class Path
   #   It might behave as {Path#/}, String#+, give warnings,
   #   or not be defined at all.
 
-  # Path#join joins paths.
+  # Joins paths.
   #
-  # <tt>path0.join(path1, ..., pathN)</tt> is the same as
-  # <tt>path0 / path1 / ... / pathN</tt>.
+  #   path0.join(path1, ..., pathN)
+  #   # is the same as
+  #   path0 / path1 / ... / pathN
   def join(*args)
     args.unshift self
     result = Path.new(args.pop)
