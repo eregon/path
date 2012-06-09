@@ -171,8 +171,8 @@ describe 'Path implementation' do
     end
   end
 
-  it 'plus' do
-    (Path('a') + Path('b')).should be_kind_of Path
+  it '/' do
+    (Path('a') / Path('b')).should be_kind_of Path
     {
       ['/', '/'] => '/',
       ['a', 'b'] => 'a/b',
@@ -192,7 +192,7 @@ describe 'Path implementation' do
 
       ['a//b/c', '../d//e'] => 'a//b/d//e',
     }.each_pair do |(a, b), path|
-      (Path(a) + Path(b)).to_s.should == path
+      (Path(a) / Path(b)).to_s.should == path
     end
   end
 
