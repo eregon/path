@@ -7,9 +7,8 @@ describe 'Path : Dir', :tmpchdir do
     d = Path('d').mkdir
     Path.glob('*').sort.should == [d,f]
 
-    r = []
-    Path.glob('*') { |path| r << path }
-    r.sort.should == [d,f]
+    Path.glob('*', &accumulator)
+    accumulator.sort.should == [d,f]
 
     a = Path('a.rb').touch
     b = Path('b.rb').touch
@@ -30,9 +29,8 @@ describe 'Path : Dir', :tmpchdir do
 
   it 'each_entry' do
     a, b = Path('a').touch, Path('b').touch
-    r = []
-    Path('.').each_entry { |entry| r << entry }
-    r.sort.should == [Path('.'), Path('..'), a, b]
+    Path('.').each_entry(&accumulator)
+    accumulator.sort.should == [Path('.'), Path('..'), a, b]
   end
 
   it 'mkdir' do
@@ -50,11 +48,10 @@ describe 'Path : Dir', :tmpchdir do
   it 'opendir' do
     Path('a').touch
     Path('b').touch
-    r = []
     Path('.').opendir { |d|
-      d.each { |e| r << e }
+      d.each(&accumulator)
     }
-    r.sort.should == ['.', '..', 'a', 'b']
+    accumulator.sort.should == ['.', '..', 'a', 'b']
   end
 
   it 'chdir', :tmpchdir => false do
@@ -89,11 +86,13 @@ describe 'Path : Dir', :tmpchdir do
     x = Path('d/x').touch
     y = Path('d/y').touch
 
-    r = []; Path('.').each_child { |c| r << c }
-    r.sort.should == [a, b, d]
-    r = []; d.each_child { |c| r << c }
-    r.sort.should == [x, y]
-    r = []; d.each_child(false) { |c| r << c }
-    r.sort.should == [Path('x'), Path('y')]
+    Path('.').each_child(&accumulator)
+    accumulator.sort.should == [a, b, d]
+
+    d.each_child(&accumulator)
+    accumulator.sort.should == [x, y]
+
+    d.each_child(false, &accumulator)
+    accumulator.sort.should == [Path('x'), Path('y')]
   end
 end

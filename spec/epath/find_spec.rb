@@ -7,9 +7,8 @@ describe 'Path : Find' do
     x, y = Path('d/x').touch, Path('d/y').touch
     here = Path('.')
 
-    r = []
-    here.find { |f| r << f }
-    r.sort.should == [here, a, b, d, x, y]
+    here.find(&accumulator)
+    accumulator.sort.should == [here, a, b, d, x, y]
 
     d.find.sort.should == [d, x, y]
   end

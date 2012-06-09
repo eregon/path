@@ -76,9 +76,8 @@ describe 'Path : parts' do
   end
 
   it 'each_filename' do
-    result = []
-    Path('/usr/bin/ruby').each_filename { |f| result << f }
-    result.should == %w[usr bin ruby]
+    Path('/usr/bin/ruby').each_filename(&accumulator)
+    accumulator.should == %w[usr bin ruby]
     Path('/usr/bin/ruby').each_filename.to_a.should == %w[usr bin ruby]
   end
 

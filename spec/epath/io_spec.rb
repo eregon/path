@@ -29,9 +29,8 @@ describe 'Path : IO', :tmpchdir do
     a = Path('a')
 
     a.open('w') { |f| f.puts 1, 2 }
-    r = []
-    a.each_line { |line| r << line }
-    r.should == ["1\n", "2\n"]
+    a.each_line(&accumulator)
+    accumulator.should == ["1\n", "2\n"]
 
     a.each_line('2').to_a.should == ["1\n2", "\n"]
 

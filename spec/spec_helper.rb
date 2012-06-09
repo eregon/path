@@ -33,6 +33,18 @@ tmpdir = Path.tmpdir('path-test')
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.include Module.new {
+    self::ACCUMULATOR = begin
+      def (ary = []).to_proc
+        clear
+        lambda { |x| self << x }
+      end
+      ary
+    end
+
+    def accumulator
+      self.class::ACCUMULATOR
+    end
+
     def capture_io
       stdout, stderr = $stdout, $stderr
       $stdout, $stderr = StringIO.new, StringIO.new
