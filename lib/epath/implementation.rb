@@ -81,7 +81,51 @@ class Path
   def /(other)
     Path.new(plus(@path, other.to_s))
   end
-  alias :+ :/
+
+  # Configures the behavior of {Path#+}. The default is :warning.
+  #
+  #   Path + :defined # aliased to Path#/
+  #   Path + :warning # calls Path#/ but warns
+  #   Path + :error   # not defined
+  #   Path + :string  # like String#+. Warns if $VERBOSE (-w)
+  #
+  # @param config [:defined, :warning, :error, :string] the configuration value
+  def Path.+(config)
+    unless [:defined, :warning, :error, :string].include? config
+      raise ArgumentError, "Invalid configuration: #{config}"
+    end
+    if @plus_configured
+      raise "Path.+ has already been called: #{@plus_configured}"
+    end
+    remove_method :+ if method_defined? :+
+    case config
+    when :defined
+      alias :+ :/
+    when :warning
+      def +(other)
+        warn 'Warning: use of deprecated Path#+ as Path#/: ' <<
+             "#{inspect} + #{other.inspect}\n#{caller.first}"
+        self / other
+      end
+    when :error
+      # nothing to do, the method has been removed
+    when :string
+      def +(other)
+        warn 'Warning: use of deprecated Path#+ as String#+: ' <<
+             "#{inspect} + #{other.inspect}\n#{caller.first}" if $VERBOSE
+        Path(to_s + other.to_s)
+      end
+    end
+    @plus_configured = caller.first
+  end
+
+  Path + :warning
+  @plus_configured = nil # Let the user overrides this default configuration
+
+  # @!method +(other)
+  #   The behavior depends on the configuration with Path.{Path.+}.
+  #   It might behave as {Path#/}, String#+, give warnings,
+  #   or not be defined at all.
 
   # Path#join joins paths.
   #

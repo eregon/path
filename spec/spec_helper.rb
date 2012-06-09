@@ -8,6 +8,7 @@ end
 
 require File.expand_path('../../lib/epath', __FILE__)
 require 'yaml'
+require 'stringio'
 require 'etc'
 
 dosish = File::ALT_SEPARATOR != nil
@@ -32,6 +33,23 @@ tmpdir = Path.tmpdir('path-test')
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.include Module.new {
+    def capture_io
+      stdout, stderr = $stdout, $stderr
+      $stdout, $stderr = StringIO.new, StringIO.new
+      yield
+      [$stdout.string, $stderr.string]
+    ensure
+      $stdout, $stderr = stdout, stderr
+    end
+
+    def verbosely(value = true)
+      verbose = $VERBOSE
+      $VERBOSE = value
+      yield
+    ensure
+      $VERBOSE = verbose
+    end
+
     def time_delta
       # Time zone seems to be lost on windows for file times
       (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1

@@ -7,6 +7,42 @@ lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
 
 describe Path do
+  context '+ configuration' do
+    it 'defaults to :warning' do
+      out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }
+      out.should == ''
+      err.should start_with 'Warning: use of deprecated Path#+ as Path#/: #<Path p> + "a"'
+    end
+
+    it ':defined' do
+      Path + :defined
+      out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }.should == ['', '']
+    end
+
+    it 'gives an error if already configured once' do
+      expect { Path + :error }.to raise_error(/^Path\.\+ has already been called: .+epath_spec\.rb:\d+/)
+    end
+
+    it ':error' do
+      Path.instance_variable_set(:@plus_configured, nil)
+      Path + :error
+      expect { Path('p') + 'a' }.to raise_error(NoMethodError)
+    end
+
+    it ':string' do
+      Path.instance_variable_set(:@plus_configured, nil)
+      Path + :string
+      verbosely(nil) do
+        capture_io { (Path('p') + 'a').should == Path('pa') }.should == ['', '']
+      end
+      verbosely do
+        out, err = capture_io { (Path('p') + 'a').should == Path('pa') }
+        out.should == ''
+        err.should start_with 'Warning: use of deprecated Path#+ as String#+: #<Path p> + "a"'
+      end
+    end
+  end
+
   it '%, relative_to' do
     :%.should be_an_alias_of :relative_to
     Path('/a/b/Array/sort.rb').relative_to(Path('/')).should == Path('a/b/Array/sort.rb')
