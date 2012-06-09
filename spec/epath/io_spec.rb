@@ -76,6 +76,11 @@ describe 'Path : IO', :tmpchdir do
     Path('a').read.should == "abc\ndef"
   end
 
+  it 'binwrite' do
+    Path('a').binwrite 'abc'
+    Path('a').read.should == 'abc'
+  end
+
   it 'append' do
     f = Path('f')
     f.write "hello\n"

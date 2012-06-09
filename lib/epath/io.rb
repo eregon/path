@@ -20,9 +20,9 @@ class Path
     IO.read(@path, *args)
   end
 
-  # Returns all the bytes from the file, or the first +N+ if specified.
-  # See +IO.binread+.
   if IO.respond_to? :binread
+    # Returns all the bytes from the file, or the first +N+ if specified.
+    # See +IO.binread+.
     def binread(*args)
       IO.binread(@path, *args)
     end
@@ -50,6 +50,17 @@ class Path
   else
     def write(contents, *open_args)
       open('w', *open_args) { |f| f.write(contents) }
+    end
+  end
+
+  if IO.respond_to? :binwrite
+    # Writes +contents+ to +self+. See +IO.binwrite+.
+    def binwrite(contents, *open_args)
+      IO.binwrite(@path, contents, *open_args)
+    end
+  else
+    def binwrite(contents, *open_args)
+      open('wb', *open_args) { |f| f.write(contents) }
     end
   end
 
