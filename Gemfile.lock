@@ -27,5 +27,5 @@ PLATFORMS
 DEPENDENCIES
   json
   rake
-  rspec (~> 2.9)
+  rspec (~> 2.10)
   simplecov
