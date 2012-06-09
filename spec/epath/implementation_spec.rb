@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe 'Path implementation' do
   context 'cleanpath' do
+    it 'clean alias' do
+      :cleanpath.should be_an_alias_of :clean
+    end
+
     it 'aggressive' do
       {
         '/' => '/',

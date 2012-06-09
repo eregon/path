@@ -50,20 +50,17 @@ class Path
     init
   end
 
-  # Returns clean path of +self+ with consecutive slashes and useless dots removed.
+  # Returns a cleaned version of +self+ with consecutive slashes and useless dots removed.
   # The filesystem is not accessed.
   #
   # If +consider_symlink+ is +true+, then a more conservative algorithm is used
   # to avoid breaking symbolic linkages. This may retain more +..+
   # entries than absolutely necessary, but without accessing the filesystem,
   # this can't be avoided. See {#realpath}.
-  def cleanpath(consider_symlink=false)
-    if consider_symlink
-      cleanpath_conservative
-    else
-      cleanpath_aggressive
-    end
+  def clean(consider_symlink = false)
+    consider_symlink ? cleanpath_conservative : cleanpath_aggressive
   end
+  alias :cleanpath :clean
 
   # #parent returns the parent directory.
   # This can be chained.
@@ -151,8 +148,8 @@ class Path
   #
   # ArgumentError is raised when it cannot find a relative path.
   def relative_path_from(base_directory)
-    dest_directory = cleanpath.path
-    base_directory = Path.new(base_directory).cleanpath.path
+    dest_directory = clean.path
+    base_directory = Path.new(base_directory).clean.path
     dest_prefix = dest_directory
     dest_names = []
     while r = chop_basename(dest_prefix)
