@@ -82,4 +82,22 @@ describe 'Path : IO', :tmpchdir do
     f.append "world\n"
     f.read.should == "hello\nworld\n"
   end
+
+  it 'head' do
+    f = Path('f')
+    f.write('lorem ipsum')
+    f.head(0).should == ''
+    f.head(1).should == 'l'
+    f.head(5).should == 'lorem'
+    f.head(20).should == 'lorem ipsum'
+  end
+
+  it 'tail' do
+    f = Path('f')
+    f.write('lorem ipsum')
+    f.tail(0).should == ''
+    f.tail(1).should == 'm'
+    f.tail(5).should == 'ipsum'
+    f.tail(20).should == 'lorem ipsum'
+  end
 end

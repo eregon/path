@@ -14,7 +14,7 @@ class Path
   end
   alias :lines :each_line
 
-  # Returns all data from the file, or the first +N+ bytes if specified.
+  # Returns all data from the file, or the first +bytes+ bytes if specified.
   # See +IO.read+.
   def read(*args)
     IO.read(@path, *args)
@@ -63,5 +63,21 @@ class Path
     def append(contents, *open_args)
       open('a', *open_args) { |f| f.write(contents) }
     end
+  end
+
+  # Returns the first +bytes+ bytes of the file.
+  # If the file size is smaller than +bytes+, return the whole contents.
+  def head(bytes)
+    read(bytes)
+  end
+
+  # Returns the last +bytes+ bytes of the file.
+  # If the file size is smaller than +bytes+, return the whole contents.
+  def tail(bytes)
+    return read if size < bytes
+    open { |f|
+      f.seek(-bytes, IO::SEEK_END)
+      f.read
+    }
   end
 end
