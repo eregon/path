@@ -37,13 +37,14 @@ describe 'Path : identity' do
   end
 
   it 'behaves like a path' do
-    path = Path.new('/')
+    path = Path.new('/a/b')
 
-    [:to_s, :to_sym, :to_path].each do |meth|
-      path.should respond_to meth
-    end
+    path.path.should == '/a/b'
+    :to_s.should be_an_alias_of :path
+    :to_path.should be_an_alias_of :path
 
     path.respond_to?(:to_str).should == (RUBY_VERSION < '1.9')
+    :to_str.should be_an_alias_of :path if RUBY_VERSION < '1.9'
   end
 
   it '&Path' do

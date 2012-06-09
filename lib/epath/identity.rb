@@ -22,35 +22,33 @@ class Path
 
   # @!group Identity
 
+  # Returns the +path+ as a String.
+  # {#path} is implemented for better readability (+file.path+ instead of +file.to_s+) and as an accessor.
+  # {#to_path} is implemented so Path objects are usable with +open+, etc.
+  # {#to_str} is implemented so Path objects are usable with +open+, etc with Ruby 1.8 (it is not defined in Ruby 1.9).
+  attr_reader :path
+  alias :to_s :path
+  alias :to_path :path
+  alias :to_str :path if RUBY_VERSION < '1.9'
+
   # Compare this path with +other+. The comparison is string-based.
   # Be aware that two different paths (+foo.txt+ and +./foo.txt+)
   # can refer to the same file.
   def == other
-    Path === other and @path == other.to_path
+    Path === other and @path == other.path
   end
   alias :eql? :==
 
   # Provides for comparing paths, case-sensitively.
   def <=>(other)
     return nil unless Path === other
-    @path.tr('/', "\0") <=> other.to_s.tr('/', "\0")
+    @path.tr('/', "\0") <=> other.path.tr('/', "\0")
   end
 
   # The hash value of the +path+.
   def hash
     @path.hash
   end
-
-  # Returns the +path+ as a String.
-  def to_s
-    @path
-  end
-
-  # to_path is implemented so Path objects are usable with File.open, etc.
-  alias :to_path :to_s
-
-  # to_str is implemented so Path objects are usable with File.open, etc in Ruby 1.8.
-  alias :to_str :to_s if RUBY_VERSION < '1.9'
 
   # Returns the +path+ as a Symbol.
   def to_sym

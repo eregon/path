@@ -82,7 +82,7 @@ class Path
     Path.new(plus(@path, other.to_s))
   end
 
-  # Configures the behavior of {Path#+}. The default is :warning.
+  # Configures the behavior of {Path#+}. The default is +:warning+.
   #
   #   Path + :defined # aliased to Path#/
   #   Path + :warning # calls Path#/ but warns
@@ -151,8 +151,8 @@ class Path
   #
   # ArgumentError is raised when it cannot find a relative path.
   def relative_path_from(base_directory)
-    dest_directory = cleanpath.to_s
-    base_directory = Path.new(base_directory).cleanpath.to_s
+    dest_directory = cleanpath.path
+    base_directory = Path.new(base_directory).cleanpath.path
     dest_prefix = dest_directory
     dest_names = []
     while r = chop_basename(dest_prefix)

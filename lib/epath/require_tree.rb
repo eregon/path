@@ -17,6 +17,6 @@ class Path
   # It is not a real private method because {Path.require_tree}
   # (so the {Path} class) needs to be able to call it.
   def require_tree(source = nil)
-    glob('**/*.rb').sort.each { |file| require file.expand(dir).to_s unless file == source }
+    glob('**/*.rb').sort.each { |file| require file.expand(dir).path unless file == source }
   end
 end
