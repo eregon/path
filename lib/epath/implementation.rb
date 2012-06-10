@@ -89,7 +89,7 @@ class Path
   # @param config [:defined, :warning, :error, :string] the configuration value
   def Path.+(config)
     unless [:defined, :warning, :error, :string].include? config
-      raise ArgumentError, "Invalid configuration: #{config}"
+      raise ArgumentError, "Invalid configuration: #{config.inspect}"
     end
     if @plus_configured
       raise "Path.+ has already been called: #{@plus_configured}"

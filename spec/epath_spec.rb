@@ -7,7 +7,7 @@ lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
 
 describe Path do
-  context '+ configuration' do
+  context '+ configuration', :order_dependent do # just a reader tip
     it 'defaults to :warning' do
       out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }
       out.should == ''
@@ -17,6 +17,10 @@ describe Path do
     it ':defined' do
       Path + :defined
       out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }.should == ['', '']
+    end
+
+    it 'gives an error' do
+      expect { Path + :unknown_config }.to raise_error ArgumentError, /:unknown_config/
     end
 
     it 'gives an error if already configured once' do
