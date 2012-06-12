@@ -145,6 +145,17 @@ Path.backfind('.[.git]') # => the root of this repository
 
 * Path.require\_tree: require all .rb files recursively (in alphabetic order)
 
+### relocate
+
+``` ruby
+from = Path('pictures')
+to   = Path('output/public/thumbnails')
+earth = Path('pictures/nature/earth.jpg')
+
+earth.relocate(from, to, '.png') { |rel| "#{rel}-200" }
+# => #<Path output/public/thumbnails/nature/earth-200.png>
+```
+
 ## Status
 
 This is still in the early development stage, you should expect many additions and some changes.
