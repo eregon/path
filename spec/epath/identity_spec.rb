@@ -177,102 +177,80 @@ describe 'Path : identity' do
     Path('dir/file').to_sym.should == :"dir/file"
   end
 
-  context YAML do
+  context 'dump/load' do
     let(:path) { Path('dir/file') }
     let(:paths) { [Path('dir/file'), Path('path')] }
 
-    it 'is dumped nicely' do
-      yaml = <<-EOY
+    shared_examples_for 'a round-tripping dumping and loading module' do |impl|
+      it 'can be dumped and loaded back' do
+        reloaded = impl.load(impl.dump(path))
+
+        reloaded.should == path
+        path.should == reloaded
+        reloaded.should_not be path
+
+        reloaded.should be_frozen
+        reloaded.to_s.should be_frozen
+
+        impl.load(impl.dump(paths)).should == paths
+      end
+    end
+
+    context YAML do
+      it 'is dumped nicely' do
+        yaml = <<-EOY
 --- !ruby/object:Path
 path: dir/file
 EOY
-      # Recent JRuby 1.9 adds "...\n" (end of document) at the end
-      expected = [yaml, yaml+"...\n"]
-      # Syck adds some space after the class name and ---
-      actual = YAML.dump(path).gsub(/(Path) $/, '\1')
-      expected.should include actual
+        # Recent JRuby 1.9 adds "...\n" (end of document) at the end
+        expected = [yaml, yaml+"...\n"]
+        # Syck adds some space after the class name and ---
+        actual = YAML.dump(path).gsub(/(Path) $/, '\1')
+        expected.should include actual
 
-      yaml = <<-EOY
+        yaml = <<-EOY
 ---
 - !ruby/object:Path
   path: dir/file
 - !ruby/object:Path
   path: path
 EOY
-      # Recent JRuby 1.9 adds "...\n" (end of document) at the end
-      expected = [yaml, yaml+"...\n"]
-      # Syck adds some space after the class name and ---
-      actual = YAML.dump(paths).gsub(/(Path|-{3}) $/, '\1')
-      expected.should include actual
+        # Recent JRuby 1.9 adds "...\n" (end of document) at the end
+        expected = [yaml, yaml+"...\n"]
+        # Syck adds some space after the class name and ---
+        actual = YAML.dump(paths).gsub(/(Path|-{3}) $/, '\1')
+        expected.should include actual
+      end
+
+      it_should_behave_like 'a round-tripping dumping and loading module', YAML
     end
 
-    it 'can be dumped and loaded back' do
-      reloaded = YAML.load(YAML.dump(path))
+    context JSON do
+      it 'is dumped clearly' do
+        json = [
+          '{"json_class":"Path","data":"dir/file"}',
+          '{"data":"dir/file","json_class":"Path"}'
+        ]
+        json.should include JSON.dump(path)
 
-      reloaded.should == path
-      path.should == reloaded
-      reloaded.should_not be path
+        json = [
+          '[{"json_class":"Path","data":"dir/file"},{"json_class":"Path","data":"path"}]',
+          '[{"data":"dir/file","json_class":"Path"},{"data":"path","json_class":"Path"}]'
+        ]
+        json.should include JSON.dump(paths)
+      end
 
-      reloaded.should be_frozen
-      reloaded.to_s.should be_frozen
-
-      YAML.load(YAML.dump(paths)).should == paths
-    end
-  end
-
-  context JSON do
-    let(:path) { Path('dir/file') }
-    let(:paths) { [Path('dir/file'), Path('path')] }
-
-    it 'is dumped clearly' do
-      json = [
-        '{"json_class":"Path","data":"dir/file"}',
-        '{"data":"dir/file","json_class":"Path"}'
-      ]
-      json.should include JSON.dump(path)
-
-      json = [
-        '[{"json_class":"Path","data":"dir/file"},{"json_class":"Path","data":"path"}]',
-        '[{"data":"dir/file","json_class":"Path"},{"data":"path","json_class":"Path"}]'
-      ]
-      json.should include JSON.dump(paths)
+      it_should_behave_like 'a round-tripping dumping and loading module', JSON
     end
 
-    it 'can be dumped and loaded back' do
-      reloaded = JSON.load(JSON.dump(path))
+    context Marshal do
+      it 'is dumped efficiently' do
+        # Just dump and check if no exception
+        Marshal.dump(path)
+        Marshal.dump(paths)
+      end
 
-      reloaded.should == path
-      path.should == reloaded
-      reloaded.should_not be path
-
-      reloaded.should be_frozen
-      reloaded.to_s.should be_frozen
-
-      JSON.load(JSON.dump(paths)).should == paths
-    end
-  end
-
-  context Marshal do
-    let(:path) { Path('dir/file') }
-    let(:paths) { [Path('dir/file'), Path('path')] }
-
-    it 'is dumped efficiently' do
-      # Just dump and check if no exception
-      Marshal.dump(path)
-      Marshal.dump(paths)
-    end
-
-    it 'can be dumped and loaded back' do
-      reloaded = Marshal.load(Marshal.dump(path))
-
-      reloaded.should == path
-      path.should == reloaded
-      reloaded.should_not be path
-
-      reloaded.should be_frozen
-      reloaded.to_s.should be_frozen
-
-      Marshal.load(Marshal.dump(paths)).should == paths
+      it_should_behave_like 'a round-tripping dumping and loading module', Marshal
     end
   end
 end
