@@ -129,6 +129,7 @@ class Path
     @plus_configured = caller.first
   end
 
+  @plus_configured = nil # Initialization
   Path + :warning
   @plus_configured = nil # Let the user overrides this default configuration
 

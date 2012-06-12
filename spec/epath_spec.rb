@@ -16,7 +16,7 @@ describe Path do
 
     it ':defined' do
       Path + :defined
-      out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }.should == ['', '']
+      capture_io { (Path('p') + 'a').should == Path('p/a') }.should == ['', '']
     end
 
     it 'gives an error' do
