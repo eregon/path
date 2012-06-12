@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0
+
+* Path#relocate: allows to easily relocate a path
+  in another hierarchy tree, with optional and easy renaming
+* Path.+: configures Path#+ to help the transition to Path coming from String/Pathname
+* Path#path: an alias of #to_s to improve readability
+* Path#{head,tail} and Path#binwrite
+* Run coverage across OS and >= 1.9 versions (maybe 1.8 soon?)
+* JSON dumping/loading (never two without three)
+* Improve specs, by using better matchers, an automatic accumulator block and sharing them
+
 ## 0.2.0
 
 * Every public method is now documented (although some basically), and methods grouped
