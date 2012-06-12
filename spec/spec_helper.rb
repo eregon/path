@@ -10,6 +10,7 @@ end
 
 require File.expand_path('../../lib/epath', __FILE__)
 require 'yaml'
+require 'json'
 require 'stringio'
 require 'etc'
 

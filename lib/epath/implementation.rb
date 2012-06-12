@@ -39,6 +39,19 @@ class Path
     init
   end
 
+  # JSON dumping.
+  def to_json(*args)
+    {
+      'json_class' => 'Path',
+      'data'       => @path
+    }.to_json(*args)
+  end
+
+  # JSON loading.
+  def self.json_create json
+    new json['data']
+  end
+
   # Marshal dumping.
   def marshal_dump
     @path

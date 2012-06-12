@@ -220,6 +220,38 @@ EOY
     end
   end
 
+  context JSON do
+    let(:path) { Path('dir/file') }
+    let(:paths) { [Path('dir/file'), Path('path')] }
+
+    it 'is dumped clearly' do
+      json = [
+        '{"json_class":"Path","data":"dir/file"}',
+        '{"data":"dir/file","json_class":"Path"}'
+      ]
+      json.should include JSON.dump(path)
+
+      json = [
+        '[{"json_class":"Path","data":"dir/file"},{"json_class":"Path","data":"path"}]',
+        '[{"data":"dir/file","json_class":"Path"},{"data":"path","json_class":"Path"}]'
+      ]
+      json.should include JSON.dump(paths)
+    end
+
+    it 'can be dumped and loaded back' do
+      reloaded = JSON.load(JSON.dump(path))
+
+      reloaded.should == path
+      path.should == reloaded
+      reloaded.should_not be path
+
+      reloaded.should be_frozen
+      reloaded.to_s.should be_frozen
+
+      JSON.load(JSON.dump(paths)).should == paths
+    end
+  end
+
   context Marshal do
     let(:path) { Path('dir/file') }
     let(:paths) { [Path('dir/file'), Path('path')] }
