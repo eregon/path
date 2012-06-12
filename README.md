@@ -164,10 +164,10 @@ String (not using a path library), Pathname, or another library.
 To this intend, [`Path + config`](http://rubydoc.info/github/eregon/epath/master/Path#%2B-class_method) allows to configure the behavior of `Path#+`.
 
 Coming from String, one should use `Path + :string`, and run ruby with the verbose option (`-w`),
-which will show were `+` is used as String concatenation.
+which will show where `+` is used as String concatenation.
 
 Coming from a path library using `+` as #join, one should just use the default (`Path + :warning`),
-which will show were `+` is used as #join.
+which will show where `+` is used.
 
 ## Status
 
