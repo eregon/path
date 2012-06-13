@@ -143,16 +143,13 @@ class Path
   #   path0.join(path1, ..., pathN)
   #   # is the same as
   #   path0 / path1 / ... / pathN
-  def join(*args)
-    args.unshift self
-    result = Path.new(args.pop)
-    return result if result.absolute?
-    args.reverse_each { |arg|
-      arg = Path.new(arg)
-      result = arg / result
+  def join(*paths)
+    result = nil
+    paths.reverse_each { |path|
+      result = Path.new(path) / result
       return result if result.absolute?
     }
-    result
+    self / result
   end
 
   # #relative_path_from returns a relative path from the argument to the
