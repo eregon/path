@@ -79,6 +79,7 @@ class Path
 
   # Whether +self+ is inside +ancestor+, such that +ancestor+ is an ancestor of +self+.
   # This is pure String manipulation. Paths should be absolute.
+  # +self+ is considered to be inside itself.
   def inside? ancestor
     @path == ancestor.to_s or @path.start_with?("#{ancestor}/")
   end
