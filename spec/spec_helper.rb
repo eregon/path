@@ -70,8 +70,8 @@ RSpec.configure do |config|
       (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1
     end
 
-    def jruby?
-      RUBY_DESCRIPTION.start_with? 'jruby'
+    def jruby?(version = nil)
+      RUBY_DESCRIPTION.start_with? "jruby #{version}"
     end
   }
 

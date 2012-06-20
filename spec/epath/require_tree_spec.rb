@@ -33,7 +33,7 @@ describe 'Path#require_tree' do
       foo/foo2.rb
       bar.rb
     ].map(&Path)
-    order.unshift order.pop if jruby? # JRuby puts the being-required file directly in the list
+    order.unshift order.pop if jruby?(1.6) # JRuby 1.6 puts the being-required file directly in the list
     features.last(5).map { |path|
       Path(path) % dir
     }.should == order
@@ -46,7 +46,7 @@ describe 'Path#require_tree' do
     }.to change { features.size }.by 3
 
     order = %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path)
-    order.unshift order.pop if jruby?
+    order.unshift order.pop if jruby?(1.6)
     features.last(3).map { |path|
       Path(path) % dir
     }.should == order
