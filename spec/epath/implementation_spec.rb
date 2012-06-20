@@ -376,7 +376,7 @@ describe 'Path implementation' do
     File.join(Path.new('foo'), Path.new('bar')).should == 'foo/bar'
 
     lambda {
-      $SAFE = 1 unless RUBY_DESCRIPTION.start_with? 'jruby'
+      $SAFE = 1 unless jruby?
       File.join(Path.new('foo'), Path.new('bar'.taint)).should == 'foo/bar'
     }.call
   end

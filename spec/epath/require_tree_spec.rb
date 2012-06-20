@@ -26,15 +26,17 @@ describe 'Path#require_tree' do
       require dir/:bar
     }.to change { features.size }.by 5
 
-    features.last(5).map { |path|
-      Path(path) % dir
-    }.should == %w[
+    order = %w[
       baz.rb
       foo.rb
       foo/foo1.rb
       foo/foo2.rb
       bar.rb
     ].map(&Path)
+    order.unshift order.pop if jruby? # JRuby puts the being-required file directly in the list
+    features.last(5).map { |path|
+      Path(path) % dir
+    }.should == order
   end
 
   it 'given directory' do
@@ -43,8 +45,10 @@ describe 'Path#require_tree' do
       require dir/:bar
     }.to change { features.size }.by 3
 
+    order = %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path)
+    order.unshift order.pop if jruby?
     features.last(3).map { |path|
       Path(path) % dir
-    }.should == %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path)
+    }.should == order
   end
 end

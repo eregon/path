@@ -69,6 +69,10 @@ RSpec.configure do |config|
       # Time zone seems to be lost on windows for file times
       (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1
     end
+
+    def jruby?
+      RUBY_DESCRIPTION.start_with? 'jruby'
+    end
   }
 
   config.around(:each, :tmpchdir) { |example|
