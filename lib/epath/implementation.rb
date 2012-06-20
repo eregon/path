@@ -12,6 +12,10 @@ class Path
   # If multiple arguments are given, they are joined with File.join.
   # The path will have File::ALT_SEPARATOR replaced with '/' and
   # if it begins with a '~', it will be expanded (using File.expand_path).
+  # Accepts an Array of Strings, a Tempfile, anything that respond to #path
+  # or #to_path with a String and defaults to calling #to_s.
+  #
+  # @param parts [Array<String>, Tempfile, #to_path, #path, #to_s] the path-like object(s)
   def initialize(*parts)
     path = parts.size > 1 ? File.join(*parts) : parts.first
     @path = case path
@@ -21,7 +25,13 @@ class Path
     when String
       path.dup
     else
-      path.to_s.dup
+      if path.respond_to? :to_path and String === path.to_path
+        path.to_path.dup
+      elsif path.respond_to? :path and String === path.path
+        path.path.dup
+      else
+        path.to_s.dup
+      end
     end
 
     init

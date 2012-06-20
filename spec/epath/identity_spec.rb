@@ -34,6 +34,13 @@ describe 'Path : identity' do
     Path('/usr', 'bin', 'ls').should == Path('/usr/bin/ls')
     (Path('/usr')/:bin/:ls).should == Path('/usr/bin/ls')
     Path(:path).to_s.should == 'path'
+
+    File.open(__FILE__) { |file| Path(file) }.should == Path.file
+
+    path = double(:path => 'call/path', :to_path => 'call/to_path')
+    Path(path).should == Path('call/to_path')
+    path = double(:path => 'call/path')
+    Path(path).should == Path('call/path')
   end
 
   it 'behaves like a path' do
