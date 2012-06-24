@@ -86,6 +86,15 @@ class Path
   # Truncates the file to +length+ bytes. See +File.truncate+.
   def truncate(length) File.truncate(@path, length) end
 
+  # Removes a file using +File.unlink+.
+  # This is incompatible with Pathname#unlink,
+  # which can also remove directories.
+  # Use {#rmdir} or {#rm_r} for directories.
+  def unlink
+    File.unlink @path
+  end
+  alias :delete :unlink
+
   # Updates the access and modification times. See +File.utime+.
   def utime(atime, mtime) File.utime(atime, mtime, @path) end
 

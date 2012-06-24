@@ -113,6 +113,32 @@ describe 'Path : File', :tmpchdir do
     path.read.should == 'ab'
   end
 
+  it 'unlink, delete' do
+    :delete.should be_an_alias_of :unlink
+    file = Path('file').touch
+    file.unlink
+    file.should_not exist
+
+    dir = Path('dir').mkdir
+    expect { dir.unlink }.to raise_error(SystemCallError)
+  end
+
+  it 'unlink (symlink)', :symlink do
+    file = Path('file').touch
+    symlink = Path('symlink').make_symlink(file)
+
+    symlink.unlink
+    symlink.should_not exist
+    file.should exist
+    file.should be_a_file
+
+    symlink.make_symlink(file)
+    Path('symlink/').unlink
+    Path.getwd.children(false).should include symlink
+    symlink.should_not exist
+    file.should_not exist
+  end
+
   it 'utime' do
     atime, mtime = Time.utc(2000), Time.utc(1999)
     path.utime(atime, mtime)
