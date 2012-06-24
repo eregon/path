@@ -86,8 +86,11 @@ class Path
 end
 
 unless defined? NO_EPATH_GLOBAL_FUNCTION
-  # A shorthand method to create a {Path}. Same as {Path.new}.
-  def Path(*args)
-    Path.new(*args)
+  module Kernel
+    # A shorthand method to create a {Path}. Same as {Path.new}.
+    def Path(*args)
+      Path.new(*args)
+    end
+    private :Path
   end
 end
