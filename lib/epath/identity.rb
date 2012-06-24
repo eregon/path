@@ -18,6 +18,30 @@ class Path
     def to_proc
       lambda { |path| new(path) }
     end
+
+    # Whether +object+ looks like a path.
+    # The current test checks if the object responds to
+    # #to_path, #path or #to_str.
+    def like? object
+      [:to_path, :path, :to_str].any? { |meth| object.respond_to? meth }
+    end
+
+    # A matcher responding to #===. Useful for case clauses, grep, etc.
+    # See {Path.like?}.
+    #
+    #   case obj
+    #   when Path.like then Path(obj)
+    #   # ...
+    #   end
+    def like
+      @like ||= begin
+        matcher = Object.new
+        def matcher.===(object)
+          Path.like?(object)
+        end
+        matcher
+      end
+    end
   end
 
   # @!group Identity

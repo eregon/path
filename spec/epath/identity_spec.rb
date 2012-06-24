@@ -104,6 +104,23 @@ describe 'Path : identity' do
     ('a' <=> Path('a')).should be_nil
   end
 
+  it 'Path.like?' do
+    Path.like?(Object.new).should be_false
+    Path.like?(double(:path => 'path')).should be_true
+  end
+
+  it 'Path.like' do
+    (Path.like === Object.new).should be_false
+    (Path.like === double(:path => 'path')).should be_true
+
+    case path = double(:path => 'path')
+    when Path.like
+      Path(path)
+    end.should == Path('path')
+
+    [1, '2', :'3'].grep(Path.like).should == ['2']
+  end
+
   it 'destructive update of #to_s are not allowed' do
     path = Path('a')
     expect {
