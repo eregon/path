@@ -4,8 +4,8 @@ class Path
 
     # Creates a new Path. See {#initialize}.
     def new(*args)
-      if args.size == 1 and Path === args[0]
-        args[0]
+      if args.size == 1 and Path === args.first
+        args.first
       else
         super(*args)
       end

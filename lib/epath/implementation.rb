@@ -313,7 +313,7 @@ class Path
       when '..'
         names.unshift base
       else
-        if names[0] == '..'
+        if names.first == '..'
           names.shift
         else
           names.unshift base
@@ -321,7 +321,7 @@ class Path
       end
     end
     if File.basename(pre).include? '/'
-      names.shift while names[0] == '..'
+      names.shift while names.first == '..'
     end
     Path.new(prepend_prefix(pre, File.join(*names)))
   end
@@ -335,7 +335,7 @@ class Path
       names.unshift base if base != '.'
     end
     if File.basename(pre).include? '/'
-      names.shift while names[0] == '..'
+      names.shift while names.first == '..'
     end
     if names.empty?
       Path.new(File.dirname(pre))
