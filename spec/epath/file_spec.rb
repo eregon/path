@@ -131,12 +131,6 @@ describe 'Path : File', :tmpchdir do
     symlink.should_not exist
     file.should exist
     file.should be_a_file
-
-    symlink.make_symlink(file)
-    Path('symlink/').unlink
-    Path.getwd.children(false).should include symlink
-    symlink.should_not exist
-    file.should_not exist
   end
 
   it 'utime' do
