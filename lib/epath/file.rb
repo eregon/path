@@ -18,10 +18,14 @@ class Path
   end
 
   # Changes permissions of +path+. See +File.chmod+.
-  def chmod(mode) File.chmod(mode, @path) end
+  def chmod(mode)
+    File.chmod(mode, @path)
+  end
 
   # Changes permissions of +path+, not following symlink. See +File.lchmod+.
-  def lchmod(mode) File.lchmod(mode, @path) end
+  def lchmod(mode)
+    File.lchmod(mode, @path)
+  end
 
   # Changes the owner and group of the file. See +File.chown+.
   def chown(owner, group)
@@ -84,7 +88,9 @@ class Path
   end
 
   # Truncates the file to +length+ bytes. See +File.truncate+.
-  def truncate(length) File.truncate(@path, length) end
+  def truncate(length)
+    File.truncate(@path, length)
+  end
 
   # Removes a file using +File.unlink+.
   # This is incompatible with Pathname#unlink,
@@ -96,7 +102,9 @@ class Path
   alias :delete :unlink
 
   # Updates the access and modification times. See +File.utime+.
-  def utime(atime, mtime) File.utime(atime, mtime, @path) end
+  def utime(atime, mtime)
+    File.utime(atime, mtime, @path)
+  end
 
   # Expands +path+, making it absolute.
   # If the path is relative, it is expanded with the current working directory,
