@@ -33,47 +33,50 @@ ruby = nil if $DEBUG
 
 tmpdir = Path.tmpdir('path-test')
 
+module PathSpecHelpers
+  ACCUMULATOR = begin
+    def (ary = []).to_proc
+      clear
+      lambda { |x| self << x }
+    end
+    ary
+  end
+
+  def accumulator
+    ACCUMULATOR
+  end
+
+  def capture_io
+    stdout, stderr = $stdout, $stderr
+    $stdout, $stderr = StringIO.new, StringIO.new
+    yield
+    [$stdout.string, $stderr.string]
+  ensure
+    $stdout, $stderr = stdout, stderr
+  end
+
+  def verbosely(value = true)
+    verbose = $VERBOSE
+    $VERBOSE = value
+    yield
+  ensure
+    $VERBOSE = verbose
+  end
+
+  def time_delta
+    # Time zone seems to be lost on windows for file times
+    (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1
+  end
+
+  def jruby?(version = nil)
+    RUBY_DESCRIPTION.start_with?("jruby #{version}")
+  end
+  module_function :jruby?
+end
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
-  config.include Module.new {
-    self::ACCUMULATOR = begin
-      def (ary = []).to_proc
-        clear
-        lambda { |x| self << x }
-      end
-      ary
-    end
-
-    def accumulator
-      self.class::ACCUMULATOR
-    end
-
-    def capture_io
-      stdout, stderr = $stdout, $stderr
-      $stdout, $stderr = StringIO.new, StringIO.new
-      yield
-      [$stdout.string, $stderr.string]
-    ensure
-      $stdout, $stderr = stdout, stderr
-    end
-
-    def verbosely(value = true)
-      verbose = $VERBOSE
-      $VERBOSE = value
-      yield
-    ensure
-      $VERBOSE = verbose
-    end
-
-    def time_delta
-      # Time zone seems to be lost on windows for file times
-      (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1
-    end
-
-    def jruby?(version = nil)
-      RUBY_DESCRIPTION.start_with? "jruby #{version}"
-    end
-  }
+  config.include PathSpecHelpers
 
   config.around(:each, :tmpchdir) { |example|
     if example.metadata[:tmpchdir]
@@ -86,8 +89,7 @@ RSpec.configure do |config|
     end
   }
 
-  unless ENV['TRAVIS'] and RUBY_DESCRIPTION.start_with?('jruby') and
-                           JRUBY_VERSION < '1.7' # bugged on TravisCI
+  unless ENV['TRAVIS'] and PathSpecHelpers.jruby?(1.6) # bugged on TravisCI
     config.after(:suite) {
       FileUtils.remove_entry_secure tmpdir
     }
