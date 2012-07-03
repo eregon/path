@@ -5,16 +5,18 @@ describe 'Path : Dir', :tmpchdir do
     f = Path('f')
     f.write 'abc'
     d = Path('d').mkdir
-    Path.glob('*').sort.should == [d,f]
 
+    Path.glob('*').sort.should == [d,f]
     Path.glob('*', &accumulator)
     accumulator.sort.should == [d,f]
 
     a = Path('a.rb').touch
     b = Path('b.rb').touch
 
-    Path.getwd.glob('*.rb').sort.should == [a,b].map(&:expand)
     Path.glob('*.rb').sort.should == [a,b]
+    Path.getwd.glob('*.rb').sort.should == [a,b].map(&:expand)
+    Path.getwd.glob('*.rb', &accumulator)
+    accumulator.sort.should == [a,b].map(&:expand)
   end
 
   it 'getwd, pwd', :tmpchdir => false do

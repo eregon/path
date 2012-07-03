@@ -4,11 +4,11 @@ class Path
 
     # Returns or yields Path objects. See +Dir.glob+.
     # @yieldparam [Path] path
-    def glob(*args)
+    def glob(pattern, flags = 0)
       if block_given?
-        Dir.glob(*args) { |f| yield new(f) }
+        Dir.glob(pattern, flags) { |f| yield new(f) }
       else
-        Dir.glob(*args).map(&Path)
+        Dir.glob(pattern, flags).map(&Path)
       end
     end
 
@@ -58,7 +58,11 @@ class Path
   # Returns or yields Path objects. See +Dir.glob+.
   # @yieldparam [Path] path
   def glob(pattern, flags = 0)
-    Dir.glob(join(pattern), flags).map(&Path)
+    if block_given?
+      Dir.glob(join(pattern), flags) { |f| yield Path.new(f) }
+    else
+      Dir.glob(join(pattern), flags).map(&Path)
+    end
   end
 
   # Return the entries (files and subdirectories) in the directory.
