@@ -26,17 +26,11 @@ describe 'Path#require_tree' do
       require dir/:bar
     }.to change { features.size }.by 5
 
-    order = %w[
-      baz.rb
-      foo.rb
-      foo/foo1.rb
-      foo/foo2.rb
-      bar.rb
-    ].map(&Path)
-    order.unshift order.pop if jruby?(1.6) # JRuby 1.6 puts the being-required file directly in the list
-    features.last(5).map { |path|
-      Path(path) % dir
-    }.should == order
+    %w[baz.rb
+       foo.rb
+       foo/foo1.rb
+       foo/foo2.rb
+       bar.rb].map { |rel| dir/rel }.should be_required_in_order
   end
 
   it 'given directory' do
@@ -45,10 +39,44 @@ describe 'Path#require_tree' do
       require dir/:bar
     }.to change { features.size }.by 3
 
-    order = %w[foo/foo1.rb foo/foo2.rb bar.rb].map(&Path)
-    order.unshift order.pop if jruby?(1.6)
-    features.last(3).map { |path|
-      Path(path) % dir
-    }.should == order
+    %w[foo/foo1.rb
+       foo/foo2.rb
+       bar.rb].map { |rel| dir/rel }.should be_required_in_order
+  end
+
+  it 'default directory and :except prefix' do
+    expect {
+      (dir/'bar.rb').write('Path.require_tree(:except => %w[foo])')
+      require dir/:bar
+    }.to change { features.size }.by 2
+
+    %w[baz.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
+  end
+
+  it 'default directory and :except dir' do
+    expect {
+      (dir/'bar.rb').write('Path.require_tree(:except => %w[foo/])')
+      require dir/:bar
+    }.to change { features.size }.by 3
+
+    %w[baz.rb foo.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
+  end
+
+  it 'given directory and :except prefix' do
+    expect {
+      (dir/'bar.rb').write('Path.require_tree(".", :except => %w[foo])')
+      require dir/:bar
+    }.to change { features.size }.by 2
+
+    %w[baz.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
+  end
+
+  it 'given directory and :except dir' do
+    expect {
+      (dir/'bar.rb').write('Path.require_tree(".", :except => %w[foo/])')
+      require dir/:bar
+    }.to change { features.size }.by 3
+
+    %w[baz.rb foo.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
   end
 end

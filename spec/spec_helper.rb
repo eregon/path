@@ -113,3 +113,14 @@ RSpec::Matchers.define :be_an_alias_of do |expected|
     actual != expected and Path.instance_method(actual) == Path.instance_method(expected)
   end
 end
+
+RSpec::Matchers.define :be_required_in_order do
+  match do |files|
+    files.unshift files.pop if PathSpecHelpers.jruby?(1.6)
+    $LOADED_FEATURES.last(files.size) == files.map(&:to_s)
+  end
+
+  failure_message_for_should do |files|
+    "Expected to load\n#{features.last(files.size) * "\n"}\nin this order\n#{files * "\n"}"
+  end
+end
