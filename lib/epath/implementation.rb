@@ -210,12 +210,7 @@ class Path
   end
 
   def has_trailing_separator?(path)
-    if r = chop_basename(path)
-      pre, basename = r
-      pre.length + basename.length < path.length
-    else
-      false
-    end
+    !is_root?(path) and path.end_with?('/')
   end
 
   def add_trailing_separator(path)
