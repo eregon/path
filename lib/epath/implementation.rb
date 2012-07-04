@@ -221,6 +221,11 @@ class Path
     end
   end
 
+  # remove '..' segments since root's parent is root
+  def remove_root_parents(prefix, names)
+    names.shift while names.first == '..' if is_root?(prefix)
+  end
+
   # Clean the path simply by resolving and removing excess "." and ".." entries.
   # Nothing more, nothing less.
   def cleanpath_aggressive
@@ -241,18 +246,14 @@ class Path
         end
       end
     end
-    if File.basename(pre).include? '/'
-      names.shift while names.first == '..'
-    end
+    remove_root_parents(pre, names)
     Path.new(prepend_prefix(pre, names))
   end
 
   def cleanpath_conservative
     path = @path
     pre, names = split_names(path)
-    if File.basename(pre).include? '/'
-      names.shift while names.first == '..'
-    end
+    remove_root_parents(pre, names)
     if names.empty?
       Path.new(File.dirname(pre))
     else
