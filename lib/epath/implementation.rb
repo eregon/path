@@ -263,44 +263,31 @@ class Path
     end
   end
 
-  def plus(path1, path2) # -> path
-    prefix2 = path2
-    index_list2 = []
-    basename_list2 = []
-    while r2 = chop_basename(prefix2)
-      prefix2, basename2 = r2
-      index_list2.unshift prefix2.length
-      basename_list2.unshift basename2
-    end
-    return path2 if prefix2 != ''
-    prefix1 = path1
-    while true
-      while !basename_list2.empty? && basename_list2.first == '.'
-        index_list2.shift
-        basename_list2.shift
-      end
-      break unless r1 = chop_basename(prefix1)
-      prefix1, basename1 = r1
-      next if basename1 == '.'
-      if basename1 == '..' || basename_list2.empty? || basename_list2.first != '..'
-        prefix1 = prefix1 + basename1
+  def plus(prefix, rel)
+    return rel if is_absolute?(rel)
+    _, names = split_names(rel)
+
+    loop do
+      # break if that was the last segment
+      break unless r = chop_basename(prefix)
+      prefix, name = r
+      next if name == '.'
+
+      # break if we can't resolve anymore
+      if name == '..' or names.first != '..'
+        prefix << name
         break
       end
-      index_list2.shift
-      basename_list2.shift
+      names.shift
     end
-    r1 = chop_basename(prefix1)
-    if !r1 && File.basename(prefix1).include?('/')
-      while !basename_list2.empty? && basename_list2.first == '..'
-        index_list2.shift
-        basename_list2.shift
-      end
-    end
-    if !basename_list2.empty?
-      suffix2 = path2[index_list2.first..-1]
-      r1 ? File.join(prefix1, suffix2) : prefix1 + suffix2
+
+    remove_root_parents(prefix, names)
+    has_prefix = chop_basename(prefix)
+    if names.empty?
+      has_prefix ? prefix : File.dirname(prefix)
     else
-      r1 ? prefix1 : File.dirname(prefix1)
+      suffix = File.join(*names)
+      has_prefix ? File.join(prefix, suffix) : prefix + suffix
     end
   end
 end

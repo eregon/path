@@ -194,7 +194,7 @@ describe 'Path implementation' do
       ['a/b', '../c'] => 'a/c',
       ['..', '../c'] => '../../c',
 
-      ['a//b/c', '../d//e'] => 'a//b/d//e',
+      ['a//b/c', '../d//e'] => 'a//b/d/e',
     }.each_pair do |(a, b), path|
       (Path(a) / Path(b)).to_s.should == path
     end
