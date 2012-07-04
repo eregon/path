@@ -22,7 +22,7 @@ describe 'Path : File', :tmpchdir do
     path.chmod(old)
   end
 
-  it 'lchmod', :symlink, :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
+  it 'lchmod', :symlink, :fails_on => [:rbx, :jruby] do
     link = Path('l').make_symlink(path)
     old = link.lstat.mode
     begin
@@ -34,7 +34,7 @@ describe 'Path : File', :tmpchdir do
     link.chmod(old)
   end
 
-  it 'chown', :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
+  it 'chown', :fails_on => [:rbx, :jruby] do
     old_uid = path.stat.uid
     old_gid = path.stat.gid
     begin
@@ -47,7 +47,7 @@ describe 'Path : File', :tmpchdir do
     path.chown(old_uid, old_gid)
   end
 
-  it 'lchown', :symlink, :fails_on => [:rbx, :rbx19, :jruby, :jruby19] do
+  it 'lchown', :symlink, :fails_on => [:rbx, :jruby] do
     link = Path('l').make_symlink(path)
     old_uid = link.stat.uid
     old_gid = link.stat.gid
@@ -66,7 +66,7 @@ describe 'Path : File', :tmpchdir do
     Path('d').mkdir.ftype.should == 'directory'
   end
 
-  it 'make_link', :fails_on => [:jruby, :jruby19, :rbx] do
+  it 'make_link', :fails_on => [:jruby, :rbx18] do
     link = Path('link')
     link.make_link(path)
     # rbx18: https://github.com/rubinius/rubinius/pull/1754
@@ -74,7 +74,7 @@ describe 'Path : File', :tmpchdir do
     link.read.should == 'abc'
   end
 
-  it 'readlink', :symlink, :fails_on => [:jruby, :jruby19] do
+  it 'readlink', :symlink, :fails_on => [:jruby] do
     Path('l').make_symlink(path).readlink.should == path
   end
 

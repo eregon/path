@@ -27,9 +27,9 @@ Path.tmpdir do |dir|
   end
 end
 
-ruby = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
-ruby = :"#{ruby}19" if RUBY_VERSION > '1.9'
-ruby = nil if $DEBUG
+impl = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
+ruby = RUBY_VERSION > '1.9' ? :"#{impl}19" : :"#{impl}18"
+ruby, impl = nil, nil if $DEBUG
 
 tmpdir = Path.tmpdir('path-test')
 
@@ -103,8 +103,8 @@ RSpec.configure do |config|
   config.filter_run_excluding :dosish => !dosish
   config.filter_run_excluding :dosish_drive => !dosish_drive
   config.filter_run_excluding :unc => !unc
-  config.filter_run_excluding :fails_on => lambda { |implementations|
-    implementations.include? ruby
+  config.filter_run_excluding :fails_on => lambda { |rubies|
+    rubies.include?(impl) or rubies.include?(ruby)
   }
 end
 

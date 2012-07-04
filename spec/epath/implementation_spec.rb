@@ -144,7 +144,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'del_trailing_separator (dosish_drive, failing on JRuby)', :dosish_drive, :fails_on => [:jruby, :jruby19] do
+  it 'del_trailing_separator (dosish_drive, failing on JRuby)', :dosish_drive, :fails_on => [:jruby] do
     Path.allocate.send(:del_trailing_separator, 'A://').should == 'A:/'
   end
 
@@ -171,7 +171,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'del_trailing_separator win32', :dosish, :fails_on => [:jruby, :jruby19] do
+  it 'del_trailing_separator win32', :dosish, :fails_on => [:jruby] do
     require 'Win32API'
     if Win32API.new('kernel32', 'GetACP', nil, 'L').call == 932
       Path.allocate.send(:del_trailing_separator, "\225\\\\").should == "\225\\" # SJIS
@@ -277,7 +277,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'realpath', :tmpchdir, :symlink, :fails_on => [:jruby, :jruby19] do
+  it 'realpath', :tmpchdir, :symlink, :fails_on => [:jruby] do
     dir = Path.getwd
     not_exist = dir/'not-exist'
     expect { not_exist.realpath }.to raise_error(Errno::ENOENT)
@@ -334,7 +334,7 @@ describe 'Path implementation' do
     h.realpath.should == g
   end
 
-  it 'realdirpath', :symlink, :fails_on => [:jruby, :jruby19] do
+  it 'realdirpath', :symlink, :fails_on => [:jruby] do
     Dir.mktmpdir('realdirpath') do |dir|
       dir = Path(dir)
       rdir = dir.realpath
@@ -358,7 +358,7 @@ describe 'Path implementation' do
     end
   end
 
-  it 'Kernel#open', :fails_on => [:rbx, :rbx19, :jruby19] do
+  it 'Kernel#open', :fails_on => [:rbx, :jruby19] do
     count = 0
     Kernel.open(Path(__FILE__)) { |f|
       File.should be_identical(__FILE__, f) # failure is due to rb_stat able to deal with #File

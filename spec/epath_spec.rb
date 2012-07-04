@@ -178,7 +178,7 @@ describe Path do
     # tmpdir.should_not exist
   end
 
-  it 'tmpchdir', :fails_on => [:rbx] do
+  it 'tmpchdir', :fails_on => [:rbx18] do
     Path.tmpchdir do |dir|
       dir.should be_identical(Path.getwd)
     end
