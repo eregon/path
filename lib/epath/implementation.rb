@@ -253,11 +253,9 @@ class Path
     if names.empty?
       Path.new(File.dirname(pre))
     else
-      if names.last != '..' && File.basename(path) == '.'
-        names << '.'
-      end
+      names << '.' if names.last != '..' and File.basename(path) == '.'
       result = prepend_prefix(pre, names)
-      if /\A(?:\.|\.\.)\z/ !~ names.last && has_trailing_separator?(path)
+      if names.last != '.' and names.last != '..' and has_trailing_separator?(path)
         Path.new(add_trailing_separator(result))
       else
         Path.new(result)
