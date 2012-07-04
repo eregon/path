@@ -136,13 +136,16 @@ describe 'Path implementation' do
     {
       'A:' => 'A:',
       'A:/' => 'A:/',
-      'A://' => 'A:/', # fails on JRuby, File.basename('A://') = 'A:' vs 'A:/' on MRI
       'A:.' => 'A:.',
       'A:./' => 'A:.',
       'A:.//' => 'A:.',
     }.each_pair do |path, expected|
       Path.allocate.send(:del_trailing_separator, path).should == expected
     end
+  end
+
+  it 'del_trailing_separator (dosish_drive, failing on JRuby)', :dosish_drive, :fails_on => [:jruby, :jruby19] do
+    Path.allocate.send(:del_trailing_separator, 'A://').should == 'A:/'
   end
 
   it 'del_trailing_separator (unc)', :unc do
