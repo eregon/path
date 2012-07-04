@@ -105,28 +105,23 @@ class Path
   #
   # ArgumentError is raised when it cannot find a relative path.
   def relative_path_from(base_directory)
-    dest_directory = clean.path
-    base_directory = Path.new(base_directory).clean.path
-    dest_prefix, dest_names = split_names(dest_directory)
-    base_prefix, base_names = split_names(base_directory)
+    dest = clean.path
+    base = Path.new(base_directory).clean.path
+    dest_prefix, dest_names = split_names(dest)
+    base_prefix, base_names = split_names(base)
 
     unless SAME_PATHS[dest_prefix, base_prefix]
-      raise ArgumentError, "different prefix: #{dest_prefix.inspect} and #{base_directory.inspect}"
+      raise ArgumentError, "different prefix: #{self.inspect} and #{base_directory.inspect}"
     end
-    until dest_names.empty? or base_names.empty? or !SAME_PATHS[dest_names.first, base_names.first]
+    while d = dest_names.first and b = base_names.first and SAME_PATHS[d, b]
       dest_names.shift
       base_names.shift
     end
-    if base_names.include? '..'
-      raise ArgumentError, "base_directory has ..: #{base_directory.inspect}"
-    end
-    base_names.fill('..')
-    relpath_names = base_names + dest_names
-    if relpath_names.empty?
-      Path.new('.')
-    else
-      Path.new(*relpath_names)
-    end
+    raise ArgumentError, "base_directory has ..: #{base_directory.inspect}" if base_names.include? '..'
+    # the number of names left in base is the ones we have to climb
+    names = base_names.fill('..').concat(dest_names)
+    return Path.new('.') if names.empty?
+    Path.new(*names)
   end
   alias :relative_to :relative_path_from
   alias :% :relative_path_from
