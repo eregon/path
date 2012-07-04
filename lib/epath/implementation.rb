@@ -229,21 +229,17 @@ class Path
   # Clean the path simply by resolving and removing excess "." and ".." entries.
   # Nothing more, nothing less.
   def cleanpath_aggressive
-    path = @path
+    pre = @path
     names = []
-    pre = path
     while r = chop_basename(pre)
       pre, base = r
-      case base
-      when '.'
-      when '..'
-        names.unshift base
+      if base == '.'
+        # do nothing, it can be ignored
+      elsif names.first == '..' and base != '..'
+        # base can be ignored as we go back to its parent
+        names.shift
       else
-        if names.first == '..'
-          names.shift
-        else
-          names.unshift base
-        end
+        names.unshift base
       end
     end
     remove_root_parents(pre, names)
