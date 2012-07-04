@@ -107,18 +107,9 @@ class Path
   def relative_path_from(base_directory)
     dest_directory = clean.path
     base_directory = Path.new(base_directory).clean.path
-    dest_prefix = dest_directory
-    dest_names = []
-    while r = chop_basename(dest_prefix)
-      dest_prefix, basename = r
-      dest_names.unshift basename if basename != '.'
-    end
-    base_prefix = base_directory
-    base_names = []
-    while r = chop_basename(base_prefix)
-      base_prefix, basename = r
-      base_names.unshift basename if basename != '.'
-    end
+    dest_prefix, dest_names = split_names(dest_directory)
+    base_prefix, base_names = split_names(base_directory)
+
     unless SAME_PATHS[dest_prefix, base_prefix]
       raise ArgumentError, "different prefix: #{dest_prefix.inspect} and #{base_directory.inspect}"
     end
@@ -198,7 +189,7 @@ class Path
     names = []
     while r = chop_basename(path)
       path, basename = r
-      names.unshift basename
+      names.unshift basename if basename != '.'
     end
     return path, names
   end
@@ -264,12 +255,7 @@ class Path
 
   def cleanpath_conservative
     path = @path
-    names = []
-    pre = path
-    while r = chop_basename(pre)
-      pre, base = r
-      names.unshift base if base != '.'
-    end
+    pre, names = split_names(path)
     if File.basename(pre).include? '/'
       names.shift while names.first == '..'
     end
