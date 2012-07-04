@@ -205,12 +205,9 @@ class Path
     !is_root?(path) and path.end_with?('/')
   end
 
-  def add_trailing_separator(path)
-    if File.basename(path + 'a') == 'a'
-      path
-    else
-      path + '/'
-    end
+  def add_trailing_separator(path) # mutates path
+    path << '/' unless path.end_with? '/'
+    path
   end
 
   def del_trailing_separator(path)
