@@ -185,6 +185,10 @@ class Path
     end
   end
 
+  def is_root?(path)
+    chop_basename(path) == nil and path.include?('/')
+  end
+
   # split_names(path) -> prefix, [name, ...]
   def split_names(path)
     names = []

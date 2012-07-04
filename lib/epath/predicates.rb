@@ -21,7 +21,7 @@ class Path
   # It doesn't access actual filesystem. So it may return +false+ for some
   # paths which points to roots such as +/usr/..+.
   def root?
-    chop_basename(@path) == nil and @path.include?('/')
+    is_root?(@path)
   end
 
   # #mountpoint? returns +true+ if +self+ points to a mountpoint.
