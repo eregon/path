@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0
+
+* huge refactoring of internal code for clarity and efficiency
+* improve Path.require_tree with a good default order and an :except option
+* add a Path.like? predicate and a Path.like matcher for path-like objects
+* be consistent and try #to_path, then #path, #to_str and #to_s in constructor
+* CHANGE: #unlink (and the alias #delete) is now File.unlink,
+  and will not remove directories (use #rmdir or #rm_r)
+* fix #glob to yield when a block is given, as documented and as Path.glob
+* Path() is now in Kernel, no more in Object (as Integer, String, Array, ...)
+* reorganize implementation.rb so that it contains almost only internal methods
+* more testing on Windows
+* improve documentation and specs
+
 ## 0.3.0
 
 * Path#relocate: allows to easily relocate a path
