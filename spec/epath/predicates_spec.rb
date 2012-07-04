@@ -14,8 +14,14 @@ describe 'Path predicates' do
     Path('a/b').should be_relative
   end
 
+  it 'relative? (non dosish_drive)', :dosish_drive => false do
+    Path('A:').should be_relative
+    Path('A:/').should be_relative
+    Path('A:/a').should be_relative
+  end
+
   it 'relative? (dosish_drive)', :dosish_drive do
-    Path('A:').should_not be_relative
+    Path('A:').should be_relative
     Path('A:/').should_not be_relative
     Path('A:/a').should_not be_relative
   end

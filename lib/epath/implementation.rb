@@ -185,6 +185,10 @@ class Path
     end
   end
 
+  def is_absolute?(path)
+    path.start_with?('/') or (path =~ /\A[a-zA-Z]:\// and is_root?($&))
+  end
+
   def is_root?(path)
     chop_basename(path) == nil and path.include?('/')
   end

@@ -3,16 +3,12 @@ class Path
 
   # Whether a path is absolute.
   def absolute?
-    !relative?
+    is_absolute?(@path)
   end
 
   # Whether a path is relative.
   def relative?
-    path = @path
-    while r = chop_basename(path)
-      path, = r
-    end
-    path == ''
+    not absolute?
   end
 
   # #root? is a predicate for root directories. I.e. it returns +true+ if the
