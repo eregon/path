@@ -10,9 +10,7 @@ class Path
       resolved = []
       until unresolved.empty?
         n = unresolved.shift
-        if n == '.'
-          next
-        elsif n == '..'
+        if n == '..'
           resolved.pop
         else
           path = prepend_prefix(prefix, resolved + [n])
@@ -33,11 +31,10 @@ class Path
             if s.symlink?
               h[path] = :resolving
               link_prefix, link_names = split_names(File.readlink(path))
-              if link_prefix == ''
-                prefix, *resolved = h[path] = realpath_rec(prefix, resolved + link_names, h, strict, unresolved.empty?)
-              else
-                prefix, *resolved = h[path] = realpath_rec(link_prefix, link_names, h, strict, unresolved.empty?)
+              if link_prefix == '' # if link is relative
+                link_prefix, link_names = prefix, resolved.concat(link_names)
               end
+              prefix, *resolved = h[path] = realpath_rec(link_prefix, link_names, h, strict, unresolved.empty?)
             else
               resolved << n
               h[path] = [prefix, *resolved]
@@ -54,7 +51,7 @@ class Path
       prefix, names = split_names(path)
       if prefix == ''
         prefix, names2 = split_names(Dir.pwd)
-        names = names2 + names
+        names = names2.concat(names)
       end
       prefix, *names = realpath_rec(prefix, names, {}, strict)
       prepend_prefix(prefix, names)
