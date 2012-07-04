@@ -15,7 +15,7 @@ class Path
         elsif n == '..'
           resolved.pop
         else
-          path = prepend_prefix(prefix, File.join(*(resolved + [n])))
+          path = prepend_prefix(prefix, resolved + [n])
           if h.include? path
             if h[path] == :resolving
               raise Errno::ELOOP.new(path)
@@ -57,7 +57,7 @@ class Path
         names = names2 + names
       end
       prefix, *names = realpath_rec(prefix, names, {}, strict)
-      prepend_prefix(prefix, File.join(*names))
+      prepend_prefix(prefix, names)
     end
   end
 end

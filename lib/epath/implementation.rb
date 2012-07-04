@@ -189,11 +189,13 @@ class Path
     return path, names
   end
 
-  def prepend_prefix(prefix, relpath)
+  def prepend_prefix(prefix, relnames)
+    relpath = File.join(*relnames)
     if relpath.empty?
       File.dirname(prefix)
     elsif prefix.include? '/'
-      add_trailing_separator(File.dirname(prefix)) + relpath
+      # safe because File.dirname returns a new String
+      add_trailing_separator(File.dirname(prefix)) << relpath
     else
       prefix + relpath
     end
@@ -245,7 +247,7 @@ class Path
     if File.basename(pre).include? '/'
       names.shift while names.first == '..'
     end
-    Path.new(prepend_prefix(pre, File.join(*names)))
+    Path.new(prepend_prefix(pre, names))
   end
 
   def cleanpath_conservative
@@ -260,7 +262,7 @@ class Path
       if names.last != '..' && File.basename(path) == '.'
         names << '.'
       end
-      result = prepend_prefix(pre, File.join(*names))
+      result = prepend_prefix(pre, names)
       if /\A(?:\.|\.\.)\z/ !~ names.last && has_trailing_separator?(path)
         Path.new(add_trailing_separator(result))
       else
