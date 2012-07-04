@@ -101,9 +101,7 @@ class Path
   # @yieldparam [Path] path
   def descend
     return to_enum(:descend) unless block_given?
-    vs = []
-    ascend { |v| vs << v }
-    vs.reverse_each { |v| yield v }
+    ascend.reverse_each { |v| yield v }
     nil
   end
 
