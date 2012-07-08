@@ -37,10 +37,13 @@ describe 'Path : identity' do
 
     File.open(__FILE__) { |file| Path(file) }.should == Path.file
 
-    path = double(:path => 'call/path', :to_path => 'call/to_path')
-    Path(path).should == Path('call/to_path')
-    path = double(:path => 'call/path')
-    Path(path).should == Path('call/path')
+    path = double(:to_str => 'to_str', :path => 'path', :to_path => 'to_path')
+    Path(path).should == Path('to_path')
+    path = double(:to_str => 'to_str', :path => 'path')
+    Path(path).should == Path('path')
+    path = double(:to_str => 'to_str')
+    Path(path).should == Path('to_str')
+    Path(42).should == Path('42') # call to_s
   end
 
   it 'behaves like a path' do
