@@ -98,12 +98,13 @@ class Path
   end
 
   # #relative_path_from returns a relative path from the argument to the
-  # receiver. If +self+ is absolute, the argument must be absolute too.
-  # If +self+ is relative, the argument must be relative too.
+  # receiver. They must be both relative or both absolute.
   #
   # #relative_path_from doesn't access the filesystem. It assumes no symlinks.
   #
-  # ArgumentError is raised when it cannot find a relative path.
+  # @raise [ArgumentError] if it cannot find a relative path:
+  #   Either the base is relative and contains '..' (in that case you can expand
+  #   both paths) or the paths are absolutes and on different drives (Windows).
   def relative_path_from(base_directory)
     dest = clean.path
     base = Path.new(base_directory).clean.path
