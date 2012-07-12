@@ -9,6 +9,7 @@ if ENV['COVERAGE']
 end
 
 require File.expand_path('../../lib/epath', __FILE__)
+require 'rspec'
 require 'yaml'
 require 'json'
 require 'stringio'
