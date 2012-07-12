@@ -81,6 +81,11 @@ describe 'Path : parts' do
     Path('/usr/bin/ruby').each_filename.to_a.should == %w[usr bin ruby]
   end
 
+  it 'each_filename (dosish_drive)', :dosish_drive do
+    Path('C:/Program Files/Stellarium').each_filename(&accumulator)
+    accumulator.should == ['Program Files', 'Stellarium']
+  end
+
   it 'descend' do
     Path('/a/b/c').descend.map(&:to_s).should == %w[/ /a /a/b /a/b/c]
     Path('a/b/c').descend.map(&:to_s).should == %w[a a/b a/b/c]
