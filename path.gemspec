@@ -1,12 +1,12 @@
-require File.expand_path('../lib/epath/version', __FILE__)
+require File.expand_path('../lib/path/version', __FILE__)
 
 Gem::Specification.new do |s|
-  s.name = 'epath'
+  s.name = 'path'
   s.summary = 'a Path manipulation library'
   s.author = 'eregon'
   s.email = 'eregontp@gmail.com'
-  s.homepage = 'https://github.com/eregon/epath'
-  s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE epath.gemspec]
+  s.homepage = 'https://github.com/eregon/path'
+  s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE path.gemspec]
   s.version = Path::VERSION
 
   s.add_development_dependency 'rspec'

@@ -3,10 +3,16 @@ require 'spec_helper'
 this = Path(__FILE__).expand
 root = Path(File.expand_path('../..',__FILE__))
 lib = Path(File.expand_path('../../lib',__FILE__))
-lib_epath = Path(File.expand_path('../../lib/epath.rb',__FILE__))
+lib_path = Path(File.expand_path('../../lib/path.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
 
 describe Path do
+  it "can be required as 'epath' for compatibility" do
+    epath = Path.relative('../lib/epath.rb')
+    epath.should exist
+    epath.lines.should include "require File.expand_path('../path.rb', __FILE__)\n"
+  end
+
   context '+ configuration', :order_dependent do # just a reader tip
     it 'defaults to :warning' do
       out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }
@@ -24,7 +30,7 @@ describe Path do
     end
 
     it 'gives an error if already configured once' do
-      expect { Path + :error }.to raise_error(/^Path\.\+ has already been called: .+epath_spec\.rb:\d+/)
+      expect { Path + :error }.to raise_error(/^Path\.\+ has already been called: .+path_spec\.rb:\d+/)
     end
 
     it ':error' do
@@ -98,10 +104,10 @@ describe Path do
   end
 
   it 'relative' do
-    Path.relative('epath_spec.rb').should == this
+    Path.relative('path_spec.rb').should == this
     Path.relative('..').should == root
     Path.relative('../spec').should == spec
-    Path.relative('../lib/epath.rb').should == lib_epath
+    Path.relative('../lib/path.rb').should == lib_path
   end
 
   it '~, home' do
@@ -138,18 +144,18 @@ describe Path do
   context 'backfind' do
     it 'simple' do
       Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
-      Path.here.backfind('lib/epath.rb').should == lib_epath
-      (Path.dir/'x/y/z').backfind('lib/epath.rb').should == lib_epath
+      Path.here.backfind('lib/path.rb').should == lib_path
+      (Path.dir/'x/y/z').backfind('lib/path.rb').should == lib_path
       (Path.dir/'x/y/z').backfind('lib/nothin/such.rb').should be_nil
       Path('x/y/z').backfind('lib/nothin/such.rb').should be_nil # relative paths should work too
     end
 
     it 'class method' do
-      Path.backfind('lib/epath.rb').should == lib_epath
+      Path.backfind('lib/path.rb').should == lib_path
     end
 
     it 'with xpath-like context' do
-      Path.backfind('lib[epath.rb]').should == lib
+      Path.backfind('lib[path.rb]').should == lib
       Path.backfind('.[.git]').should == root
       (Path.dir/'x/y/z').backfind('.[.git]').should == root
     end

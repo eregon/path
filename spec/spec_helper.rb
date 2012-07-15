@@ -8,7 +8,7 @@ if ENV['COVERAGE']
   end
 end
 
-require File.expand_path('../../lib/epath', __FILE__)
+require File.expand_path('../../lib/path', __FILE__)
 require 'rspec'
 require 'yaml'
 require 'json'

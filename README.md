@@ -1,6 +1,6 @@
 # Path - a Path manipulation library
 
-[Path](http://rubydoc.info/github/eregon/epath/master/Path) is a library to manage paths.  
+[Path](http://rubydoc.info/github/eregon/path/master/Path) is a library to manage paths.  
 It is similar to Pathname, but has some extra goodness.  
 The method names are intended to be short and explicit, and avoid too much duplication like having 'name' or 'path' in the method name.
 
@@ -11,17 +11,17 @@ Also, using a path library like this avoid to remember in which class the functi
 
 ## Installation
 
-    gem install epath
+    gem install path
 
 ## Links
 
-* [GitHub](https://github.com/eregon/epath)
-* [YARD Documentation](http://rubydoc.info/github/eregon/epath/master/file/README.md)
-* [Changelog](https://github.com/eregon/epath/blob/master/Changelog.md)
+* [GitHub](https://github.com/eregon/path)
+* [YARD Documentation](http://rubydoc.info/github/eregon/path/master/file/README.md)
+* [Changelog](https://github.com/eregon/path/blob/master/Changelog.md)
 
 ## API
 
-See the [Path](http://rubydoc.info/github/eregon/epath/master/Path) class documentation for details.
+See the [Path](http://rubydoc.info/github/eregon/path/master/Path) class documentation for details.
 
 All the useful methods of `File` (and so `IO`) and `Dir` should be included.  
 Most methods of `FileUtils` should be there too.
@@ -31,7 +31,7 @@ Most methods of `FileUtils` should be there too.
 ``` ruby
 Path.new('/usr/bin')
 Path['/usr/bin']
-Path('/usr/bin') # unless NO_EPATH_GLOBAL_FUNCTION is defined
+Path('/usr/bin') # unless NO_PATH_GLOBAL_FUNCTION is defined
 
 Path.new('~myuser/path') # expanded if it begins with ~
 
@@ -69,7 +69,7 @@ Path can split a path in two ways:
 The first way is the one done by File methods (dirname, basename, extname).  
 
 The second is Path's own way in which the base is given without the extension and the extension is given without the leading dot.  
-The rationale behind this is to have a true three-components path, splitting on the / and the . (See [this issue](https://github.com/eregon/epath/pull/8#issuecomment-3499030) for details)
+The rationale behind this is to have a true three-components path, splitting on the / and the . (See [this issue](https://github.com/eregon/path/pull/8#issuecomment-3499030) for details)
 
        dirname     basename
      ____________   ______
@@ -161,7 +161,7 @@ earth.relocate(from, to, '.png') { |rel| "#{rel}-200" }
 One aim of Path is to help the user make the transition coming from
 String (not using a path library), Pathname, or another library.
 
-To this intend, [`Path + config`](http://rubydoc.info/github/eregon/epath/master/Path#%2B-class_method) allows to configure the behavior of `Path#+`.
+To this intend, [`Path + config`](http://rubydoc.info/github/eregon/path/master/Path#%2B-class_method) allows to configure the behavior of `Path#+`.
 
 Coming from String, one should use `Path + :string`, and run ruby with the verbose option (`-w`),
 which will show where `+` is used as String concatenation.
