@@ -87,6 +87,13 @@ describe 'Path : IO', :tmpchdir do
     f.read.should == "hello\nworld\n"
   end
 
+  it 'rewrite' do
+    f = Path('f')
+    f.write 'abc'
+    f.rewrite { |contents| contents.reverse }
+    f.read.should == 'cba'
+  end
+
   it 'head' do
     f = Path('f')
     f.write('lorem ipsum')

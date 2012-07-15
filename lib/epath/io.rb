@@ -76,6 +76,16 @@ class Path
     end
   end
 
+  # Rewrites contents of +self+.
+  #
+  #    Path('file').rewrite { |contents| contents.reverse }
+  #
+  # @yieldparam [String] contents
+  # @yieldreturn [String] contents to write
+  def rewrite
+    write yield read
+  end
+
   # Returns the first +bytes+ bytes of the file.
   # If the file size is smaller than +bytes+, return the whole contents.
   def head(bytes)
