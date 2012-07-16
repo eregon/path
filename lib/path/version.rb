@@ -1,5 +1,5 @@
 class Path
   # The version of the gem.
   # Set here to avoid duplication and allow introspection.
-  VERSION = '0.4.0'
+  VERSION = '1.3.0'
 end

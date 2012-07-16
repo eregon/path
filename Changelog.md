@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0
+
+* Over 1.0, it's totally stable now
+* Renamed to path, the right name for the gem (thanks to trans!)
+* add Path#rewrite
+* improve specs and documentation
+
 ## 0.4.0
 
 * huge refactoring of internal code for clarity and efficiency
