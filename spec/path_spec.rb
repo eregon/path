@@ -119,6 +119,10 @@ describe Path do
     Path.~(Etc.getlogin).should == Path('~').expand
   end
 
+  it 'null' do
+    Path.null.should exist
+  end
+
   context 'inside?' do
     it 'works when paths are related' do
       this.inside?(this).should be_true

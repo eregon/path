@@ -3,6 +3,7 @@
 Dir.glob(File.expand_path('../path/*.rb',__FILE__)) { |file| require file }
 
 require 'tempfile'
+require 'rbconfig'
 
 class Path
   class << self
@@ -32,6 +33,16 @@ class Path
       new("~#{user}")
     end
     alias :home :~
+
+    # A {Path} to the null device on the current platform.
+    def null
+      new case RbConfig::CONFIG['host_os']
+      when /mswin|mingw/ then 'NUL'
+      when /amiga/i then 'NIL:'
+      when /openvms/i then 'NL:'
+      else '/dev/null'
+      end
+    end
 
     # Same as +Path.file.backfind(path)+. See {#backfind}.
     def backfind(path)
