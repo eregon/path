@@ -73,9 +73,12 @@ class Path
     end
     @plus_configured = caller.first
   end
+  class << self
+    alias :configure_plus :+
+  end
 
   @plus_configured = nil # Initialization
-  Path + :warning
+  Path.configure_plus(:warning)
   @plus_configured = nil # Let the user overrides this default configuration
 
   # @!method +(other)
