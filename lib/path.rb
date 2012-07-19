@@ -23,7 +23,11 @@ class Path
     # {Path} relative to the directory of this file.
     def relative(path, from = nil)
       from ||= caller # this can not be moved as a default argument, JRuby optimizes it
-      new(path).expand dir(from)
+      if path.is_a?(String)
+        new(path).expand dir(from)
+      elsif path.is_a?(Array)
+        new(File.join(path)).expand_dir(from)
+      end
     end
 
     # A {Path} to the home directory of +user+ (defaults to the current user).
