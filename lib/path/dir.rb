@@ -16,6 +16,7 @@ class Path
     def Path.getwd
       new Dir.getwd
     end
+    alias :cwd :getwd
     alias :pwd :getwd
   end
 

@@ -19,7 +19,8 @@ describe 'Path : Dir', :tmpchdir do
     accumulator.sort.should == [a,b].map(&:expand)
   end
 
-  it 'getwd, pwd', :tmpchdir => false do
+  it 'getwd, cwd, pwd', :tmpchdir => false do
+    Path.method(:getwd).should == Path.method(:cwd)
     Path.method(:getwd).should == Path.method(:pwd)
     Path.getwd.should be_kind_of Path
   end
