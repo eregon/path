@@ -7,12 +7,6 @@ lib_path = Path(File.expand_path('../../lib/path.rb',__FILE__))
 spec = Path(File.expand_path('..',__FILE__))
 
 describe Path do
-  it "can be required as 'epath' for compatibility" do
-    epath = Path.relative('../lib/epath.rb')
-    epath.should exist
-    epath.lines.should include "require File.expand_path('../path.rb', __FILE__)\n"
-  end
-
   context '+ configuration', :order_dependent do # just a reader tip
     it 'defaults to :warning' do
       out, err = capture_io { (Path('p') + 'a').should == Path('p/a') }
