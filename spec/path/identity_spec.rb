@@ -160,7 +160,7 @@ describe 'Path : identity' do
     Path('a'.freeze).freeze.to_s.should be_frozen
   end
 
-  it 'freeze, taint and untaint', :fails_on => [:rbx] do
+  it 'freeze, taint and untaint' do
     path = Path('a')
     path.should_not be_tainted
     expect {
