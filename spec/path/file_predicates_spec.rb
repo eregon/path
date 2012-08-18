@@ -116,7 +116,7 @@ describe 'Path : File predicates', :tmpchdir do
     end
   end
 
-  it 'identical?', :fails_on => [:rbx18] do
+  it 'identical?' do
     a = Path('a').touch
     a.should be_identical(Path('a'))
     Path.getwd.should be_identical(Path('.'))
