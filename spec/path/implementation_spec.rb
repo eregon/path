@@ -358,10 +358,10 @@ describe 'Path implementation' do
     end
   end
 
-  it 'Kernel#open', :fails_on => [:rbx, :jruby19] do
+  it 'Kernel#open', :fails_on => [:jruby19] do
     count = 0
     Kernel.open(Path(__FILE__)) { |f|
-      File.should be_identical(__FILE__, f) # failure is due to rb_stat able to deal with #File
+      File.should be_identical(__FILE__, f.path)
       count += 1
       2
     }.should == 2
