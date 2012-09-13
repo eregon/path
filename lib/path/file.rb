@@ -121,6 +121,7 @@ class Path
   def realpath(basedir=nil)
     Path.new(real_path_internal(true, basedir))
   end
+  alias :real :realpath
 
   # Returns the real (absolute) path of +self+ in the actual filesystem.
   # The real path doesn't contain symlinks or useless dots.

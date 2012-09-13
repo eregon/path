@@ -278,6 +278,7 @@ describe 'Path implementation' do
   end
 
   it 'realpath', :tmpchdir, :symlink, :fails_on => [:jruby] do
+    :real.should be_an_alias_of :realpath
     dir = Path.getwd
     not_exist = dir/'not-exist'
     expect { not_exist.realpath }.to raise_error(Errno::ENOENT)
