@@ -94,7 +94,7 @@ class Path
   end
   alias :eql? :==
 
-  # Provides for comparing paths, case-sensitively.
+  # Provides a case-sensitive comparison operator for paths.
   def <=>(other)
     return nil unless Path === other
     @path.tr('/', "\0") <=> other.path.tr('/', "\0")

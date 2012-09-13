@@ -11,16 +11,16 @@ class Path
     not absolute?
   end
 
-  # #root? is a predicate for root directories. I.e. it returns +true+ if the
+  # Predicate for root directories. Returns +true+ if the
   # path consists of consecutive slashes.
   #
-  # It doesn't access actual filesystem. So it may return +false+ for some
+  # It doesn't access the filesystem. So it may return +false+ for some
   # paths which points to roots such as +/usr/..+.
   def root?
     is_root?(@path)
   end
 
-  # #mountpoint? returns +true+ if +self+ points to a mountpoint.
+  # Returns +true+ if +self+ points to a mountpoint.
   def mountpoint?
     begin
       stat1 = lstat

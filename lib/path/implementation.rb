@@ -20,13 +20,13 @@ class Path
   end
   alias :cleanpath :clean
 
-  # #parent returns the parent directory.
+  # Returns the parent directory.
   # This can be chained.
   def parent
     self / '..'
   end
 
-  # Path#/ appends a path fragment to this one to produce a new Path.
+  # Path#/ appends a path fragment to +self+ to produce a new Path.
   #
   #   p = Path.new("/usr")  # => #<Path /usr>
   #   p / "bin/ruby"        # => #<Path /usr/bin/ruby>
@@ -100,10 +100,10 @@ class Path
     self / result
   end
 
-  # #relative_path_from returns a relative path from the argument to the
-  # receiver. They must be both relative or both absolute.
+  # #relative_path_from returns a relative path from the given +base_directory+
+  # to the receiver. They must be both relative or both absolute.
   #
-  # #relative_path_from doesn't access the filesystem. It assumes no symlinks.
+  # It doesn't access the filesystem and assumes no symlinks.
   #
   # @raise [ArgumentError] if it cannot find a relative path:
   #   Either the base is relative and contains '..' (in that case you can expand
@@ -230,7 +230,7 @@ class Path
     names.shift while names.first == '..' if is_root?(prefix)
   end
 
-  # Clean the path simply by resolving and removing excess "." and ".." entries.
+  # Clean the path simply by resolving and removing excess +.+ and +..+ entries.
   # Nothing more, nothing less.
   def cleanpath_aggressive
     pre = @path

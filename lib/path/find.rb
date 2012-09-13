@@ -1,14 +1,16 @@
 class Path
-  # Path#find is an iterator to traverse a directory tree in a depth first
-  # manner. It yields a Path for each file under "this" directory.
+  # Iterates over the directory tree in a depth first
+  # manner, yielding a Path for each file under "this" directory.
   #
-  # Returns an enumerator if no block is given.
+  # Returns an Enumerator if no block is given.
   #
-  # Since it is implemented by +find.rb+, +Find.prune+ can be used
-  # to control the traversal.
+  # Since it is implemented by the standard library module Find, +Find.prune+
+  # can be used to control the traversal.
   #
   # If +self+ is +.+, yielded paths begin with a filename in the
   # current directory, not +./+.
+  #
+  # See +Find.find+.
   #
   # @yieldparam [Path] path
   def find

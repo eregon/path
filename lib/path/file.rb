@@ -1,12 +1,12 @@
 class Path
   # @!group File
 
-  # Returns last access time. See +File.atime+.
+  # Returns the last access time. See +File.atime+.
   def atime
     File.atime(@path)
   end
 
-  # Returns last change time (of the directory entry, not the file itself).
+  # Returns the last change time (of the directory entry, not the file itself).
   # See +File.ctime+.
   def ctime
     File.ctime(@path)
@@ -27,7 +27,7 @@ class Path
     File.lchmod(mode, @path)
   end
 
-  # Changes the owner and group of the file. See +File.chown+.
+  # Changes the owner and group of +path+. See +File.chown+.
   def chown(owner, group)
     File.chown(owner, group, @path)
   end
@@ -114,7 +114,7 @@ class Path
   end
   alias :expand_path :expand
 
-  # Returns the real (absolute) path of +self+ in the actual
+  # Returns the real (absolute) path for +self+ in the actual
   # filesystem not containing symlinks or useless dots.
   #
   # All components of the path must exist when this method is called.

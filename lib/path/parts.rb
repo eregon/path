@@ -74,6 +74,7 @@ class Path
   #   Path.new("/usr/bin/ruby").each_filename { |filename| ... }
   #     # yields "usr", "bin", and "ruby".
   #
+  # Returns an Enumerator if no block was given.
   # @yieldparam [String] filename
   def each_filename
     return to_enum(__method__) unless block_given?
@@ -97,7 +98,7 @@ class Path
   #     #<Path path/to/some>
   #     #<Path path/to/some/file.rb>
   #
-  # It doesn't access actual filesystem.
+  # It doesn't access the filesystem.
   # @yieldparam [Path] path
   def descend
     return to_enum(:descend) unless block_given?
@@ -120,7 +121,7 @@ class Path
   #     #<Path path/to>
   #     #<Path path>
   #
-  # It doesn't access actual filesystem.
+  # It doesn't access the filesystem.
   # @yieldparam [Path] path
   def ascend
     return to_enum(:ascend) unless block_given?
