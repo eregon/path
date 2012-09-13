@@ -145,4 +145,15 @@ class Path
   def each_child(with_directory=true, &b)
     children(with_directory).each(&b)
   end
+
+  # Equivalent of +parent.children - [self]+.
+  # Returns the siblings, the files in the same directory as the current +path+.
+  # Returns only the root if +path+ is the root.
+  def siblings(with_directory = true)
+    if root?
+      [self]
+    else
+      parent.children(with_directory) - [(with_directory ? self : basename)]
+    end
+  end
 end

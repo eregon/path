@@ -100,4 +100,11 @@ describe 'Path : Dir', :tmpchdir do
     d.each_child(false, &accumulator)
     accumulator.sort.should == [Path('x'), Path('y')]
   end
+
+  it 'siblings' do
+    create_hierarchy
+    d.siblings.sort.should == [a, b]
+    x.siblings.sort.should == [y]
+    x.siblings(false).sort.should == [Path('y')]
+  end
 end
