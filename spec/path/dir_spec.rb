@@ -1,6 +1,20 @@
 require 'spec_helper'
 
 describe 'Path : Dir', :tmpchdir do
+  let(:a) { Path('a').touch }
+  let(:b) { Path('b').touch }
+  let(:d) { Path('d').mkdir }
+  let(:x) { (d/'x').touch }
+  let(:y) { (d/'y').touch }
+
+  def create_files
+    a; b
+  end
+
+  def create_hierarchy
+    a; b; d; x; y
+  end
+
   it 'glob' do
     f = Path('f')
     f.write 'abc'
@@ -26,33 +40,31 @@ describe 'Path : Dir', :tmpchdir do
   end
 
   it 'entries' do
-    a, b = Path('a').touch, Path('b').touch
+    create_files
     Path('.').entries.sort.should == [Path('.'), Path('..'), a, b]
   end
 
   it 'each_entry' do
-    a, b = Path('a').touch, Path('b').touch
+    create_files
     Path('.').each_entry(&accumulator)
     accumulator.sort.should == [Path('.'), Path('..'), a, b]
   end
 
   it 'mkdir' do
-    Path('d').mkdir.should be_a_directory
+    d.should be_a_directory
     Path('e').mkdir(0770).should be_a_directory
   end
 
   it 'rmdir' do
-    d = Path('d').mkdir
     d.should be_a_directory
     d.rmdir
     d.should_not exist
   end
 
   it 'opendir' do
-    Path('a').touch
-    Path('b').touch
-    Path('.').opendir { |d|
-      d.each(&accumulator)
+    create_files
+    Path('.').opendir { |dir|
+      dir.each(&accumulator)
     }
     accumulator.sort.should == ['.', '..', 'a', 'b']
   end
@@ -71,24 +83,14 @@ describe 'Path : Dir', :tmpchdir do
   end
 
   it 'children' do
-    a = Path('a').touch
-    b = Path('b').touch
-    d = Path('d').mkdir
-    x = Path('d/x').touch
-    y = Path('d/y').touch
-
+    create_hierarchy
     Path('.').children.sort.should == [a, b, d]
     d.children.sort.should == [x, y]
     d.children(false).sort.should == [Path('x'), Path('y')]
   end
 
   it 'each_child' do
-    a = Path('a').touch
-    b = Path('b').touch
-    d = Path('d').mkdir
-    x = Path('d/x').touch
-    y = Path('d/y').touch
-
+    create_hierarchy
     Path('.').each_child(&accumulator)
     accumulator.sort.should == [a, b, d]
 
