@@ -18,7 +18,7 @@ describe 'Path : IO', :tmpchdir do
     g.close
   end
 
-  it 'open 1.9', :ruby => 1.9, :fails_on => [:rbx19, :jruby19] do
+  it 'open 1.9', :ruby => 1.9, :fails_on => [:rbx19, :jruby19, :macruby] do
     c = Path('c')
     c.open('w', 0444, {}) { |f| f.write "ghi" }
     (c.stat.mode & 0777).should == 0444
