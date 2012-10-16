@@ -60,9 +60,9 @@ class Path
   # @yieldparam [Path] path
   def glob(pattern, flags = 0)
     if block_given?
-      Dir.glob(join(pattern), flags) { |f| yield Path.new(f) }
+      Dir.glob(join(pattern).path, flags) { |f| yield Path.new(f) }
     else
-      Dir.glob(join(pattern), flags).map(&Path)
+      Dir.glob(join(pattern).path, flags).map(&Path)
     end
   end
 
