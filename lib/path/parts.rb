@@ -10,6 +10,7 @@ class Path
   def base
     basename(extname)
   end
+  alias :stem :base
 
   # Returns all but the last component of the path.
   #

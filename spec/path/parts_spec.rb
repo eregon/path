@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe 'Path : parts' do
-  it 'base, basename' do
+  it 'base (stem), basename' do
+    :stem.should be_an_alias_of :base
     Path('dir/file.ext').basename.should == Path('file.ext')
     Path('file.ext').basename.should == Path('file.ext')
     Path('file.ext').basename('xt').should == Path('file.e')
