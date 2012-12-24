@@ -24,12 +24,14 @@ describe 'Path : File', :tmpchdir do
 
   it 'lchmod', :symlink, :fails_on => [:rbx, :jruby] do
     link = Path('l').make_symlink(path)
+    path_mode = path.stat.mode
     old = link.lstat.mode
     begin
       link.lchmod(0444)
     rescue NotImplementedError
       next
     end
+    path.stat.mode.should == path_mode
     (link.lstat.mode & 0777).should == 0444
     link.chmod(old)
   end
