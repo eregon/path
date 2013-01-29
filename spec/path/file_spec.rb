@@ -10,9 +10,9 @@ describe 'Path : File', :tmpchdir do
   }
 
   it 'atime, ctime, mtime' do
-    Path(__FILE__).atime.should be_kind_of Time
-    Path(__FILE__).ctime.should be_kind_of Time
-    Path(__FILE__).mtime.should be_kind_of Time
+    path.atime.should be_kind_of Time
+    path.ctime.should be_kind_of Time
+    path.mtime.should be_kind_of Time
   end
 
   it 'chmod' do
