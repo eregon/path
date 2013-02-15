@@ -147,7 +147,7 @@ class Path
     renamer = lambda { |rel|
       Path.new(updater.call(rel.rm_ext)).add_ext(new_ext)
     }
-    to / renamer.call(self % from)
+    Path.new(to) / renamer.call(self % from)
   end
 
   # Setup

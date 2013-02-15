@@ -197,6 +197,10 @@ describe Path do
       source.relocate(from, to).should == to/'nature/earth.jpg'
     end
 
+    it 'handles from and to as Strings' do
+      source.relocate(from.to_s, to.to_s).should == to/'nature/earth.jpg'
+    end
+
     it 'supports a new extension' do
       source.relocate(from, to, "png").should == to/'nature/earth.png'
     end
