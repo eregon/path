@@ -31,7 +31,7 @@ Most methods of `FileUtils` should be there too.
 ``` ruby
 Path.new('/usr/bin')
 Path['/usr/bin']
-Path('/usr/bin') # unless NO_PATH_GLOBAL_FUNCTION is defined
+Path('/usr/bin')
 
 Path.new('~myuser/path') # expanded if it begins with ~
 

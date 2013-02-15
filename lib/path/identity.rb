@@ -152,12 +152,10 @@ class Path
   end
 end
 
-unless defined?(NO_PATH_GLOBAL_FUNCTION)
-  module Kernel
-    # A shorthand method to create a {Path}. Same as {Path.new}.
-    def Path(*args)
-      Path.new(*args)
-    end
-    private :Path
+module Kernel
+  # A shorthand method to create a {Path}. Same as {Path.new}.
+  def Path(*args)
+    Path.new(*args)
   end
+  private :Path
 end
