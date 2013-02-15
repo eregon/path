@@ -68,7 +68,7 @@ class Path
       def +(other)
         warn 'Warning: use of deprecated Path#+ as String#+: ' <<
              "#{inspect} + #{other.inspect}\n#{caller.first}" if $VERBOSE
-        Path(to_s + other.to_s)
+        Path.new(to_s + other.to_s)
       end
     end
     @plus_configured = caller.first

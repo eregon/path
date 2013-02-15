@@ -145,7 +145,7 @@ class Path
   def relocate(from, to, new_ext = ext, &updater)
     updater ||= lambda { |path| path }
     renamer = lambda { |rel|
-      Path(updater.call(rel.rm_ext)).add_ext(new_ext)
+      Path.new(updater.call(rel.rm_ext)).add_ext(new_ext)
     }
     to / renamer.call(self % from)
   end

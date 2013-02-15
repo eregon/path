@@ -60,7 +60,7 @@ class Path
   # Renames the file and returns the new Path. See +File.rename+.
   def rename(to)
     File.rename(@path, to)
-    Path(to)
+    Path.new(to)
   end
 
   # Returns the stat of +path+ as a +File::Stat+ object. See +File.stat+.
