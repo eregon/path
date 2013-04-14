@@ -33,6 +33,17 @@ describe 'Path : Dir', :tmpchdir do
     accumulator.sort.should == [a,b].map(&:expand)
   end
 
+  context 'glob with directories having globbing characters' do
+    %w"a[b ] [a-c] {a,b} { } * ** ?".each do |dir|
+      it dir do
+        dir = Path(dir).mkdir
+        dir.should be_a_directory
+        files = %w[a e].map { |name| (dir/name).touch }
+        dir.glob('*').sort.should == files
+      end
+    end
+  end
+
   it 'getwd, cwd, pwd', :tmpchdir => false do
     Path.method(:getwd).should == Path.method(:cwd)
     Path.method(:getwd).should == Path.method(:pwd)

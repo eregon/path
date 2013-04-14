@@ -2,6 +2,12 @@ class Path
   class << self
     # @!group Directory
 
+    # Escape the path to be suitable for globbing
+    # (so it contains no globbing special characters)
+    def glob_escape(path)
+      path.gsub(/\[|\]|\*|\?|\{|\}/, '\\\\' + '\0')
+    end
+
     # Returns or yields Path objects. See +Dir.glob+.
     # @yieldparam [Path] path
     def glob(pattern, flags = 0)
@@ -56,13 +62,16 @@ class Path
     Dir.open(@path, &block)
   end
 
-  # Returns or yields Path objects. See +Dir.glob+.
+  # Returns or yields Path objects.
+  # Prepends the (escaped for globbing) +path+ to the pattern.
+  # See +Dir.glob+.
   # @yieldparam [Path] path
   def glob(pattern, flags = 0)
+    pattern = "#{Path.glob_escape(@path)}/#{pattern}"
     if block_given?
-      Dir.glob(join(pattern).path, flags) { |f| yield Path.new(f) }
+      Dir.glob(pattern, flags) { |f| yield Path.new(f) }
     else
-      Dir.glob(join(pattern).path, flags).map(&Path)
+      Dir.glob(pattern, flags).map(&Path)
     end
   end
 
