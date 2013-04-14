@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem 'rake'
 gem 'json', :platforms => [:ruby_18, :jruby, :mingw_18]
