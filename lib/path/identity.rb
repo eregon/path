@@ -152,6 +152,7 @@ class Path
   end
 end
 
+# @private The extension to define the global method Path()
 module Kernel
   # A shorthand method to create a {Path}. Same as {Path.new}.
   def Path(*args)
