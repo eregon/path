@@ -13,7 +13,6 @@ class Path
                                      # v This : is there to define a group without capturing
       new(from.first.rpartition(/:\d+(?:$|:in )/).first).expand
     end
-    alias :here :file
 
     # {Path} to the directory of this file: +Path(__FILE__).dir+.
     def dir(from = nil)

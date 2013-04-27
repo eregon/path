@@ -63,8 +63,7 @@ describe Path do
     Path('../a').parent.should == Path('..')
   end
 
-  it 'here, file, dir' do
-    Path.method(:here).should == Path.method(:file)
+  it 'file, dir' do
     # Test caller parsing
     file = Path('dir/file.rb').expand
     # MRI 1.8
@@ -141,8 +140,8 @@ describe Path do
 
   context 'backfind' do
     it 'simple' do
-      Path.here.backfind('Rakefile').should == Path.relative('../Rakefile').expand
-      Path.here.backfind('lib/path.rb').should == lib_path
+      Path.dir.backfind('Rakefile').should == Path.relative('../Rakefile').expand
+      Path.dir.backfind('lib/path.rb').should == lib_path
       (Path.dir/'x/y/z').backfind('lib/path.rb').should == lib_path
       (Path.dir/'x/y/z').backfind('lib/nothin/such.rb').should be_nil
       Path('x/y/z').backfind('lib/nothin/such.rb').should be_nil # relative paths should work too

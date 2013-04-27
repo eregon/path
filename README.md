@@ -113,7 +113,7 @@ Path('/usr')/'bin'
 * backfind: ascends the parents until it finds the given path
 
 ``` ruby
-# Path.backfind is Path.here.backfind
+# Path.backfind is Path.dir.backfind
 Path.backfind('lib') # => Path's lib folder
 
 # It accepts XPath-like context
