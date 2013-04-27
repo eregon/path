@@ -164,6 +164,3 @@ class Path
     eval path.read
   end
 end
-
-# to meet everyone's expectations and for compatibility with old gem name
-EPath = Path
