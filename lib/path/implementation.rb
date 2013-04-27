@@ -39,18 +39,19 @@ class Path
 
   # Configures the behavior of {Path#+}. The default is +:warning+.
   #
-  #   Path + :defined # aliased to Path#/
-  #   Path + :warning # calls Path#/ but warns
-  #   Path + :error   # not defined
-  #   Path + :string  # like String#+. Warns if $VERBOSE (-w)
+  #   Path.configure(:+ => :defined) # aliased to Path#/
+  #   Path.configure(:+ => :warning) # calls Path#/ but warns
+  #   Path.configure(:+ => :error)   # not defined
+  #   Path.configure(:+ => :string)  # like String#+. Warns if $VERBOSE (-w)
   #
-  # @param config [:defined, :warning, :error, :string] the configuration value
-  def Path.+(config)
+  # @option config [:defined, :warning, :error, :string] :+ the configuration value
+  def Path.configure(config)
+    config = config[:+]
     unless [:defined, :warning, :error, :string].include? config
       raise ArgumentError, "Invalid configuration: #{config.inspect}"
     end
     if @plus_configured
-      raise "Path.+ has already been called: #{@plus_configured}"
+      raise "Path.configure(:+ => ...) has already been called: #{@plus_configured}"
     end
     remove_method :+ if method_defined? :+
     case config
@@ -73,16 +74,13 @@ class Path
     end
     @plus_configured = caller.first
   end
-  class << self
-    alias :configure_plus :+
-  end
 
   @plus_configured = nil # Initialization
-  Path.configure_plus(:warning)
+  Path.configure(:+ => :warning)
   @plus_configured = nil # Let the user overrides this default configuration
 
   # @!method +(other)
-  #   The behavior depends on the configuration with Path.{Path.+}.
+  #   The behavior depends on the configuration with {Path.configure}.
   #   It might behave as {Path#/}, String#+, give warnings,
   #   or not be defined at all.
 

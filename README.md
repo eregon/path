@@ -152,7 +152,7 @@ earth.relocate(from, to, '.png') { |rel| "#{rel}-200" }
 One aim of Path is to help the user make the transition coming from
 String (not using a path library), Pathname, or another library.
 
-To this intend, [`Path + config`](http://rubydoc.info/github/eregon/path/master/Path#%2B-class_method) allows to configure the behavior of `Path#+`.
+To this intend, [`Path.configure`](http://rubydoc.info/github/eregon/path/master/Path#configure-class_method) allows to configure the behavior of `Path#+`.
 
 Coming from String, one should use `Path + :string`, and run ruby with the verbose option (`-w`),
 which will show where `+` is used as String concatenation.

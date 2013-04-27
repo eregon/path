@@ -15,27 +15,27 @@ describe Path do
     end
 
     it ':defined' do
-      Path + :defined
+      Path.configure(:+ => :defined)
       capture_io { (Path('p') + 'a').should == Path('p/a') }.should == ['', '']
     end
 
     it 'gives an error' do
-      expect { Path + :unknown_config }.to raise_error ArgumentError, /:unknown_config/
+      expect { Path.configure(:+ => :unknown_config) }.to raise_error ArgumentError, /:unknown_config/
     end
 
     it 'gives an error if already configured once' do
-      expect { Path + :error }.to raise_error(/^Path\.\+ has already been called: .+path_spec\.rb:\d+/)
+      expect { Path.configure(:+ => :error) }.to raise_error(/Path\.configure.+ has already been called: .+path_spec\.rb:\d+/)
     end
 
     it ':error' do
       Path.instance_variable_set(:@plus_configured, nil)
-      Path + :error
+      Path.configure(:+ => :error)
       expect { Path('p') + 'a' }.to raise_error(NoMethodError)
     end
 
     it ':string' do
       Path.instance_variable_set(:@plus_configured, nil)
-      Path + :string
+      Path.configure(:+ => :string)
       verbosely(nil) do
         capture_io { (Path('p') + 'a').should == Path('pa') }.should == ['', '']
       end
