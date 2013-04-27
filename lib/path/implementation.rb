@@ -130,24 +130,6 @@ class Path
   alias :relative_to :relative_path_from
   alias :% :relative_path_from
 
-  # @private
-  module Helpers
-    private
-
-    # remove the leading . of +ext+ if present.
-    def pure_ext(ext)
-      ext = ext.to_s and ext.start_with?('.') ? ext[1..-1] : ext
-    end
-
-    # add a leading . to +ext+ if missing. Returns '' if +ext+ is empty.
-    def dotted_ext(ext)
-      ext = ext.to_s and (ext.empty? or ext.start_with?('.')) ? ext : ".#{ext}"
-    end
-  end
-
-  include Helpers
-  extend Helpers
-
   private
 
   def init

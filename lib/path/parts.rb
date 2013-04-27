@@ -1,16 +1,26 @@
 class Path
   # @!group Path parts
 
-  # Returns the last component of the path. See +File.basename+.
-  def basename(*args)
-    Path.new(File.basename(@path, *args))
+  # remove the leading . of +ext+ if present.
+  def self.pure_ext(ext)
+    ext = ext.to_s and ext.start_with?('.') ? ext[1..-1] : ext
   end
 
-  # basename(extname)
-  def base
-    basename(extname)
+  # add a leading . to +ext+ if missing. Returns '' if +ext+ is empty.
+  def self.dotted_ext(ext)
+    ext = ext.to_s and (ext.empty? or ext.start_with?('.')) ? ext : ".#{ext}"
   end
-  alias :stem :base
+
+  # Returns the last component of the path. See +File.basename+.
+  def base(*args)
+    Path.new(File.basename(@path, *args))
+  end
+  alias :basename :base
+
+  # Returns the last component of the path, without the extension: base(ext)
+  def stem
+    base(ext)
+  end
 
   # Returns all but the last component of the path.
   #
@@ -18,20 +28,20 @@ class Path
   #     Path('.').dir # => #<Path .>
   # Use #parent instead.
   # See +File.dirname+.
-  def dirname
+  def dir
     Path.new(File.dirname(@path))
   end
-  alias :dir :dirname
+  alias :dirname :dir
 
   # Returns the extension, with a leading dot. See +File.extname+.
-  def extname
+  def ext
     File.extname(@path)
   end
+  alias :extname :ext
 
-  # {#extname} without leading dot.
-  def ext
-    ext = extname
-    ext.empty? ? ext : ext[1..-1]
+  # {#ext} without leading dot.
+  def pure_ext
+    Path.pure_ext(extname)
   end
 
   # Returns the #dirname and the #basename in an Array. See +File.split+.
@@ -46,7 +56,7 @@ class Path
   #   Path('file').add_extension('txt') # => #<Path file.txt>
   def add_extension(ext)
     return self if ext.to_s.empty?
-    Path.new @path+dotted_ext(ext)
+    Path.new @path + Path.dotted_ext(ext)
   end
   alias :add_ext :add_extension
 
@@ -66,7 +76,7 @@ class Path
   #   Path('main.c++').replace_extension('cc') # => #<Path main.cc>
   def replace_extension(ext)
     return without_extension if ext.to_s.empty?
-    Path.new(@path[0..-extname.size-1] << dotted_ext(ext))
+    Path.new(@path[0..-extname.size-1] << Path.dotted_ext(ext))
   end
   alias :sub_ext :replace_extension
 

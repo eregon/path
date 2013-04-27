@@ -9,6 +9,12 @@ Paths are naturally the subject of their methods and even if they are simple Str
 
 Also, using a path library like this avoid to remember in which class the functionality is implemented, everything is in one place (if not, please open an issue!).
 
+## Version 2
+
+This is the second version of Path, which tries to respect even more
+the standard library names and the principle of least surprise.  
+For the first version, see the branch [1.x](https://github.com/eregon/path/tree/1.x).
+
 ## Installation
 
     gem install path
@@ -64,35 +70,20 @@ Path.tmpdir
 
 ### parts
 
-Path can split a path in two ways:
+A path can be split in two or three parts:
 
-The first way is the one done by File methods (dirname, basename, extname).  
+       dir      base
+     _______   ______
+    /       \ /      \
+    /some/dir/file.ext
+    \_______/ \__/\__/
+       dir    stem ext
 
-The second is Path's own way in which the base is given without the extension and the extension is given without the leading dot.  
-The rationale behind this is to have a true three-components path, splitting on the / and the . (See [this issue](https://github.com/eregon/path/pull/8#issuecomment-3499030) for details)
+    path = dir "/" base = dir "/" stem ext
 
-       dirname     basename
-     ____________   ______
-    /            \ /      \
-    /some/path/dir/file.ext
-    \____________/ \__/ \_/
-          dir      base ext
-
-    path = dirname / basename
-    path = dirname / basename(extname) extname
-    path = dir / base [. ext]
-
-* dirname: "/some/path/dir"
-* basename: "file.ext"
-* extname: ".ext"
-
-<!-- -->
-
-* dir: alias of dirname: "/some/paths/dir"
-* base: basename(extname), the basename without the extension: "file"
-* ext: extname without the leading dot: "ext"
-
-<!-- -->
+* dir:  "/some/dir"
+* base: "file.ext"
+* ext:  ".ext"
 
 ### join
 

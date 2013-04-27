@@ -1,15 +1,17 @@
 require 'spec_helper'
 
 describe 'Path : parts' do
-  it 'base (stem), basename' do
-    :stem.should be_an_alias_of :base
-    Path('dir/file.ext').basename.should == Path('file.ext')
-    Path('file.ext').basename.should == Path('file.ext')
-    Path('file.ext').basename('xt').should == Path('file.e')
-    Path('file.ext').basename('.ext').should == Path('file')
+  it 'base (basename)' do
+    :base.should be_an_alias_of :basename
+    Path('dir/file.ext').base.should == Path('file.ext')
+    Path('file.ext').base.should == Path('file.ext')
+    Path('file.ext').base('xt').should == Path('file.e')
+    Path('file.ext').base('.ext').should == Path('file')
+  end
 
-    Path('file.ext').base.should == Path('file')
-    Path('dir/file.ext').base.should == Path('file')
+  it 'stem' do
+    Path('file.ext').stem.should == Path('file')
+    Path('dir/file.ext').stem.should == Path('file')
   end
 
   it 'dir, dirname' do
@@ -18,10 +20,11 @@ describe 'Path : parts' do
   end
 
   it 'ext, extname' do
-    Path('file.rb').extname.should == '.rb'
-    Path('file.rb').ext.should == 'rb'
-    Path('.hidden').extname.should == ''
+    :ext.should be_an_alias_of :extname
+    Path('file.rb').ext.should == '.rb'
+    Path('file.rb').pure_ext.should == 'rb'
     Path('.hidden').ext.should == ''
+    Path('.hidden').pure_ext.should == ''
   end
 
   it 'split' do
@@ -40,11 +43,11 @@ describe 'Path : parts' do
     :add_ext.should be_an_alias_of :add_extension
     path = Path('file')
     path = path.add_extension('.txt')
-    path.ext.should == 'txt'
+    path.ext.should == '.txt'
     path = path.add_extension(:mkv)
-    path.ext.should == 'mkv'
+    path.ext.should == '.mkv'
     path = path.add_ext('tar.gz')
-    path.ext.should == 'gz'
+    path.ext.should == '.gz'
     path.to_s.should == 'file.txt.mkv.tar.gz'
   end
 

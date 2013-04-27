@@ -12,7 +12,7 @@ class Path
   # @yieldparam [Path] path
   def self.register_loader(*extensions, &loader)
     extensions.each { |ext|
-      LOADERS[pure_ext(ext)] = loader
+      LOADERS[Path.dotted_ext(ext)] = loader
     }
   end
 
