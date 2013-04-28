@@ -1,3 +1,7 @@
+notifications:
+  email:
+    on_success: change
+    on_failure: change
 bundler_args: --without development
 jdk:
   - openjdk6
