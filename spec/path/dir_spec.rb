@@ -35,7 +35,7 @@ describe 'Path : Dir', :tmpchdir do
 
   context 'glob with directories having globbing characters' do
     %w"a[b ] [a-c] {a,b} { } * ** ?".each do |dir|
-      it dir do
+      it dir, :fails_on => [:rbx, :jruby] do
         dir = Path(dir).mkdir
         dir.should be_a_directory
         files = %w[a e].map { |name| (dir/name).touch }
