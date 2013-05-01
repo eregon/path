@@ -141,14 +141,13 @@ class Path
   end
 
   # Marshal dumping.
-  def marshal_dump
+  def _dump level
     @path
   end
 
   # Marshal loading.
-  def marshal_load path
-    @path = path
-    init
+  def self._load path
+    self.new(path)
   end
 end
 
