@@ -9,6 +9,4 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/eregon/path'
   s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE path.gemspec]
   s.version = Path::VERSION
-
-  s.add_development_dependency 'rspec'
 end
