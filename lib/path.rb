@@ -1,6 +1,7 @@
 # Path - a Path manipulation library
 
-Dir.glob(File.expand_path('../path/*.rb',__FILE__)) { |file| require file }
+dir = File.expand_path('..', __FILE__)
+Dir.glob("#{dir}/path/*.rb") { |file| require file }
 
 require 'tempfile'
 require 'rbconfig'
