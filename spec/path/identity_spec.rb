@@ -12,6 +12,11 @@ describe 'Path : identity' do
 
     expect { Path.new("invalid path\0") }.to raise_error(ArgumentError, /null byte/)
 
+    Path.new('/').to_s.should == '/'
+    Path.new('//').to_s.should == '/'
+    Path.new('/usr/bin/').to_s.should == '/usr/bin'
+    Path.new('/usr/bin//').to_s.should == '/usr/bin'
+
     home = Path.new('~')
     home.to_s.should_not == '~'
     home.should be_absolute
@@ -22,6 +27,11 @@ describe 'Path : identity' do
     Path.new(str).should == Path.new('C:/Users')
     Path.new(str).to_s.should == 'C:/Users'
     str.should == 'C:\Users'
+
+    Path.new('C:\\').to_s.should == 'C:/'
+    Path.new('C:\\\\').to_s.should == 'C:/'
+    Path.new('C:\Users\Benoit\\').to_s.should == 'C:/Users/Benoit'
+    Path.new('C:\Users\Benoit\\\\').to_s.should == 'C:/Users/Benoit'
   end
 
   it 'new' do
@@ -99,7 +109,7 @@ describe 'Path : identity' do
     (Path('b') <=> Path('a')).should == 1
     (Path('a') <=> Path('b')).should == -1
 
-    %w[a a/ a/b a. a0].each_cons(2) { |p1,p2|
+    %w[a a/b a. a0].each_cons(2) { |p1,p2|
       (Path(p1) <=> Path(p2)).should == -1
     }
 
