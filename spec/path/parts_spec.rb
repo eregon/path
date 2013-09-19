@@ -90,7 +90,7 @@ describe 'Path : parts' do
     Path('/a/b/c').descend.map(&:to_s).should == %w[/ /a /a/b /a/b/c]
     Path('a/b/c').descend.map(&:to_s).should == %w[a a/b a/b/c]
     Path('./a/b/c').descend.map(&:to_s).should == %w[. ./a ./a/b ./a/b/c]
-    Path('a/').descend.map(&:to_s).should == %w[a/]
+    Path('a/').descend.map(&:to_s).should == %w[a]
   end
 
   it 'ascend, ancestors' do
@@ -98,7 +98,7 @@ describe 'Path : parts' do
     Path('/a/b/c').ascend.map(&:to_s).should == %w[/a/b/c /a/b /a /]
     Path('a/b/c').ascend.map(&:to_s).should == %w[a/b/c a/b a]
     Path('./a/b/c').ascend.map(&:to_s).should == %w[./a/b/c ./a/b ./a .]
-    Path('a/').ascend.map(&:to_s).should == %w[a/]
+    Path('a').ascend.map(&:to_s).should == %w[a]
 
     r = Path.new(File.dirname('C:') != '.' ? 'C:/' : '/')
     (r/'usr/bin/ls').ancestors.to_a.should == [r/'usr/bin/ls', r/'usr/bin', r/'usr', r]

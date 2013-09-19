@@ -161,6 +161,7 @@ class Path
   def validate(path)
     raise ArgumentError, "path contains a null byte: #{path.inspect}" if path.include? "\0"
     path.gsub!(File::ALT_SEPARATOR, '/') if File::ALT_SEPARATOR
+    path = del_trailing_separator(path)
     path = File.expand_path(path) if path.start_with? '~'
     path
   end
