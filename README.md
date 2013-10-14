@@ -13,7 +13,7 @@ Also, using a path library like this avoid to remember in which class the functi
 
 This is the second version of Path, which tries to respect even more
 the standard library names and the principle of least surprise.  
-For the first version, see the branch [1.x](https://github.com/eregon/path/tree/1.x).
+For the first version, see the branch [1.3.x](https://github.com/eregon/path/tree/1.3.x).
 
 ## Installation
 
