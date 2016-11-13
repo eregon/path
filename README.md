@@ -15,7 +15,7 @@ Also, using a path library like this avoid to remember in which class the functi
 ## Version 2
 
 This is the second version of Path, which tries to respect even more
-the standard library names and the principle of least surprise.  
+the standard library names and the principle of least surprise.
 For the first version, see the branch [1.3.x](https://github.com/eregon/path/tree/1.3.x).
 
 ## Installation
@@ -59,7 +59,7 @@ Path.home or Path.~ # == Path(File.expand_path('~'))
 Path.~(user)        # == Path(File.expand_path("~#{user}"))
 ```
 
-### temporary
+### temporary paths
 
 ``` ruby
 Path.tmpfile
@@ -71,7 +71,7 @@ Path.tmpdir
 * expand => expand\_path
 * relative\_to => relative\_path\_from
 
-### parts
+### parts and decomposition
 
 A path can be split in two or three parts:
 
@@ -84,9 +84,12 @@ A path can be split in two or three parts:
 
     path = dir "/" base = dir "/" stem ext
 
+All of these are methods of Path:
+
 * dir:  "/some/dir"
 * base: "file.ext"
 * ext:  ".ext"
+* stem: "file"
 
 ### join
 
@@ -97,18 +100,18 @@ A path can be split in two or three parts:
 Path('/usr')/'bin'
 ```
 
-### extensions
+### file extensions
 
 * add\_ext / add\_extension
 * rm\_ext / without\_extension
 * sub\_ext(new\_ext) / replace\_extension(new\_ext)
 
-### glob
+### globbing
 
 * children: files under self, without . and ..
 * glob: relative glob to self, yield absolute paths
 
-### structure
+### navigating the structure
 
 * parent: parent directory (don't use #dirname more than once, use #parent instead)
 * ascend, ancestors: self and all the parent directories
@@ -129,7 +132,7 @@ Path.backfind('.[.git]') # => the root of this repository
 * write(contents)
 * append(contents)
 
-### management
+### directory management
 
 * mkdir
 * mkdir\_p
