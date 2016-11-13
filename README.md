@@ -167,6 +167,17 @@ which will show where `+` is used as String concatenation.
 Coming from a path library using `+` as #join, one should just use the default (`Path.configure(:+ => :warning)`),
 which will show where `+` is used.
 
+## Migration from path 1.x
+
+A couple methods changed since 1.x, all mentioned in the [ChangeLog](Changelog.md).
+
+One of the easiest way is to grep for the changed methods.
+Here is a list of each with a direct replacement.
+
+* Path.here => Path.file
+* Path#base => Path#stem
+* Path#ext => Path#pure_ext (it now returns a leading dot)
+
 ## Status
 
 This is still in the early development stage, you should expect many additions and some changes.
