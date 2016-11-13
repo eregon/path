@@ -1,5 +1,9 @@
 # Path - a Path manipulation library
 
+[![Gem Version](https://badge.fury.io/rb/path.png)](https://badge.fury.io/rb/path.svg)
+[![Build Status](https://travis-ci.org/eregon/path.svg?branch=master)](https://travis-ci.org/eregon/path)
+[![Build Status](https://ci.appveyor.com/api/projects/status/jg6fx1692mw8mu58/branch/master?svg=true)](https://ci.appveyor.com/project/eregon/path/branch/master)
+
 [Path](http://rubydoc.info/github/eregon/path/master/Path) is a library to manage paths.  
 It is similar to Pathname, but has some extra goodness.  
 The method names are intended to be short and explicit, and avoid too much duplication like having 'name' or 'path' in the method name.
@@ -8,9 +12,6 @@ I believe the object-oriented approach to manipulate paths is very elegant and u
 Paths are naturally the subject of their methods and even if they are simple Strings behind, they carry way much more information and deserve a first-class status.
 
 Also, using a path library like this avoid to remember in which class the functionality is implemented, everything is in one place (if not, please open an issue!).
-
-[![Gem Version](https://badge.fury.io/rb/path.png)](https://badge.fury.io/rb/path.svg)
-[![Build Status](https://travis-ci.org/eregon/path.svg?branch=master)](https://travis-ci.org/eregon/path)
 
 ## Version 2
 
