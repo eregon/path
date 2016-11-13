@@ -33,7 +33,7 @@ describe 'Path : FileUtils', :tmpchdir do
 
   it 'cp, copy' do
     :cp.should be_an_alias_of :copy
-    f, g, h, i = Path('f'), Path('g'), Path('h'), Path('i')
+    f, g, h = Path('f'), Path('g'), Path('h')
     f.write 'cp'
 
     f.cp('g')
@@ -45,6 +45,11 @@ describe 'Path : FileUtils', :tmpchdir do
     f.cp h
     h.read.should == 'cp'
     (h.stat.mode & 0777).should == 0444
+  end
+
+  it 'cp, copy (unix)', :unix do
+    f, i = Path('f'), Path('i')
+    f.write 'cp'
 
     f.chmod 0777
     f.cp i
