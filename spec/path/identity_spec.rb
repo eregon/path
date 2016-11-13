@@ -13,13 +13,16 @@ describe 'Path : identity' do
     expect { Path.new("invalid path\0") }.to raise_error(ArgumentError, /null byte/)
 
     Path.new('/').to_s.should == '/'
-    Path.new('//').to_s.should == '/'
     Path.new('/usr/bin/').to_s.should == '/usr/bin'
     Path.new('/usr/bin//').to_s.should == '/usr/bin'
 
     home = Path.new('~')
     home.to_s.should_not == '~'
     home.should be_absolute
+  end
+
+  it 'initialize unix', :unix do
+    Path.new('//').to_s.should == '/'
   end
 
   it 'initialize win32', :dosish do
