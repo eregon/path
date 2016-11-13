@@ -80,11 +80,9 @@ class Path
   # Returns the +path+ as a String.
   # {#path} is implemented for better readability (+file.path+ instead of +file.to_s+) and as an accessor.
   # {#to_path} is implemented so Path objects are usable with +open+, etc.
-  # {#to_str} is implemented so Path objects are usable with +open+, etc with Ruby 1.8 (it is not defined in Ruby 1.9).
   attr_reader :path
   alias :to_s :path
   alias :to_path :path
-  alias :to_str :path if RUBY_VERSION < '1.9'
 
   # Compare this path with +other+. The comparison is string-based.
   # Be aware that two different paths (+foo.txt+ and +./foo.txt+)

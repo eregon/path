@@ -28,8 +28,8 @@ Path.tmpdir do |dir|
   end
 end
 
-impl = (defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby').to_sym
-ruby = RUBY_VERSION > '1.9' ? :"#{impl}19" : :"#{impl}18"
+impl = RUBY_ENGINE.to_sym
+ruby = :"#{impl}19"
 ruby, impl = nil, nil if $DEBUG
 
 tmpdir = Path.tmpdir('path-test')
