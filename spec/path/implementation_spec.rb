@@ -376,7 +376,7 @@ describe 'Path implementation' do
     File.split(path).should == %w[foo bar]
     File.extname(Path('bar.baz')).should == '.baz'
 
-    File.fnmatch('*.*', Path.new('bar.baz')).should be_true
+    File.fnmatch('*.*', Path.new('bar.baz')).should be true
     File.join(Path.new('foo'), Path.new('bar')).should == 'foo/bar'
 
     if mri?

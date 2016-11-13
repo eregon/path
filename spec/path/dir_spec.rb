@@ -90,7 +90,7 @@ describe 'Path : Dir', :tmpchdir do
       Path.getwd.should == spec
     end
     Path.getwd.should == root
-    called.should be_true
+    called.should be true
   end
 
   it 'children' do

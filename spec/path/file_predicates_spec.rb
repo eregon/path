@@ -124,9 +124,9 @@ describe 'Path : File predicates', :tmpchdir do
   end
 
   it 'fnmatch?' do
-    Path('a').fnmatch?('*').should be_true
-    Path('a').fnmatch?('*.*').should be_false
-    Path('.foo').fnmatch?('*').should be_false
-    Path('.foo').fnmatch?('*', File::FNM_DOTMATCH).should be_true
+    Path('a').fnmatch?('*').should be true
+    Path('a').fnmatch?('*.*').should be false
+    Path('.foo').fnmatch?('*').should be false
+    Path('.foo').fnmatch?('*', File::FNM_DOTMATCH).should be true
   end
 end

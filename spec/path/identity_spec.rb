@@ -118,13 +118,13 @@ describe 'Path : identity' do
   end
 
   it 'Path.like?' do
-    Path.like?(Object.new).should be_false
-    Path.like?(double(:path => 'path')).should be_true
+    Path.like?(Object.new).should be false
+    Path.like?(double(:path => 'path')).should be true
   end
 
   it 'Path.like' do
-    (Path.like === Object.new).should be_false
-    (Path.like === double(:path => 'path')).should be_true
+    (Path.like === Object.new).should be false
+    (Path.like === double(:path => 'path')).should be true
 
     case path = double(:path => 'path')
     when Path.like

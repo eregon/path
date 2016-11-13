@@ -118,23 +118,23 @@ describe Path do
 
   context 'inside?' do
     it 'works when paths are related' do
-      this.inside?(this).should be_true
-      this.inside?(spec).should be_true
-      this.inside?(root).should be_true
-      spec.inside?(this).should be_false
+      this.inside?(this).should be true
+      this.inside?(spec).should be true
+      this.inside?(root).should be true
+      spec.inside?(this).should be false
     end
 
     it 'works when paths are not related' do
-      Path('/etc/passwd').inside?(spec).should be_false
+      Path('/etc/passwd').inside?(spec).should be false
     end
 
     it 'accepts a string' do
-      this.inside?(spec.to_s).should be_true
+      this.inside?(spec.to_s).should be true
     end
 
     it 'is negated as outside?' do
-      this.outside?(root).should be_false
-      spec.outside?(this).should be_true
+      this.outside?(root).should be false
+      spec.outside?(this).should be true
     end
   end
 
