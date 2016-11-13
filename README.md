@@ -1,6 +1,6 @@
 # Path - a Path manipulation library
 
-[![Gem Version](https://badge.fury.io/rb/path.png)](https://badge.fury.io/rb/path.svg)
+[![Gem Version](https://badge.fury.io/rb/path.png)](https://rubygems.org/gems/path)
 [![Build Status](https://travis-ci.org/eregon/path.svg?branch=master)](https://travis-ci.org/eregon/path)
 [![Build Status](https://ci.appveyor.com/api/projects/status/jg6fx1692mw8mu58/branch/master?svg=true)](https://ci.appveyor.com/project/eregon/path/branch/master)
 
