@@ -8,5 +8,6 @@ Gem::Specification.new do |s|
   s.email = 'eregontp@gmail.com'
   s.homepage = 'https://github.com/eregon/path'
   s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE path.gemspec]
+  s.licenses = ['MIT']
   s.version = Path::VERSION
 end
