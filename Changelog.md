@@ -10,7 +10,7 @@
 
 * Path#ext returns the extension with a leading dot like File.extname
 * Path#base is the same as Path#basename and File.basename
-* Drop support for Ruby 1.8
+* Path.here is removed, use the clearer Path.file.
 
 ### New features
 
