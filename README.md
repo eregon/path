@@ -157,10 +157,10 @@ String (not using a path library), Pathname, or another library.
 
 To this intent, [`Path.configure`](http://rubydoc.info/github/eregon/path/master/Path#configure-class_method) allows to configure the behavior of `Path#+`.
 
-Coming from String, one should use `Path + :string`, and run ruby with the verbose option (`-w`),
+Coming from String, one should use `Path.configure(:+ => :string)`, and run ruby with the verbose option (`-w`),
 which will show where `+` is used as String concatenation.
 
-Coming from a path library using `+` as #join, one should just use the default (`Path + :warning`),
+Coming from a path library using `+` as #join, one should just use the default (`Path.configure(:+ => :warning)`),
 which will show where `+` is used.
 
 ## Status
