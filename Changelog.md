@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.0
+
+### Incompatibilities with 1.x to be consistent with File methods
+
+* Path#ext returns the extension with a leading dot like File.extname
+* Path#base is the same as Path#basename and File.basename
+* Drop support for Ruby 1.8
+
+### New features
+
+* Path#stem returns the basename without the extension
+
 ## 1.3.0
 
 * Over 1.0, it's totally stable now
