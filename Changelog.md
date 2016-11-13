@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+* Restore support for Ruby 1.8
+
 ## 2.0.0
 
 ### Incompatibilities with 1.x to be consistent with File methods
