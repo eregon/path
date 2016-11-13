@@ -112,9 +112,9 @@ describe 'Path : identity' do
     (Path('b') <=> Path('a')).should == 1
     (Path('a') <=> Path('b')).should == -1
 
-    %w[a a/b a. a0].each_cons(2) { |p1,p2|
-      (Path(p1) <=> Path(p2)).should == -1
-    }
+    (Path('a') <=> Path('a/b')).should == -1
+    (Path('a/b') <=> Path('a.')).should == -1
+    (Path('a.') <=> Path('a0')).should == -1
 
     (Path('a') <=> 'a').should be_nil
     ('a' <=> Path('a')).should be_nil
