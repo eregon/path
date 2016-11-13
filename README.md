@@ -11,7 +11,7 @@ The method names are intended to be short and explicit, and avoid too much dupli
 I believe the object-oriented approach to manipulate paths is very elegant and useful.  
 Paths are naturally the subject of their methods and even if they are simple Strings behind, they carry way much more information and deserve a first-class status.
 
-Also, using a path library like this avoid to remember in which class the functionality is implemented, everything is in one place (if not, please open an issue!).
+With `Path`, there is no need to remember in which class the functionality is implemented, everything is in one place (if not, please open an issue!).
 
 ## Version 2
 
