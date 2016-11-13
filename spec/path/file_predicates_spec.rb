@@ -27,7 +27,7 @@ describe 'Path : File predicates', :tmpchdir do
     Path('not-exist').should_not exist
   end
 
-  it 'grpowned?', :unix do
+  it 'grpowned?', :unix, :fails_on => [:ruby18] do
     f.chown(-1, Process.gid)
     f.should be_grpowned
   end
