@@ -113,8 +113,8 @@ describe 'Path : identity' do
     (Path('a') <=> Path('b')).should == -1
 
     (Path('a') <=> Path('a/b')).should == -1
-    (Path('a/b') <=> Path('a.')).should == -1
-    (Path('a.') <=> Path('a0')).should == -1
+    (Path('a/b') <=> Path('a-')).should == -1
+    (Path('a-') <=> Path('a0')).should == -1
 
     (Path('a') <=> 'a').should be_nil
     ('a' <=> Path('a')).should be_nil
