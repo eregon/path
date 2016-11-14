@@ -95,27 +95,27 @@ describe 'Path : Dir', :tmpchdir do
 
   it 'children' do
     create_hierarchy
-    Path('.').children.sort.should == [a, b, d]
-    d.children.sort.should == [x, y]
-    d.children(false).sort.should == [Path('x'), Path('y')]
+    Path('.').children.should == [a, b, d]
+    d.children.should == [x, y]
+    d.children(false).should == [Path('x'), Path('y')]
   end
 
   it 'each_child' do
     create_hierarchy
     Path('.').each_child(&accumulator)
-    accumulator.sort.should == [a, b, d]
+    accumulator.should == [a, b, d]
 
     d.each_child(&accumulator)
-    accumulator.sort.should == [x, y]
+    accumulator.should == [x, y]
 
     d.each_child(false, &accumulator)
-    accumulator.sort.should == [Path('x'), Path('y')]
+    accumulator.should == [Path('x'), Path('y')]
   end
 
   it 'siblings' do
     create_hierarchy
-    d.siblings.sort.should == [a, b]
-    x.siblings.sort.should == [y]
-    x.siblings(false).sort.should == [Path('y')]
+    d.siblings.should == [a, b]
+    x.siblings.should == [y]
+    x.siblings(false).should == [Path('y')]
   end
 end

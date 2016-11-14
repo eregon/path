@@ -96,7 +96,8 @@ class Path
   end
 
   # Returns the children of the directory (files and subdirectories, not
-  # recursive) as an array of Path objects. By default, the returned
+  # recursive) as an array of Path objects. The children paths are always
+  # sorted to ensure a deterministic order. By default, the returned
   # paths will have enough information to access the files. If you set
   # +with_directory+ to +false+, then the returned paths will contain the
   # filename only.
@@ -123,10 +124,12 @@ class Path
         result << Path.new(e)
       end
     }
+    result.sort!
     result
   end
 
   # Iterates over the children of the directory (files and subdirectories, not recursive).
+  # The children paths are always sorted to ensure a deterministic order.
   # By default, the yielded paths will have enough information to access the files.
   # If you set +with_directory+ to +false+, then the returned paths will contain the filename only.
   #
@@ -158,6 +161,7 @@ class Path
   # Equivalent of +parent.children - [self]+.
   # Returns the siblings, the files in the same directory as the current +path+.
   # Returns only the root if +path+ is the root.
+  # The sibling paths are always sorted to ensure a deterministic order.
   def siblings(with_directory = true)
     if root?
       [self]

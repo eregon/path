@@ -2,7 +2,8 @@
 
 ## next
 
-* Path#hidden?
+* add Path#hidden?
+* Path#children, #each_child and #siblings are now always sorted to ensure a consistent ordering
 
 ## 2.0.1
 
