@@ -1,5 +1,9 @@
 # Changelog
 
+## next
+
+* Path#hidden?
+
 ## 2.0.1
 
 * Restore support for Ruby 1.8

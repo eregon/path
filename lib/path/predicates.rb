@@ -30,4 +30,9 @@ class Path
       false
     end
   end
+
+  # Whether this is a hidden path, i.e. starting with a dot.
+  def hidden?
+    basename.to_s.start_with?('.')
+  end
 end

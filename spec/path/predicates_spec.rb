@@ -48,4 +48,10 @@ describe 'Path predicates' do
   it 'mountpoint?' do
     [true, false].should include Path('/').mountpoint?
   end
+
+  it 'hidden?' do
+    Path('a/.hidden').should be_hidden
+    Path('path').should_not be_hidden
+    Path('.hiddendir/foo').should_not be_hidden
+  end
 end
