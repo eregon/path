@@ -8,9 +8,23 @@
 
 ### Incompatibilities with 1.x to be consistent with File methods
 
-* Path#ext returns the extension with a leading dot like File.extname
-* Path#base is the same as Path#basename and File.basename
-* Path.here is removed, use the clearer Path.file.
+* Path#base is now Path#basename, which is File#basename and therefore contains the extension
+  `Path('dir/file.ext').base # => Path('file.ext'), was Path('file')`
+  The old behavior is implemented in Path#stem: `Path('dir/file.ext').stem # => Path('file')`
+* Path#ext returns the dotted extension (like File.extname)
+  `Path('file.ext').ext # => ".ext", was "ext"`
+  Path#pure_ext has the old behavior: `Path('file.ext').pure_ext # => "ext"`
+* Path::+(value) has been renamed to Path.configure(:+ => value)
+
+### New methods:
+
+* Path#stem: returns the basename without the extension: `Path('dir/file.ext').stem # => Path('file')`
+* Path#siblings: a new method to return siblings of the given path, excluding itself
+* No more conditional definition of Kernel#Path, it is now always defined.
+
+### Removed methods:
+
+* Deleted Path.here, alias of Path.dir (it was unclear). Always use Path.dir from now on.
 
 ### New features
 
