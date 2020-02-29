@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rake', '~> 10.0'
+gem 'rake', '~> 12.3'
 gem 'json', '~> 1.8', :platforms => [:ruby_18, :ruby_19]
 
 group :test do
