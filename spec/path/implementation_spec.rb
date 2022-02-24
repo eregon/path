@@ -170,13 +170,6 @@ describe 'Path implementation' do
     end
   end
 
-  it 'del_trailing_separator win32', :dosish, :fails_on => [:jruby] do
-    require 'Win32API'
-    if Win32API.new('kernel32', 'GetACP', nil, 'L').call == 932
-      Path.allocate.send(:del_trailing_separator, "\225\\\\").should == "\225\\" # SJIS
-    end
-  end
-
   it '/' do
     (Path('a') / Path('b')).should be_kind_of Path
     {
