@@ -80,8 +80,8 @@ class Path
   # Install +file+ into +path+ (the "prefix", which should be a directory).
   # If +file+ is not same as +path/file+, replaces it.
   # See +FileUtils.install+ (arguments are swapped).
-  def install(file, options = {})
-    FileUtils.install(file, @path, options)
+  def install(file, **options)
+    FileUtils.install(file, @path, **options)
   end
 
   # Recusively changes permissions. See +FileUtils.chmod_R+ and +File.chmod+.

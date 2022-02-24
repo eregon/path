@@ -28,7 +28,7 @@ describe 'Path : File', :tmpchdir do
     old = link.lstat.mode
     begin
       link.lchmod(0444)
-    rescue NotImplementedError
+    rescue NotImplementedError, Errno::ENOTSUP
       next
     end
     path.stat.mode.should == path_mode
