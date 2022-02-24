@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE path.gemspec]
   s.licenses = ['MIT']
   s.version = Path::VERSION
+  s.required_ruby_version = '>= 2.6.0'
 end
