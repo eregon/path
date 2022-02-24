@@ -64,7 +64,7 @@ class Path
     end
   end
 
-  if IO.respond_to? :write and !RUBY_DESCRIPTION.start_with?('jruby')
+  if IO.respond_to? :write and RUBY_ENGINE != 'jruby'
     # Appends +contents+ to +self+. See +IO.write+ or +IO#write+.
     def append(contents, **open_args)
       open_args[:mode] = 'a'

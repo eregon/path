@@ -70,11 +70,11 @@ module PathSpecHelpers
   end
 
   def mri?
-    RUBY_DESCRIPTION.start_with?('ruby ')
+    RUBY_ENGINE == 'ruby'
   end
 
   def jruby?(version = nil)
-    RUBY_DESCRIPTION.start_with?("jruby #{version}")
+    RUBY_ENGINE == 'jruby' && (version.nil? or RUBY_ENGINE_VERSION == version)
   end
   module_function :jruby?
 end
