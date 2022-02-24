@@ -193,7 +193,9 @@ describe 'Path : identity' do
 
     shared_examples_for 'a round-tripping dumping and loading module' do |impl|
       it 'can be dumped and loaded back' do
-        reloaded = impl.load(impl.dump(path))
+        load_method = impl == YAML && impl.respond_to?(:unsafe_load) ? :unsafe_load : :load
+
+        reloaded = impl.send(load_method, impl.dump(path))
 
         reloaded.should == path
         path.should == reloaded
@@ -202,7 +204,7 @@ describe 'Path : identity' do
         reloaded.should be_frozen
         reloaded.to_s.should be_frozen
 
-        impl.load(impl.dump(paths)).should == paths
+        impl.send(load_method, impl.dump(paths)).should == paths
       end
     end
 
