@@ -133,7 +133,6 @@ class Path
   def init
     @path = validate(@path)
 
-    taint if @path.tainted?
     @path.freeze
     freeze
   end

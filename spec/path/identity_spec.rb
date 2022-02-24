@@ -146,19 +146,6 @@ describe 'Path : identity' do
     path.should == Path('a')
   end
 
-  it 'taint' do
-    Path('a'      )           .should_not be_tainted
-    Path('a'      )      .to_s.should_not be_tainted
-    Path('a'.taint)           .should be_tainted
-    Path('a'.taint)      .to_s.should be_tainted
-
-    str = 'a'
-    path = Path(str)
-    str.taint
-    path.should_not be_tainted
-    path.to_s.should_not be_tainted
-  end
-
   it 'freeze' do
     path = Path('a')
     path.freeze.should be path
@@ -171,23 +158,6 @@ describe 'Path : identity' do
     Path('a'.freeze)       .to_s.should be_frozen
     Path('a'       ).freeze.to_s.should be_frozen
     Path('a'.freeze).freeze.to_s.should be_frozen
-  end
-
-  it 'freeze, taint and untaint' do
-    path = Path('a')
-    path.should_not be_tainted
-    expect {
-      path.taint
-    }.to raise_error(*frozen_error)
-    path.     should_not be_tainted
-    path.to_s.should_not be_tainted
-
-    path = Path('a'.taint)
-    expect {
-      path.untaint
-    }.to raise_error(*frozen_error)
-    path     .should be_tainted
-    path.to_s.should be_tainted
   end
 
   it 'inspect' do

@@ -378,12 +378,5 @@ describe 'Path implementation' do
 
     File.fnmatch('*.*', Path.new('bar.baz')).should be true
     File.join(Path.new('foo'), Path.new('bar')).should == 'foo/bar'
-
-    if mri?
-      lambda {
-        $SAFE = 1
-        File.join(Path.new('foo'), Path.new('bar'.taint)).should == 'foo/bar'
-      }.call
-    end
   end
 end
