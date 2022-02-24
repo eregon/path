@@ -68,15 +68,6 @@ module PathSpecHelpers
     # Time zone seems to be lost on windows for file times
     (File::ALT_SEPARATOR != nil) ? Time.now.gmt_offset.abs + 1 : 1
   end
-
-  def mri?
-    RUBY_ENGINE == 'ruby'
-  end
-
-  def jruby?(version = nil)
-    RUBY_ENGINE == 'jruby' && (version.nil? or RUBY_ENGINE_VERSION == version)
-  end
-  module_function :jruby?
 end
 
 RSpec.configure do |config|
@@ -94,11 +85,9 @@ RSpec.configure do |config|
     end
   }
 
-  unless ENV['TRAVIS'] and PathSpecHelpers.jruby?(1.6) # bugged on TravisCI
-    config.after(:suite) {
-      FileUtils.remove_entry_secure tmpdir
-    }
-  end
+  config.after(:suite) {
+    FileUtils.remove_entry_secure tmpdir
+  }
 
   config.filter_run_excluding :ruby => lambda { |version|
     RUBY_VERSION < version.to_s
@@ -121,7 +110,6 @@ end
 
 RSpec::Matchers.define :be_required_in_order do
   match do |files|
-    files.unshift files.pop if PathSpecHelpers.jruby?(1.6)
     $LOADED_FEATURES.last(files.size) == files.map(&:to_s)
   end
 
