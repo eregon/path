@@ -2,7 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/path.svg)](https://rubygems.org/gems/path)
 [![CI](https://github.com/eregon/path/actions/workflows/ci.yml/badge.svg)](https://github.com/eregon/path/actions/workflows/ci.yml)
-[![Build Status](https://ci.appveyor.com/api/projects/status/jg6fx1692mw8mu58/branch/master?svg=true)](https://ci.appveyor.com/project/eregon/path/branch/master)
 
 [Path](http://rubydoc.info/github/eregon/path/master/Path) is a library to manage paths.  
 It is similar to Pathname, but has some extra goodness.  

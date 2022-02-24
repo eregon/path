@@ -5,8 +5,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os: [ ubuntu-latest, windows-latest ]
         ruby: [ '2.6', '2.7', '3.0', '3.1', jruby, truffleruby ]
-    runs-on: ubuntu-latest
+        exclude:
+        - { os: windows-latest, ruby: truffleruby }
+    runs-on: ${{ matrix.os }}
     env:
       BUNDLE_WITHOUT: "development"
     steps:
