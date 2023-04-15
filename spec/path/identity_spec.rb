@@ -10,7 +10,7 @@ describe 'Path : identity' do
     p2 = Path.new(p1)
     p2.should == p1
 
-    expect { Path.new("invalid path\0") }.to raise_error(ArgumentError, /null byte/)
+    -> { Path.new("invalid path\0") }.should raise_error(ArgumentError, /null byte/)
 
     Path.new('/').to_s.should == '/'
     Path.new('/usr/bin/').to_s.should == '/usr/bin'
@@ -139,9 +139,9 @@ describe 'Path : identity' do
 
   it 'destructive update of #to_s are not allowed' do
     path = Path('a')
-    expect {
+    -> {
       path.to_s.replace 'b'
-    }.to raise_error(*frozen_error)
+    }.should raise_error(*frozen_error)
     path.to_s.should == 'a'
     path.should == Path('a')
   end

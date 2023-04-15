@@ -10,13 +10,13 @@ describe 'Path#load' do
 
     Path.backfind('path.gemspec').load.should be_a Gem::Specification
 
-    expect {
+    -> {
       (fixtures/'no-such-one.yml').load
-    }.to raise_error(Errno::ENOENT)
+    }.should raise_error(Errno::ENOENT)
 
-    expect {
+    -> {
       Path(__FILE__).load
-    }.to raise_error(RuntimeError, /Unable to load .*unrecognized extension/)
+    }.should raise_error(RuntimeError, /Unable to load .*unrecognized extension/)
   end
 
   it 'loads new extensions with Path.register_loader' do

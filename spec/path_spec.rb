@@ -20,17 +20,17 @@ describe Path do
     end
 
     it 'gives an error' do
-      expect { Path.configure(:+ => :unknown_config) }.to raise_error ArgumentError, /:unknown_config/
+      -> { Path.configure(:+ => :unknown_config) }.should raise_error ArgumentError, /:unknown_config/
     end
 
     it 'gives an error if already configured once' do
-      expect { Path.configure(:+ => :error) }.to raise_error(/Path\.configure.+ has already been called: .+path_spec\.rb:\d+/)
+      -> { Path.configure(:+ => :error) }.should raise_error(/Path\.configure.+ has already been called: .+path_spec\.rb:\d+/)
     end
 
     it ':error' do
       Path.instance_variable_set(:@plus_configured, nil)
       Path.configure(:+ => :error)
-      expect { Path('p') + 'a' }.to raise_error(NoMethodError)
+      -> { Path('p') + 'a' }.should raise_error(NoMethodError)
     end
 
     it ':string' do

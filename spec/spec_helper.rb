@@ -71,8 +71,9 @@ module PathSpecHelpers
 end
 
 RSpec.configure do |config|
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.include PathSpecHelpers
+
+  config.expect_with(:rspec) { |c| c.syntax = :should }
 
   config.around(:each, :tmpchdir) { |example|
     if example.metadata[:tmpchdir]
@@ -113,7 +114,7 @@ RSpec::Matchers.define :be_required_in_order do
     $LOADED_FEATURES.last(files.size) == files.map(&:to_s)
   end
 
-  failure_message_for_should do |files|
+  failure_message do |files|
     "Expected to load\n#{features.last(files.size) * "\n"}\nin this order\n#{files * "\n"}"
   end
 end

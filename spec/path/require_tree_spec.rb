@@ -21,10 +21,10 @@ describe 'Path#require_tree' do
   let(:features) { $LOADED_FEATURES }
 
   it 'default directory' do
-    expect {
+    -> {
       (dir/'bar.rb').write('Path.require_tree')
       require dir/:bar
-    }.to change { features.size }.by 5
+    }.should change { features.size }.by 5
 
     %w[baz.rb
        foo.rb
@@ -34,10 +34,10 @@ describe 'Path#require_tree' do
   end
 
   it 'given directory' do
-    expect {
+    -> {
       (dir/'bar.rb').write('Path.require_tree "foo"')
       require dir/:bar
-    }.to change { features.size }.by 3
+    }.should change { features.size }.by 3
 
     %w[foo/foo1.rb
        foo/foo2.rb
@@ -45,37 +45,37 @@ describe 'Path#require_tree' do
   end
 
   it 'default directory and :except prefix' do
-    expect {
+    -> {
       (dir/'bar.rb').write('Path.require_tree(:except => %w[foo])')
       require dir/:bar
-    }.to change { features.size }.by 2
+    }.should change { features.size }.by 2
 
     %w[baz.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
   end
 
   it 'default directory and :except dir' do
-    expect {
+    -> {
       (dir/'bar.rb').write('Path.require_tree(:except => %w[foo/])')
       require dir/:bar
-    }.to change { features.size }.by 3
+    }.should change { features.size }.by 3
 
     %w[baz.rb foo.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
   end
 
   it 'given directory and :except prefix' do
-    expect {
+    -> {
       (dir/'bar.rb').write('Path.require_tree(".", :except => %w[foo])')
       require dir/:bar
-    }.to change { features.size }.by 2
+    }.should change { features.size }.by 2
 
     %w[baz.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
   end
 
   it 'given directory and :except dir' do
-    expect {
+    -> {
       (dir/'bar.rb').write('Path.require_tree(".", :except => %w[foo/])')
       require dir/:bar
-    }.to change { features.size }.by 3
+    }.should change { features.size }.by 3
 
     %w[baz.rb foo.rb bar.rb].map { |rel| dir/rel }.should be_required_in_order
   end

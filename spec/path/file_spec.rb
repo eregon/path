@@ -101,7 +101,7 @@ describe 'Path : File', :tmpchdir do
     path.size.should == 3
 
     Path('z').touch.size.should == 0
-    expect { Path('not-exist').size }.to raise_error(Errno::ENOENT)
+    -> { Path('not-exist').size }.should raise_error(Errno::ENOENT)
   end
 
   it 'make_symlink', :symlink do
@@ -121,7 +121,7 @@ describe 'Path : File', :tmpchdir do
     file.should_not exist
 
     dir = Path('dir').mkdir
-    expect { dir.unlink }.to raise_error(SystemCallError)
+    -> { dir.unlink }.should raise_error(SystemCallError)
   end
 
   it 'unlink (symlink)', :symlink do

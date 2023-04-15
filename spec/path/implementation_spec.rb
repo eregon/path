@@ -263,9 +263,9 @@ describe 'Path implementation' do
       ['a', '..'],
       ['.', '..'],
     ].each do |path, base|
-      expect {
+      -> {
         Path(path).relative_path_from(Path(base))
-      }.to raise_error(ArgumentError)
+      }.should raise_error(ArgumentError)
     end
   end
 
@@ -273,18 +273,18 @@ describe 'Path implementation' do
     :real.should be_an_alias_of :realpath
     dir = Path.getwd
     not_exist = dir/'not-exist'
-    expect { not_exist.realpath }.to raise_error(Errno::ENOENT)
+    -> { not_exist.realpath }.should raise_error(Errno::ENOENT)
     not_exist.make_symlink('not-exist-target')
-    expect { not_exist.realpath }.to raise_error(Errno::ENOENT)
+    -> { not_exist.realpath }.should raise_error(Errno::ENOENT)
 
     looop = dir/'loop'
     looop.make_symlink('loop')
-    expect { looop.realpath }.to raise_error(Errno::ELOOP)
-    expect { looop.realpath(dir) }.to raise_error(Errno::ELOOP)
+    -> { looop.realpath }.should raise_error(Errno::ELOOP)
+    -> { looop.realpath(dir) }.should raise_error(Errno::ELOOP)
 
     not_exist2 = dir/'not-exist2'
     not_exist2.make_symlink("../#{dir.basename}/./not-exist-target")
-    expect { not_exist2.realpath }.to raise_error(Errno::ENOENT)
+    -> { not_exist2.realpath }.should raise_error(Errno::ENOENT)
 
     exist_target, exist2 = (dir/'exist-target').touch, dir/'exist2'
     exist2.make_symlink(exist_target)
@@ -292,19 +292,19 @@ describe 'Path implementation' do
 
     loop_relative = Path('loop-relative')
     loop_relative.make_symlink(loop_relative)
-    expect { loop_relative.realpath }.to raise_error(Errno::ELOOP)
+    -> { loop_relative.realpath }.should raise_error(Errno::ELOOP)
 
     exist = Path('exist').mkdir
     exist.realpath.should == dir/'exist'
-    expect { Path('../loop').realpath(exist) }.to raise_error(Errno::ELOOP)
+    -> { Path('../loop').realpath(exist) }.should raise_error(Errno::ELOOP)
 
     Path('loop1').make_symlink('loop1/loop1')
-    expect { (dir/'loop1').realpath }.to raise_error(Errno::ELOOP)
+    -> { (dir/'loop1').realpath }.should raise_error(Errno::ELOOP)
 
     loop2, loop3 = Path('loop2'), Path('loop3')
     loop2.make_symlink(loop3)
     loop3.make_symlink(loop2)
-    expect { loop2.realpath }.to raise_error(Errno::ELOOP)
+    -> { loop2.realpath }.should raise_error(Errno::ELOOP)
 
     b = dir/'b'
     Path('c').make_symlink(Path('b').mkdir)
@@ -322,7 +322,7 @@ describe 'Path implementation' do
     g = dir / (f/'g').mkdir
     h = Path('h').make_symlink(g)
     f.chmod(0000)
-    expect { h.realpath }.to raise_error(Errno::EACCES) unless Process.uid == 0
+    -> { h.realpath }.should raise_error(Errno::EACCES) unless Process.uid == 0
     f.chmod(0755)
     h.realpath.should == g
   end
@@ -334,7 +334,7 @@ describe 'Path implementation' do
       not_exist = dir/'not-exist'
 
       not_exist.realdirpath.should == rdir/'not-exist'
-      expect { (not_exist/'not-exist-child').realdirpath }.to raise_error(Errno::ENOENT)
+      -> { (not_exist/'not-exist-child').realdirpath }.should raise_error(Errno::ENOENT)
 
       not_exist.make_symlink('not-exist-target')
       not_exist.realdirpath.should == rdir/'not-exist-target'
@@ -347,7 +347,7 @@ describe 'Path implementation' do
       exist.realdirpath.should == rdir/'exist-target'
 
       looop = (dir/'loop').make_symlink('loop')
-      expect { looop.realdirpath }.to raise_error(Errno::ELOOP)
+      -> { looop.realdirpath }.should raise_error(Errno::ELOOP)
     end
   end
 
