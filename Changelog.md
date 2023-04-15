@@ -2,6 +2,9 @@
 
 ## next
 
+## 2.1.0
+
+* Support Ruby 3.2, drop support for Ruby < 2.6
 * add Path#hidden?
 * Path#children, #each_child and #siblings are now always sorted to ensure a consistent ordering
 
