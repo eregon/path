@@ -162,6 +162,6 @@ class Path
   end
 
   register_loader 'gemspec' do |path|
-    eval path.read
+    eval path.read, nil, path.to_s
   end
 end
