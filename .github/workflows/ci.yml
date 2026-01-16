@@ -10,7 +10,6 @@ jobs:
         exclude:
         - { os: windows-latest, ruby: jruby }
         - { os: windows-latest, ruby: truffleruby }
-        - { os: windows-latest, ruby: '4.0' }
     runs-on: ${{ matrix.os }}
     env:
       BUNDLE_WITHOUT: "development"
