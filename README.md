@@ -4,7 +4,8 @@
 [![CI](https://github.com/eregon/path/actions/workflows/ci.yml/badge.svg)](https://github.com/eregon/path/actions/workflows/ci.yml)
 
 [Path](http://rubydoc.info/github/eregon/path/master/Path) is a library to manage paths.  
-It is similar to Pathname, but has some extra goodness.  
+It is similar to Pathname, but has some extra goodness, notably more than 50 extra methods.  
+Pathname only exposes a subset of `File`, `Dir` and `FileUtils` but Path exposes most of them.
 The method names are intended to be short and explicit, and avoid too much duplication like having 'name' or 'path' in the method name.
 
 I believe the object-oriented approach to manipulate paths is very elegant and useful.  
